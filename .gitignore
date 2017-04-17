@@ -1,2 +1,5 @@
 .idea
+.sass-cache
 venv
+static/css/bin
+static/js/bin

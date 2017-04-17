@@ -1,12 +1,15 @@
-/* Here we define any variables we use across CutCash. They're defined here in order to be accessible to all the SCSS
+/***********************************************************************************************************************
+ * Here we define any variables we use across CutCash. They're defined here in order to be accessible to all the SCSS
  * files we build with the project. They are read in cutcash.scss and used there to override the default framework
- * styles. */
+ * styles.
+ * ********************************************************************************************************************/
+
 @import "cuteworks-variables";
 
-$cutecasa-sans-serif-font: 'Yantramanav', sans-serif;
-$cutecasa-serif-font: 'Roboto Slab', serif;
+$cutcash-sans-serif-font: 'Yantramanav', sans-serif;
+$cutcash-serif-font: 'Roboto Slab', serif;
 
-$cutecasa-primary: $cuteworks-primary;
-$cutecasa-primary-subtle: $cuteworks-primary-subtle;
-$cutecasa-secondary: $cuteworks-secondary;
-$cutecasa-secondary-subtle: $cuteworks-secondary-subtle;
+$cutcash-primary: $cuteworks-primary;
+$cutcash-primary-subtle: $cuteworks-primary-subtle;
+$cutcash-secondary: $cuteworks-secondary;
+$cutcash-secondary-subtle: $cuteworks-secondary-subtle;

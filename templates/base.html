@@ -17,36 +17,42 @@
     <!-- Framework and application style -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bin/bulma.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/bin/cutcash.css') }}">
+    <!-- / -->
 
     <!-- Icon font and Google fonts -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}">
     <link href="https://fonts.googleapis.com/css?family=Yantramanav:300" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Roboto+Slab" rel="stylesheet">
+    <!-- / -->
 
-    <!-- Styles defined by templates -->
-    {% block styles %}
-    {% endblock %}
+    <!-- Template styles -->
+    {% block styles %}{% endblock %}
+    <!-- / -->
 
     <!-- JS frameworks and custom JS to run on every page -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
     <script type="text/javascript" src="{{ url_for('static', filename='js/bin/head.js') }}"></script>
+    <!-- / -->
 
-    <!-- Scripts defined by the templates -->
-    {% block scripts %}
-    {% endblock %}
+    <!-- Template scripts -->
+    {% block scripts %}{% endblock %}
+    <!-- / -->
 
     <title>{% block title %}{% endblock %}</title>
 </head>
 <body>
 
-{% block header %}
-{% endblock %}
+<!-- Template header -->
+{% block header %}{% endblock %}
+<!-- / -->
 
-{% block body %}
-{% endblock %}
+<!-- Template body -->
+{% block body %}{% endblock %}
+<!-- / -->
 
-{% block footer %}
-{% endblock %}
+<!-- Template footer -->
+{% block footer %}{% endblock %}
+<!-- / -->
 
 </body>
 </html>

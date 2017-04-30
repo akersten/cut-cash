@@ -10,7 +10,7 @@ def splash():
     The splash screen for the CutCash homepage.
     :return: The rendered template.
     """
-    return generic_path_render("splash.html")
+    return generic_path_render("splash/splash.html")
 
 
 def generic_path_render(file):

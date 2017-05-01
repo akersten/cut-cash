@@ -3,6 +3,7 @@
     "target": "ES5",
     "outDir": "static/js/bin",
     "rootDir": "src/ts",
+    "jsx": "react",
     "sourceMap": true
   }
 }

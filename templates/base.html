@@ -31,11 +31,7 @@
 
     <!-- JS frameworks and custom JS to run on every page -->
     <script type="text/javascript" src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-    <script type="text/javascript" src="{{ url_for('static', filename='js/bin/base.bundle.js') }}"></script>
-    <!-- / -->
-
-    <!-- Template scripts -->
-    {% block scripts %}{% endblock %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bin/base.bundled.js') }}"></script>
     <!-- / -->
 
     <title>{% block title %}{% endblock %}</title>
@@ -52,6 +48,10 @@
 
 <!-- Template footer -->
 {% block footer %}{% endblock %}
+<!-- / -->
+
+<!-- Template scripts -->
+{% block scripts %}{% endblock %}
 <!-- / -->
 
 </body>

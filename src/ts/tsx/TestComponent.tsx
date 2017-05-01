@@ -1,3 +1,5 @@
+import * as React from "react";
+
 /**
  * Created by akersten on 4/30/17.
  */
@@ -6,7 +8,7 @@ class DemoProps {
   public age:number;
 }
 
-class Demo extends React.Component<DemoProps, any> {
+export class Demo extends React.Component<DemoProps, any> {
   private foo:number;
   constructor(props:DemoProps) {
     super(props);

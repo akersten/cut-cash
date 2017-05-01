@@ -1,6 +1,10 @@
 {% extends "base.html" %}
 {% block title %}CutCash{% endblock %}
 
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bin/splash/splash.js') }}"></script>
+{% endblock %}
+
 {% block header %}
     {% include "splash/splash-header.html" %}
 {% endblock %}

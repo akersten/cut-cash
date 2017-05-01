@@ -24,6 +24,10 @@ then
 fi
 tsc
 
+echo "  Bundling scripts..."
+for f in $(find static/js/bin/ -name '*.js'); do echo "    $f"; browserify $f -o ${f%.*}.bundled.js; done
+
+
 echo "-----------------------------------------------------------------------------------"
 echo "Build complete - run 'python3 cut-cash.py' to start the server."
 echo "-----------------------------------------------------------------------------------"

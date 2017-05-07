@@ -18,6 +18,7 @@ sass src/scss/cutcash.scss static/css/bin/cutcash.css
 
 echo "  Building scripts..."
 
+rm -rf static/js/bin/
 if  [ ! -d static/js/bin ]
 then
     mkdir -p static/js/bin

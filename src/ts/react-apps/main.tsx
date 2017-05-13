@@ -7,9 +7,7 @@
 import * as React from "react";
 import * as ReactDOM from "react-dom";
 
-import { CutCashApp } from "../react-components/TestComponent";
-
-
+import {CutCashApp} from "../react-components/CutCashApp";
 
 const el = <CutCashApp name="yes" age={2} />;
 

@@ -26,7 +26,8 @@ fi
 tsc
 
 echo "  Bundling scripts..."
-for f in $(find static/js/bin/ -name '*.js'); do echo "    $f"; browserify $f -o ${f%.*}.bundled.js; done
+#browserify static/js/bin/base.js -o static/js/bin/base.bundled.js
+for f in $(find static/js/bin/react-apps/ -name '*.js'); do echo "    $f"; browserify $f -o ${f%.*}.bundled.js; done
 
 
 echo "-----------------------------------------------------------------------------------"

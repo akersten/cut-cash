@@ -17,7 +17,7 @@ export class CutCashApp extends React.Component<CutCashAppProps, any> {
     render() {
         return <div>
                 <div>Hello world! My name is {this.props.name} and my age is {this.props.age}. Looks like you've got some receipts!</div>
-                <ReceiptComponent/>
+                <ReceiptComponent title="Aaaaaaa"/>
                </div>
     }
 }

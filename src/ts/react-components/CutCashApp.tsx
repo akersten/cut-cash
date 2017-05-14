@@ -1,5 +1,6 @@
 import * as React from "react";
 import {ReceiptComponent} from "./receipt/ReceiptComponent";
+import {Receipt} from "../core/receipt/receipt";
 
 /**
  * Created by akersten on 4/30/17.
@@ -7,6 +8,7 @@ import {ReceiptComponent} from "./receipt/ReceiptComponent";
 class CutCashAppProps {
      public name:string;
      public age:number;
+     public testRec:Receipt;
 }
 
 export class CutCashApp extends React.Component<CutCashAppProps, any> {
@@ -15,9 +17,11 @@ export class CutCashApp extends React.Component<CutCashAppProps, any> {
     }
 
     render() {
-        return <div>
+        return (
+            <div>
                 <div>Hello world! My name is {this.props.name} and my age is {this.props.age}. Looks like you've got some receipts!</div>
-                <ReceiptComponent title="Aaaaaaa"/>
-               </div>
+                <ReceiptComponent receipt={this.props.testRec}/>
+            </div>
+        );
     }
 }

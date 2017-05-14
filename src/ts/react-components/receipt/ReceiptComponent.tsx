@@ -4,24 +4,27 @@
 
 import * as React from "react";
 import {Receipt} from "../../core/receipt/receipt";
+import {ReceiptHeaderComponent} from "./ReceiptHeaderComponent";
+import {ReceiptBodyComponent} from "./ReceiptBodyComponent";
+import {ReceiptFooterComponent} from "./ReceiptFooterComponent";
 
 class ReceiptProps {
-    public title:string;
+    public receipt:Receipt;
 }
 
 export class ReceiptComponent extends React.Component<ReceiptProps, any> {
-    private receipt:Receipt;
-
     constructor(props:ReceiptProps) {
         super(props);
-        this.receipt = new Receipt();
-        this.receipt.title = props.title;
-        this.setState({receipt: this.receipt});
     }
 
     render() {
-        return <ul>
-            {this.receipt.title}
-        </ul>
+        return (
+            <div>
+                <ReceiptHeaderComponent title={this.props.receipt.title} date={this.props.receipt.date} />
+                <ReceiptBodyComponent lines={this.props.receipt.lines} />
+                <ReceiptFooterComponent/>
+            </div>
+        );
+
     }
 }

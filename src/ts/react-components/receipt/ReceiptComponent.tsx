@@ -3,13 +3,17 @@
  */
 
 import * as React from "react";
-import {Receipt} from "../../core/receipt/receipt";
+import {ReceiptLine} from "../../core/receipt/receipt";
 import {ReceiptHeaderComponent} from "./ReceiptHeaderComponent";
 import {ReceiptBodyComponent} from "./ReceiptBodyComponent";
 import {ReceiptFooterComponent} from "./ReceiptFooterComponent";
 
 class ReceiptProps {
-    public receipt:Receipt;
+    public title: string;
+    public date: Date;
+    public lines: ReceiptLine[];
+
+    public onRowDelete: (rowKey) => void;
 }
 
 export class ReceiptComponent extends React.Component<ReceiptProps, any> {
@@ -20,8 +24,8 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
     render() {
         return (
             <div>
-                <ReceiptHeaderComponent title={this.props.receipt.title} date={this.props.receipt.date} />
-                <ReceiptBodyComponent lines={this.props.receipt.lines} />
+                <ReceiptHeaderComponent title={this.props.title} date={this.props.date} />
+                <ReceiptBodyComponent lines={this.props.lines} onRowDelete={this.props.onRowDelete} />
                 <ReceiptFooterComponent/>
             </div>
         );

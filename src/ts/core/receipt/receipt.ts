@@ -6,6 +6,12 @@ export class Receipt {
     public title:string;
     public date:Date;
     public lines:ReceiptLine[];
+
+    removeItem(id:number) {
+        this.lines[id-1].title="BALETED";
+
+        alert("array length is now " + this.lines.length);
+    }
 }
 
 export class ReceiptLine {

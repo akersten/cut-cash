@@ -1,9 +1,10 @@
 {
   "compilerOptions": {
-    "target": "es5",
+    "target": "es6",
     "outDir": "static/js/bin",
     "rootDir": "src/ts",
     "jsx": "react",
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "node"
   }
 }

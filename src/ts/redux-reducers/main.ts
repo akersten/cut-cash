@@ -3,7 +3,8 @@
  */
 
 import {combineReducers} from "redux";
+import {receiptReducer} from "./receiptReducer";
 
-const mainReducer = combineReducers({});
-
-export default mainReducer;
+export const mainReducer = combineReducers({
+    receipts: receiptReducer,
+});

@@ -6,3 +6,9 @@
  **********************************************************************************************************************/
 
 alert('base script');
+
+
+// Stupid polyfill for object.assign - hope browsers implement ES6 soon...
+declare interface ObjectConstructor {
+    assign(...objects: Object[]): Object;
+}

@@ -5,11 +5,13 @@ import {Receipt, ReceiptLine} from "../core/receipt/receipt";
 /**
  * Created by akersten on 4/30/17.
  */
+
+/*
 export class CutCashApp extends React.Component<any, any> {
     constructor(props:any) {
         super(props);
 
-        let rec = new Receipt();
+        //let rec = new Receipt();
         rec.date = new Date();
         rec.title = "Hey I'm a real react component!";
         rec.lines = [
@@ -18,7 +20,7 @@ export class CutCashApp extends React.Component<any, any> {
             new ReceiptLine(3,"Third item")
         ];
 
-        this.state = {receipt:rec};
+        //this.state = {receipt:rec};
 
 
         this.handleRowDeleteClick = this.handleRowDeleteClick.bind(this);
@@ -42,3 +44,4 @@ export class CutCashApp extends React.Component<any, any> {
         );
     }
 }
+*/

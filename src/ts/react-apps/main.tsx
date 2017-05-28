@@ -9,12 +9,25 @@ import * as React from "react";
 import * as ReactDOM from "react-dom";
 import {Provider} from "react-redux";
 
-//import {CutCashApp} from "../react-components/CutCashApp";
+import {CutCashApp} from "../react-components/CutCashApp";
 import {mainReducer} from "../redux-reducers/main";
 import {createReceipt, setReceiptTitle} from "../redux-actions/receiptActions";
 
 let store = createStore(mainReducer);
 
+const el =
+    <Provider store={store}>
+        <CutCashApp />
+    </Provider>;
+
+ReactDOM.render(
+    el,
+    $('#react-app')[0]
+);
+
+
+
+/*
 console.log(store.getState());
 
 let unsubscribe = store.subscribe(() =>
@@ -30,14 +43,4 @@ store.dispatch(setReceiptTitle(44,"Hey middle receipt"));
 
 unsubscribe();
 
-
-/*const el =
-    <Provider store={store}>
-        <CutCashApp />
-    </Provider>;
-
-ReactDOM.render(
-    el,
-    $('#react-app')[0]
-);
-*/
+ */

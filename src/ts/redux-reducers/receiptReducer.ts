@@ -17,7 +17,7 @@ export function receiptReducer(state: Array<Receipt> = [], action: IReceiptActio
 
         case ReceiptActionType.SET_TITLE:
             return <Array<Receipt>> state.map(
-                (receipt: Receipt, index: number): Receipt => {
+                (receipt: Receipt): Receipt => {
                     if (receipt.id === (<ISetTitle>action).id) {
                         return <Receipt> Object.assign({}, receipt, <Receipt> {
                             title: (<ISetTitle>action).title,

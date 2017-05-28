@@ -7,6 +7,7 @@ import * as React from "react";
 class ReceiptHeaderProps {
     public title: string;
     public date: Date;
+    public id: string;
 }
 
 export class ReceiptHeaderComponent extends React.Component<ReceiptHeaderProps, any> {
@@ -20,6 +21,7 @@ export class ReceiptHeaderComponent extends React.Component<ReceiptHeaderProps, 
             <div>
                 <h1>{this.props.title}</h1>
                 <h2>{this.props.date.toDateString()}</h2>
+                <h3>{this.props.id}</h3>
             </div>
         );
     }

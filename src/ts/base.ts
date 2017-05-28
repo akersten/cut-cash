@@ -1,12 +1,11 @@
 /**
  * Created by akersten on 4/30/17.
  */
+
 /***********************************************************************************************************************
- * The base script to include on every page for the application (framework-level imports, global declarations, etc.)
+ * The base script to include on every page for the application (framework imports, global declarations, polyfills,
+ * etc.)
  **********************************************************************************************************************/
-
-alert('base script');
-
 
 // Stupid polyfill for object.assign - hope browsers implement ES6 soon...
 declare interface ObjectConstructor {

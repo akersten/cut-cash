@@ -12,8 +12,7 @@ class ReceiptProps {
     public title: string;
     public date: Date;
     public lines: ReceiptLine[];
-
-    public onRowDelete: (rowKey) => void;
+    public id: string;
 }
 
 export class ReceiptComponent extends React.Component<ReceiptProps, any> {
@@ -24,8 +23,8 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
     render() {
         return (
             <div>
-                <ReceiptHeaderComponent title={this.props.title} date={this.props.date} />
-                <ReceiptBodyComponent lines={this.props.lines} onRowDelete={this.props.onRowDelete} />
+                <ReceiptHeaderComponent title={this.props.title} date={this.props.date} id={this.props.id} />
+                <ReceiptBodyComponent lines={this.props.lines} />
                 <ReceiptFooterComponent/>
             </div>
         );

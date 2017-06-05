@@ -2,6 +2,10 @@
  * Created by akersten on 5/27/17.
  */
 
+
+// TODO: Better way of doing this so we have unique IDs?
+let nextReceiptId = 0;
+
 export const enum ReceiptActionType {
     CREATE_RECEIPT,
     SET_AMOUNT,
@@ -27,8 +31,8 @@ export interface ISetTitle extends IReceiptAction {
 }
 
 
-export function createReceipt(id: string, title: string): ICreateReceipt {
-    return {type: ReceiptActionType.CREATE_RECEIPT, title, id, date: new Date()};
+export function createReceipt(title: string): ICreateReceipt {
+    return {type: ReceiptActionType.CREATE_RECEIPT, title, id: "CR_" + nextReceiptId++, date: new Date()};
 }
 
 export function setReceiptTitle(id: string, title: string): ISetTitle {

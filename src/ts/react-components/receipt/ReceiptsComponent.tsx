@@ -8,9 +8,11 @@ import {ReceiptHeaderComponent} from "./ReceiptHeaderComponent";
 import {ReceiptBodyComponent} from "./ReceiptBodyComponent";
 import {ReceiptFooterComponent} from "./ReceiptFooterComponent";
 import {ReceiptComponent} from "./ReceiptComponent";
+import {ReceiptsControls} from "./ReceiptsControls";
 
 class ReceiptsProps {
     public receipts: Array<Receipt>;
+    public onKeyPress: (event) => void;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
@@ -28,6 +30,10 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 key={receipt.id}
             />);
 
-        return <div>{rows}</div>;
+        return (
+            <div>
+                <ReceiptsControls onKeyPress={this.props.onKeyPress} />
+                <div>{rows}</div>
+            </div>);
     }
 }

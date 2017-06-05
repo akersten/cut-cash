@@ -24,23 +24,3 @@ ReactDOM.render(
     el,
     $('#react-app')[0]
 );
-
-
-
-/*
-console.log(store.getState());
-
-let unsubscribe = store.subscribe(() =>
-    console.log(store.getState())
-);
-
-
-store.dispatch(createReceipt(123,"Hey first receipt"));
-store.dispatch(createReceipt(44,"Middle receipt"));
-store.dispatch(createReceipt(1,"Hey last receipt"));
-
-store.dispatch(setReceiptTitle(44,"Hey middle receipt"));
-
-unsubscribe();
-
- */

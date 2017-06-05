@@ -16,21 +16,21 @@ export interface IReceiptAction {
 }
 
 export interface ICreateReceipt extends IReceiptAction {
-    id: number,
+    id: string,
     title: string,
     date: Date,
 }
 
 export interface ISetTitle extends IReceiptAction {
-    id: number,
+    id: string,
     title: string,
 }
 
 
-export function createReceipt(id: number, title: string): ICreateReceipt {
+export function createReceipt(id: string, title: string): ICreateReceipt {
     return {type: ReceiptActionType.CREATE_RECEIPT, title, id, date: new Date()};
 }
 
-export function setReceiptTitle(id: number, title: string): ISetTitle {
+export function setReceiptTitle(id: string, title: string): ISetTitle {
     return {type: ReceiptActionType.SET_TITLE, title, id};
 }

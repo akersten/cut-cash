@@ -1,6 +1,7 @@
 import {ReceiptsComponent} from "./ReceiptsComponent";
 import {connect} from "react-redux";
 import {createReceipt} from "../../redux-actions/receiptActions";
+
 /**
  * Created by akersten on 6/4/17.
  */
@@ -21,7 +22,7 @@ const mapDispatchToProps = (dispatch) =>
             let $t = $(event.currentTarget);
 
             // Create a new receipt!
-            dispatch(createReceipt($t.val()));
+            dispatch(createReceipt($t.val() as string));
             $t.val("");
         }
     }

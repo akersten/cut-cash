@@ -5,6 +5,9 @@
     "rootDir": "src/ts",
     "jsx": "react",
     "sourceMap": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "lib": [
+      "es2015.iterable"
+    ]
   }
 }

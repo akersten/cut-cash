@@ -3,7 +3,7 @@
  */
 
 import * as React from "react";
-import {ReceiptLine} from "../../core/receipt/receipt";
+import {ReceiptLine} from "../../../core/receipt/receipt";
 import {ReceiptHeaderComponent} from "./ReceiptHeaderComponent";
 import {ReceiptBodyComponent} from "./ReceiptBodyComponent";
 import {ReceiptFooterComponent} from "./ReceiptFooterComponent";

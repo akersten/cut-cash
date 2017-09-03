@@ -3,7 +3,7 @@
  */
 
 import * as React from "react";
-import {ReceiptLine} from "../../core/receipt/receipt";
+import {ReceiptLine} from "../../../core/receipt/receipt";
 
 class ReceiptBodyProps {
     public lines: ReceiptLine[];

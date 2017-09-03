@@ -4,10 +4,10 @@
 
 import * as React from "react";
 import {Receipt, ReceiptLine} from "../../core/receipt/receipt";
-import {ReceiptHeaderComponent} from "./ReceiptHeaderComponent";
-import {ReceiptBodyComponent} from "./ReceiptBodyComponent";
-import {ReceiptFooterComponent} from "./ReceiptFooterComponent";
-import {ReceiptComponent} from "./ReceiptComponent";
+import {ReceiptHeaderComponent} from "./receipt/ReceiptHeaderComponent";
+import {ReceiptBodyComponent} from "./receipt/ReceiptBodyComponent";
+import {ReceiptFooterComponent} from "./receipt/ReceiptFooterComponent";
+import {ReceiptComponent} from "./receipt/ReceiptComponent";
 import {ReceiptsControls} from "./ReceiptsControls";
 
 class ReceiptsProps {

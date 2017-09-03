@@ -11,8 +11,7 @@ const mapStateToProps = (state) => {
     return state;
 };
 
-const mapDispatchToProps = (dispatch) =>
-{
+const mapDispatchToProps = (dispatch) => {
     return {
         onKeyPress: (event) => {
             if (event.which !== 13) {
@@ -20,6 +19,11 @@ const mapDispatchToProps = (dispatch) =>
             }
 
             let $t = $(event.currentTarget);
+
+            let str: string = $t.val() as string;
+            if (str.length === 0) {
+                return;
+            }
 
             // Create a new receipt!
             dispatch(createReceipt($t.val() as string));

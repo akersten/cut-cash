@@ -9,9 +9,11 @@ import {ReceiptBodyComponent} from "./receipt/ReceiptBodyComponent";
 import {ReceiptFooterComponent} from "./receipt/ReceiptFooterComponent";
 import {ReceiptComponent} from "./receipt/ReceiptComponent";
 import {ReceiptsControls} from "./ReceiptsControls";
+import {Party} from "../../core/party/party";
 
 class ReceiptsProps {
     public receipts: Array<Receipt>;
+    public parties: Party[];
     public onKeyPress: (event) => void;
 }
 
@@ -28,6 +30,7 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 lines={receipt.lines}
                 id={receipt.id}
                 key={receipt.id}
+                parties={this.props.parties}
             />);
 
         return (

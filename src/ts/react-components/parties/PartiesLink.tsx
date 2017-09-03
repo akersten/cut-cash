@@ -20,6 +20,11 @@ const mapDispatchToProps = (dispatch) => {
 
             let $t = $(event.currentTarget);
 
+            let str: string = $t.val() as string;
+            if (str.length === 0) {
+                return;
+            }
+
             // Create a new receipt!
             dispatch(createParty($t.val() as string));
             $t.val("");

@@ -24,9 +24,9 @@ export class PartiesComponent extends React.Component<PartiesProps, any> {
             />);
 
         return (
-            <div>
+            <div className="columns is-multiline">
                 <PartiesControls onKeyPress={this.props.onKeyPress} />
-                <div>{parties}</div>
+                {parties}
             </div>);
     }
 }

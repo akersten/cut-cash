@@ -1,0 +1,30 @@
+.cw-fx-expand-on-create {
+  animation-duration: 0.25s;
+  animation-name: cw-fx-expand-on-create-frames;
+}
+
+@keyframes cw-fx-expand-on-create-frames {
+  from {
+    transform: scaleY(0);
+  }
+
+  to {
+    transform: scaleY(1);
+  }
+}
+
+.cw-fx-collapse {
+  animation-duration: 0.25s;
+  animation-name: cw-fx-collapse-frames;
+  animation-fill-mode: forwards;
+}
+
+@keyframes cw-fx-collapse-frames {
+  from {
+    transform: scaleY(1);
+  }
+
+  to {
+    transform: scaleY(0);
+  }
+}

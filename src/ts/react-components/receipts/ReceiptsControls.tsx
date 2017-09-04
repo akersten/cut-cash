@@ -21,7 +21,7 @@ export class ReceiptsControls extends React.Component<ReceiptsControlsProps, any
 
     render() {
         return (
-            <div>
+            <div className="column is-one-third">
                 <p className="control">
                     <input className="input" type="text" placeholder="Create receipt"
                            onKeyPress={this.props.onKeyPress}/>

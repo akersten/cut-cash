@@ -16,10 +16,11 @@ class ReceiptsProps {
     public parties: Party[];
     public onKeyPress: (event) => void;
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
+    public onReceiptDeleteClick: (e, id: string) => void;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
-    constructor(props:ReceiptsProps) {
+    constructor(props: ReceiptsProps) {
         super(props);
     }
 
@@ -33,12 +34,13 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 key={receipt.id}
                 parties={this.props.parties}
                 onReceiptPartyChange={this.props.onReceiptPartyChange}
+                onReceiptDeleteClick={this.props.onReceiptDeleteClick}
             />);
 
         return (
-            <div>
-                <ReceiptsControls onKeyPress={this.props.onKeyPress} />
-                <div>{rows}</div>
+            <div className="columns is-multiline">
+                <ReceiptsControls onKeyPress={this.props.onKeyPress}/>
+                {rows}
             </div>);
     }
 }

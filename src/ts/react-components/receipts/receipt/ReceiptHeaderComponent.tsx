@@ -6,23 +6,25 @@ import * as React from "react";
 
 class ReceiptHeaderProps {
     public title: string;
-    public date: Date;
     public id: string;
+    public onReceiptDeleteClick: (e, id: string) => void;
 }
 
 export class ReceiptHeaderComponent extends React.Component<ReceiptHeaderProps, any> {
 
-    constructor(props:ReceiptHeaderProps) {
+    constructor(props: ReceiptHeaderProps) {
         super(props);
     }
 
     render() {
         return (
-            <div>
-                <h1>{this.props.title}</h1>
-                <h2>{this.props.date.toDateString()}</h2>
-                <h3>{this.props.id}</h3>
-            </div>
+            <header className="card-header">
+                <p className="card-header-title">{this.props.title}</p>
+
+                <a className="card-header-icon" onClick={e => this.props.onReceiptDeleteClick(e, this.props.id)}>
+                    <button className="delete"></button>
+                </a>
+            </header>
         );
     }
 }

@@ -11,9 +11,12 @@ export class PartiesControls extends React.Component<PartiesControlsProps, any> 
 
     render() {
         return (
-            <div className="control">
-                <input className="input" type="text" placeholder="Add party"
-                       onKeyPress={this.props.onKeyPress}/>
+            <div className="column is-one-third">
+                <div className="control">
+
+                    <input className="input" type="text" placeholder="Add party"
+                           onKeyPress={this.props.onKeyPress}/>
+                </div>
             </div>
 
         );

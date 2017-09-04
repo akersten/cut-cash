@@ -14,6 +14,7 @@ export class CutCashApp extends React.Component<any, any> {
 
     render() {
         return <div>
+            <h1 className="title">CutCash</h1>
             <PartiesLink/>
             <ReceiptsLink/>
         </div>;

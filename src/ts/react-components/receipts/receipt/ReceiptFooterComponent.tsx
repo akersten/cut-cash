@@ -6,13 +6,15 @@ import * as React from "react";
 
 export class ReceiptFooterComponent extends React.Component<any, any> {
 
-    constructor(props:any) {
+    constructor(props: any) {
         super(props);
     }
 
     render() {
         return (
-            <a href="#">Save</a>
+            <footer className="card-footer">
+                <a className="card-footer-item" href="#">Add Carveou t</a>
+            </footer>
         );
     }
 }

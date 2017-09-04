@@ -1,6 +1,6 @@
 import {ReceiptsComponent} from "./ReceiptsComponent";
 import {connect} from "react-redux";
-import {createReceipt} from "../../redux-actions/receiptActions";
+import {createReceipt, deleteReceipt} from "../../redux-actions/receiptActions";
 import {togglePartyOnReceipt} from "../../redux-actions/partyActions";
 
 /**
@@ -33,6 +33,18 @@ const mapDispatchToProps = (dispatch) => {
 
         onReceiptPartyChange: (event, receiptId, partyId) => {
             dispatch(togglePartyOnReceipt(receiptId, partyId, event.currentTarget.checked))
+        },
+
+
+        onReceiptDeleteClick: (event, receiptId: string): void => {
+            let $el = $(".cw-fx-expand-on-create[data-id='" + receiptId + "']");
+            $el.removeClass("cw-fx-expand-on-create");
+            $el.addClass("cw-fx-collapse");
+            $el.on("animationend",
+                () => {
+                    dispatch(deleteReceipt(receiptId));
+                }
+            );
         }
     }
 };

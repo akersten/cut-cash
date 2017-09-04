@@ -14,8 +14,8 @@ export function partyReducer(state: Array<VmParty> = [], action: IPartyAction): 
         case PartyActionType.CREATE_PARTY:
             let actCP = <ICreatePartyAction> action;
             return [
+                new VmParty(actCP.id, actCP.name, actCP.color),
                 ...state,
-                new VmParty(actCP.id, actCP.name, actCP.color)
             ];
 
 

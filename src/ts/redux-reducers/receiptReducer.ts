@@ -6,7 +6,7 @@
 
 import {Receipt} from "../core/receipt/receipt";
 import {
-    ICreateReceiptAction, IReceiptAction, ISetTitleAction,
+    ICreateReceiptAction, IDeleteReceiptAction, IReceiptAction, ISetTitleAction,
     ReceiptActionType
 } from "../redux-actions/receiptActions";
 
@@ -29,6 +29,16 @@ export function receiptReducer(state: Array<Receipt> = [], action: IReceiptActio
                         });
                     }
                     return receipt;
+                }
+            );
+
+
+        case ReceiptActionType.DELETE_RECEIPT:
+            let actDR = <IDeleteReceiptAction>action;
+
+            return state.filter(
+                (receipt: Receipt): boolean => {
+                    return receipt.id !== actDR.id;
                 }
             );
         default:

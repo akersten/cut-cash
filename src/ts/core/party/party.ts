@@ -8,13 +8,13 @@ export class Party {
     public name: string;
     public color: Color;
     public initials: string;
-    public excludedReceipts: string[];
+
 
     constructor(id: string, name: string, color?: Color) {
         this.id = id;
         this.name = name;
         this.color = (color == null ? Color.generateRandom() : color);
-        this.excludedReceipts = [];
+
         if (name != null && name.length > 0) {
             this.initials = name.charAt(0).toUpperCase();
             if (name.split(" ").length > 1)

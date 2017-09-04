@@ -7,14 +7,15 @@ import {
     ICreatePartyAction, IPartyAction, ITogglePartyOnReceiptAction,
     PartyActionType
 } from "../redux-actions/partyActions";
+import {VmParty} from "../viewmodels/party/vmParty";
 
-export function partyReducer(state: Array<Party> = [], action: IPartyAction): Array<Party> {
+export function partyReducer(state: Array<VmParty> = [], action: IPartyAction): Array<VmParty> {
     switch (action.type) {
         case PartyActionType.CREATE_PARTY:
             let actCP = <ICreatePartyAction> action;
             return [
                 ...state,
-                new Party(actCP.id, actCP.name, actCP.color)
+                new VmParty(actCP.id, actCP.name, actCP.color)
             ];
 
 
@@ -22,7 +23,7 @@ export function partyReducer(state: Array<Party> = [], action: IPartyAction): Ar
             let actTP = <ITogglePartyOnReceiptAction>action;
 
             return state.map(
-                (party: Party): Party => {
+                (party: VmParty): VmParty => {
                     if (party.id === actTP.partyId) {
                         if (actTP.checked) {
                             // Remove this party from the list.
@@ -32,12 +33,12 @@ export function partyReducer(state: Array<Party> = [], action: IPartyAction): Ar
                                 }
                             );
 
-                            return <Party> Object.assign({}, party, <Party> {
+                            return <VmParty> Object.assign({}, party, <VmParty> {
                                 excludedReceipts: newList
                             });
                         } else {
                             // Add party to excluded list.
-                            return <Party> Object.assign({}, party, <Party> {
+                            return <VmParty> Object.assign({}, party, <VmParty> {
                                excludedReceipts: [
                                    ...party.excludedReceipts,
                                    actTP.id

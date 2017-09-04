@@ -7,6 +7,7 @@ class PartyProps {
     public name: string;
     public color: Color;
     public initials: string;
+    public onPartyDeleteClick: (e, partyId: string) => void;
 }
 
 export class PartyComponent extends React.Component<PartyProps, any> {
@@ -16,7 +17,7 @@ export class PartyComponent extends React.Component<PartyProps, any> {
 
     render() {
         return (
-            <div className="column is-one-third cw-fx-expand-on-create">
+            <div className="column is-one-third cw-fx-expand-on-create" data-id={this.props.id}>
                 <div className="media">
                     <div className="media-left">
                         <PartyAvatarComponent initials={this.props.initials} name={this.props.name}
@@ -26,7 +27,8 @@ export class PartyComponent extends React.Component<PartyProps, any> {
                         <p className="title">{this.props.name}</p>
                     </div>
                     <div className="media-right">
-                        <button className="delete"></button>
+                        <button className="delete"
+                                onClick={e => this.props.onPartyDeleteClick(e, this.props.id)}></button>
                     </div>
                 </div>
             </div>

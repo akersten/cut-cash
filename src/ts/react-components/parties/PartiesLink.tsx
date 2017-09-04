@@ -1,5 +1,5 @@
 import {connect} from "react-redux";
-import {createParty} from "../../redux-actions/partyActions";
+import {createParty, deleteParty} from "../../redux-actions/partyActions";
 import {PartiesComponent} from "./PartiesComponent";
 
 /**
@@ -28,6 +28,17 @@ const mapDispatchToProps = (dispatch) => {
             // Create a new receipt!
             dispatch(createParty($t.val() as string));
             $t.val("");
+        },
+
+        onPartyDeleteClick: (event, partyId: string): void => {
+            let $el = $(".cw-fx-expand-on-create[data-id='" + partyId + "']");
+            $el.removeClass("cw-fx-expand-on-create");
+            $el.addClass("cw-fx-collapse");
+            $el.on("animationend",
+                () => {
+                    dispatch(deleteParty(partyId));
+                }
+            );
         }
     }
 };

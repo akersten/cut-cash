@@ -5,7 +5,7 @@
 import {Party} from "../core/party/party";
 import {
     ICreatePartyAction, IPartyAction, ITogglePartyOnReceiptAction,
-    PartyActionType
+    PartyActionType, IDeletePartyAction
 } from "../redux-actions/partyActions";
 import {VmParty} from "../viewmodels/party/vmParty";
 
@@ -49,6 +49,13 @@ export function partyReducer(state: Array<VmParty> = [], action: IPartyAction): 
                     return party;
                 }
             );
+
+        case PartyActionType.DELETE_PARTY:
+            let actDP = <IDeletePartyAction> action;
+
+            return state.filter((party: VmParty) : boolean => {
+                return party.id !== actDP.id;
+            });
 
 
         default:

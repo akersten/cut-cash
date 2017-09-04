@@ -19,6 +19,7 @@ class ReceiptProps {
     public parties: Party[];
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
+    public onReceiptDateChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
 }
 
 export class ReceiptComponent extends React.Component<ReceiptProps, any> {
@@ -32,10 +33,10 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
                 <div className="card">
                     <ReceiptHeaderComponent title={this.props.title} id={this.props.id}
                                             onReceiptDeleteClick={this.props.onReceiptDeleteClick}/>
-                    <ReceiptInfoComponent date={this.props.date}/>
 
                     <div className="card-content">
-
+                        <ReceiptInfoComponent receiptId={this.props.id} date={this.props.date}
+                                              onReceiptDateChange={this.props.onReceiptDateChange}/>
                         <ReceiptBodyComponent lines={this.props.lines}/>
                         <ReceiptPartiesComponent parties={this.props.parties} receiptId={this.props.id}
                                                  onReceiptPartyChange={this.props.onReceiptPartyChange}/>

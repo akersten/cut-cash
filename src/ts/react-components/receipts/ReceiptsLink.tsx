@@ -45,6 +45,10 @@ const mapDispatchToProps = (dispatch) => {
                     dispatch(deleteReceipt(receiptId));
                 }
             );
+        },
+
+        onReceiptDateChange: (event, receiptId: string, newValue: string, oldValue: string): void => {
+            alert("Receipt " + receiptId + " is changing from " + oldValue + " to " + newValue);
         }
     }
 };

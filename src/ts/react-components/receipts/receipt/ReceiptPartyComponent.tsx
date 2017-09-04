@@ -12,7 +12,11 @@ export class ReceiptPartyComponent extends React.Component<ReceiptPartyProps, an
 
     render() {
         return (<li>
-            {this.props.name}
+            <label className="checkbox">
+                <input type="checkbox"/>
+                {this.props.name}
+            </label>
+
         </li>);
     }
 }

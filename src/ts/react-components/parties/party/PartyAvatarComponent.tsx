@@ -15,7 +15,7 @@ export class PartyAvatarComponent extends React.Component<PartyAvatarProps, any>
 
     render() {
         return (
-            <figure className="image is-64x64">
+            <figure className="image is-48x48 has-text-centered cw-avatar" style={this.props.color.toCSS(true, true)}>
                 {this.props.initials}
             </figure>
         );

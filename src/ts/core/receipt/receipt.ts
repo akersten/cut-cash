@@ -8,7 +8,6 @@ export class Receipt {
     public title: string;
     public date: Date;
     public lines: ReceiptLine[];
-    public parties: Party[];
 
     constructor(id: string, title: string, date: Date) {
         this.id = id;

@@ -1,6 +1,7 @@
 import {ReceiptsComponent} from "./ReceiptsComponent";
 import {connect} from "react-redux";
 import {createReceipt} from "../../redux-actions/receiptActions";
+import {togglePartyOnReceipt} from "../../redux-actions/partyActions";
 
 /**
  * Created by akersten on 6/4/17.
@@ -28,6 +29,10 @@ const mapDispatchToProps = (dispatch) => {
             // Create a new receipt!
             dispatch(createReceipt($t.val() as string));
             $t.val("");
+        },
+
+        onReceiptPartyChange: (event, receiptId, partyId) => {
+            dispatch(togglePartyOnReceipt(receiptId, partyId, event.currentTarget.checked))
         }
     }
 };

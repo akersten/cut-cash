@@ -15,8 +15,8 @@ export function receiptReducer(state: Array<Receipt> = [], action: IReceiptActio
         case ReceiptActionType.CREATE_RECEIPT:
             let actCR = <ICreateReceiptAction>action;
             return [
+                new Receipt(actCR.id, actCR.title, actCR.date),
                 ...state,
-                new Receipt(actCR.id, actCR.title, actCR.date)
             ];
 
         case ReceiptActionType.SET_TITLE:
@@ -31,7 +31,6 @@ export function receiptReducer(state: Array<Receipt> = [], action: IReceiptActio
                     return receipt;
                 }
             );
-
         default:
             return state;
     }

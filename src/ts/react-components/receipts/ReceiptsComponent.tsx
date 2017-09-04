@@ -15,6 +15,7 @@ class ReceiptsProps {
     public receipts: Array<Receipt>;
     public parties: Party[];
     public onKeyPress: (event) => void;
+    public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
@@ -31,6 +32,7 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 id={receipt.id}
                 key={receipt.id}
                 parties={this.props.parties}
+                onReceiptPartyChange={this.props.onReceiptPartyChange}
             />);
 
         return (

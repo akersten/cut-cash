@@ -7,6 +7,7 @@ let nextPartyId = 0;
 
 export const enum PartyActionType {
     CREATE_PARTY=1100,
+    TOGGLE_PARTY_ON_RECEIPT,
 }
 
 
@@ -20,7 +21,18 @@ export interface ICreatePartyAction extends IPartyAction {
     color?: Color,
 }
 
+export interface ITogglePartyOnReceiptAction extends IPartyAction {
+    id: string,
+    partyId: string,
+    checked: boolean
+}
+
 
 export function createParty(name: string): ICreatePartyAction {
     return {type: PartyActionType.CREATE_PARTY, name, id: "PARTY_" + nextPartyId++}
+}
+
+
+export function togglePartyOnReceipt(id: string, partyId: string, checked: boolean): ITogglePartyOnReceiptAction {
+    return {type: PartyActionType.TOGGLE_PARTY_ON_RECEIPT, id, partyId, checked};
 }

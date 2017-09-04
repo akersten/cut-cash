@@ -11,7 +11,7 @@ export const enum ReceiptActionType {
     SET_AMOUNT,
     SET_DATE,
     SET_TITLE,
-    SET_OWNER,
+    SET_OWNER
 }
 
 

@@ -10,6 +10,7 @@ class ReceiptInfoProps {
     public date: Date;
 
     onReceiptDateChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
+    onReceiptPayorChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
 }
 
 export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any> {
@@ -20,6 +21,9 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
     render() {
         return (
             <div>
+                <DynamicLabel id={this.props.receiptId + "_payer"}  iconClassName="fa-credit-card"
+                    onValueChange={this.props.onReceiptPayorChange} />
+
                 <DynamicLabel id={this.props.receiptId + "_date"} iconClassName="fa-calendar"
                               value={this.props.date.toDateString()} onValueChange={this.props.onReceiptDateChange}/>
 

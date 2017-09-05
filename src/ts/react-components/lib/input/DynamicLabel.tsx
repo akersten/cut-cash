@@ -2,7 +2,7 @@ import * as React from "react";
 
 class DynamicLabelProps {
     public id: string;
-    public value: string;
+    public value?: string;
 
     public inputType?: string;
 
@@ -22,7 +22,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
             <div>
 
 
-                <p className="label"
+                <p className="label cw-dynamicLabel"
                    id={"dynamicLabelLabel_" + this.props.id}
                    onClick={e => {
                        $("#dynamicLabelInputContainer_" + this.props.id).show();

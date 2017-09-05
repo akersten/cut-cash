@@ -20,6 +20,7 @@ class ReceiptProps {
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
     public onReceiptDateChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
+    public onReceiptPayorChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
 }
 
 export class ReceiptComponent extends React.Component<ReceiptProps, any> {
@@ -36,7 +37,8 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
 
                     <div className="card-content">
                         <ReceiptInfoComponent receiptId={this.props.id} date={this.props.date}
-                                              onReceiptDateChange={this.props.onReceiptDateChange}/>
+                                              onReceiptDateChange={this.props.onReceiptDateChange}
+                            onReceiptPayorChange={this.props.onReceiptPayorChange}/>
                         <ReceiptBodyComponent lines={this.props.lines}/>
                         <ReceiptPartiesComponent parties={this.props.parties} receiptId={this.props.id}
                                                  onReceiptPartyChange={this.props.onReceiptPartyChange}/>

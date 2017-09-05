@@ -3,6 +3,11 @@
  **********************************************************************************************************************/
 
 @import "fx/effects";
+@import "components/lib/_LibraryComponents.scss";
 
 @import "components/parties/parties";
 
+
+body, section.section {
+  background-color: #E4E6C3;
+}

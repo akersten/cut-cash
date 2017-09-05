@@ -48,7 +48,7 @@ const mapDispatchToProps = (dispatch) => {
         },
 
         onReceiptDateChange: (event, receiptId: string, newValue: string, oldValue: string): void => {
-            alert("Receipt " + receiptId + " is changing from " + oldValue + " to " + newValue);
+            // TODO: Parse and change date
         }
     }
 };

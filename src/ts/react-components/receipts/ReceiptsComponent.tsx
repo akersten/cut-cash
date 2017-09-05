@@ -18,6 +18,7 @@ class ReceiptsProps {
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
     public onReceiptDateChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
+    public onReceiptPayorChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
@@ -37,6 +38,7 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 onReceiptPartyChange={this.props.onReceiptPartyChange}
                 onReceiptDeleteClick={this.props.onReceiptDeleteClick}
                 onReceiptDateChange={this.props.onReceiptDateChange}
+                onReceiptPayorChange={this.props.onReceiptPayorChange}
             />);
 
         return (

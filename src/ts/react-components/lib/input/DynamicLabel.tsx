@@ -41,6 +41,13 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
                    id={"dynamicLabelInputContainer_" + this.props.id}>
                     <input className="input" id={"dynamicLabelInput_" + this.props.id} type={this.props.inputType}
                            onKeyDown={e => {
+                               if (e.which === 27) {
+                                   // Escape key - no change.
+                                   $("#dynamicLabelInputContainer_" + this.props.id).hide();
+                                   $("#dynamicLabelLabel_" + this.props.id).show();
+                                   return;
+                               }
+
                                if (e.which !== 13) {
                                    return;
                                }

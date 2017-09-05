@@ -19,6 +19,7 @@ class ReceiptsProps {
     public onReceiptDeleteClick: (e, id: string) => void;
     public onReceiptDateChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
     public onReceiptPayorChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
+    public onReceiptTotalChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
@@ -39,6 +40,7 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 onReceiptDeleteClick={this.props.onReceiptDeleteClick}
                 onReceiptDateChange={this.props.onReceiptDateChange}
                 onReceiptPayorChange={this.props.onReceiptPayorChange}
+                onReceiptTotalChange={this.props.onReceiptTotalChange}
             />);
 
         return (

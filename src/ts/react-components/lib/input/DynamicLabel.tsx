@@ -45,7 +45,13 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
                                    return;
                                }
 
-                               this.props.onValueChange(e, this.props.id, $("#dynamicLabelInput_" + this.props.id).val() as string , this.props.value);
+                               $("#dynamicLabelInput_" + this.props.id).blur();
+                           }}
+                           onBlur={e => {
+                               this.props.onValueChange(e, this.props.id, $("#dynamicLabelInput_" + this.props.id).val() as string, this.props.value);
+
+                               $("#dynamicLabelInputContainer_" + this.props.id).hide();
+                               $("#dynamicLabelLabel_" + this.props.id).show();
                            }}
                     />
                     <span className="icon">

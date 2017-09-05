@@ -10,6 +10,12 @@ doc-subtab: level
   <div class="container">
     <h1 class="title">Level</h1>
     <h2 class="subtitle">A multi-purpose <strong>horizontal level</strong>, which can contain almost any other element</h2>
+    {%
+      include meta.html
+      colors=false
+      sizes=false
+      variables=false
+    %}
 
     <hr>
 
@@ -19,7 +25,7 @@ doc-subtab: level
         <li>
           <code>level</code>: main container
           <ul>
-            <li><code>level-left</code> for the left side</li>
+            <li><code>level-left</code> for the left side. This element is <em>required</em>, even if it is empty</li>
             <li>
               <code>level-right</code> for the right side
               <ul>

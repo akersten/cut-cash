@@ -8,6 +8,21 @@ doc-subtab: nav
 
 <section class="section">
   <div class="container">
+
+    {% if site.vernum >= 43 %}
+      <div class="message is-danger">
+        <div class="message-body">
+          <p>This component has been <strong>deprecated</strong> and will be deleted soon.</p>
+        </div>
+      </div>
+
+      <div class="message is-info">
+        <div class="message-body">
+          <p>While both <code>.nav</code> and <code>.navbar</code> currently co-exist to ensure backwards compatibility, the <code>.nav</code> will probably be deleted in an upcoming update, so you should start using <a href="{{ site.url }}/documentation/components/navbar/">the new navbar</a> instead.</p>
+        </div>
+      </div>
+    {% endif %}
+
     <h1 class="title">Nav</h1>
     <h2 class="subtitle">
       A responsive horizontal <strong>nav bar</strong> that can contain links, tabs, buttons, icons, and a logo
@@ -33,6 +48,7 @@ doc-subtab: nav
       <ul>
         <li><code>nav-toggle</code> for the hamburger menu on mobile</li>
         <li><code>nav-menu</code> for menu that is collapsable on mobile (you can combine it with <code>nav-right</code>)</li>
+        <li>toggle <code>is-active</code> on <code>nav-toggle</code> and <code>nav-menu</code> when <code>nav-toggle</code> was clicked</li>
       </ul>
     </div>
 
@@ -78,20 +94,26 @@ doc-subtab: nav
       Blog
     </a>
 
-    <span class="nav-item">
-      <a class="button" >
-        <span class="icon">
-          <i class="fa fa-twitter"></i>
-        </span>
-        <span>Tweet</span>
-      </a>
-      <a class="button is-primary">
-        <span class="icon">
-          <i class="fa fa-download"></i>
-        </span>
-        <span>Download</span>
-      </a>
-    </span>
+    <div class="nav-item">
+      <div class="field is-grouped">
+        <p class="control">
+          <a class="button" >
+            <span class="icon">
+              <i class="fa fa-twitter"></i>
+            </span>
+            <span>Tweet</span>
+          </a>
+        </p>
+        <p class="control">
+          <a class="button is-primary">
+            <span class="icon">
+              <i class="fa fa-download"></i>
+            </span>
+            <span>Download</span>
+          </a>
+        </p>
+      </div>
+    </div>
   </div>
 </nav>
 {% endcapture %}

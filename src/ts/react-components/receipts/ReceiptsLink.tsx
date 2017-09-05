@@ -49,6 +49,14 @@ const mapDispatchToProps = (dispatch) => {
 
         onReceiptDateChange: (event, receiptId: string, newValue: string, oldValue: string): void => {
             // TODO: Parse and change date
+        },
+
+        onReceiptPayorChange: (event, receiptId: string, newValue: string, oldValue: string): void => {
+            // TODO
+        },
+
+        onReceiptTotalChange: (event, receiptId: string, newValue: string, oldValue: string): void => {
+            // TODO:
         }
     }
 };

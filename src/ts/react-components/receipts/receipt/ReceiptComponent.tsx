@@ -40,9 +40,11 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
 
                     <div className="card-content">
                         <ReceiptInfoComponent receiptId={this.props.id} date={this.props.date} payer={this.props.payer}
+                                              parties={this.props.parties}
                                               onReceiptDateChange={this.props.onReceiptDateChange}
                                               onReceiptPayerChange={this.props.onReceiptPayerChange}
-                                              onReceiptTotalChange={this.props.onReceiptTotalChange}/>
+                                              onReceiptTotalChange={this.props.onReceiptTotalChange}
+                        />
                         <ReceiptBodyComponent lines={this.props.lines}/>
                         <ReceiptPartiesComponent parties={this.props.parties} receiptId={this.props.id}
                                                  onReceiptPartyChange={this.props.onReceiptPartyChange}/>

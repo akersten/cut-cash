@@ -34,6 +34,8 @@ export function receiptReducer(state: Array<Receipt> = [], action: IReceiptActio
 
 
         case ReceiptActionType.DELETE_RECEIPT:
+            // TODO: Theoretically we could run into problems since parties might be tracking this receipt in a "not paying"
+            // list, but since the IDs aren't really re-used, this shouldn't be a problem. Maybe something to tackle later.
             let actDR = <IDeleteReceiptAction>action;
 
             return state.filter(

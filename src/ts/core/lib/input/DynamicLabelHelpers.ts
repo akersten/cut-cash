@@ -9,7 +9,8 @@
 export const enum DynamicLabelType {
     TEXT,
     NUMBER,
-    DATE
+    DATE,
+    SELECT,
 }
 
 export class DynamicLabelHelpers {
@@ -26,7 +27,9 @@ export class DynamicLabelHelpers {
             case DynamicLabelType.TEXT:
                 return "";
             case DynamicLabelType.NUMBER:
-                return ""
+                return "";
+            case DynamicLabelType.SELECT:
+                return ""; // It's actually special HTML for this one, not just putting something in the type attribute.
         }
     }
 
@@ -43,8 +46,11 @@ export class DynamicLabelHelpers {
                 return this.validateGenericDate(newValue);
             case DynamicLabelType.NUMBER:
                 return this.validateGenericNumber(newValue);
+            case DynamicLabelType.SELECT:
+                return this.validateGenericSelection(newValue);
             case DynamicLabelType.TEXT:
                 return this.validateGenericText(newValue);
+
         }
     }
 
@@ -59,6 +65,15 @@ export class DynamicLabelHelpers {
         return true;
     }
 
+    /**
+     * Validate a selection being made for a DynamicLabel.
+     *
+     * @param   newValue The value trying to be set.
+     * @return {boolean} Whether this is an acceptable value for this type of DL.
+     */
+    private static validateGenericSelection(newValue: string): boolean {
+        return true;
+    }
     /**
      * Validate a number being input into a DynamicLabel. Check things like whether this is actually a number.
      *
@@ -100,6 +115,8 @@ export class DynamicLabelHelpers {
                 // Given a date object,
                 // TODO: format
                 return rawValue;
+            case DynamicLabelType.SELECT:
+                return rawValue;
         }
     }
 
@@ -120,6 +137,8 @@ export class DynamicLabelHelpers {
                 // There are lots of ways to represent a date. Try to put it in the standard format given by the Date
                 // object..
                 // TODO: unformat
+                return value;
+            case DynamicLabelType.SELECT:
                 return value;
         }
     }

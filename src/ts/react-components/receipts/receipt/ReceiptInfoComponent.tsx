@@ -5,11 +5,13 @@
 import * as React from "react";
 import {DynamicLabel, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
 import {DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
+import {Party} from "../../../core/party/party";
 
 class ReceiptInfoProps {
     public receiptId: string;
     public date: Date;
     public payer: string;
+    public parties: Party[];
 
     onReceiptDateChange: IDynamicLabelValueChangeEvent;
     onReceiptPayerChange: IDynamicLabelValueChangeEvent;
@@ -22,6 +24,12 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
     }
 
     render() {
+        let partyNames: string[] = this.props.parties.map(
+            (party: Party): string => {
+                return party.name;
+            }
+        );
+
         return (
             <div>
                 <DynamicLabel
@@ -35,7 +43,8 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
                     elementId={this.props.receiptId + "_payer"}
                     objectId={this.props.receiptId}
                     iconClassName="fa-credit-card"
-                    inputType={DynamicLabelType.TEXT}
+                    inputType={DynamicLabelType.SELECT}
+                    selectValues={partyNames}
                     value={this.props.payer}
 
                     onValueChange={this.props.onReceiptPayerChange}/>

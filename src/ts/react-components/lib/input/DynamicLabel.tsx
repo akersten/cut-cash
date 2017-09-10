@@ -17,6 +17,7 @@ class DynamicLabelProps {
     public elementId: string;
     public objectId: string;
     public value?: string;
+    public selectValues?: string[];
 
     public inputType: DynamicLabelType;
 
@@ -57,6 +58,11 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
      * Switch the control to edit mode and focus the input field.
      */
     private switchToEditMode(): void {
+        // If we don't have any choices as a select, don't let user change to edit mode.
+        if (this.props.inputType === DynamicLabelType.SELECT && (!this.props.selectValues || this.props.selectValues.length === 0)) {
+      //      return;
+        }
+
         this.$inputContainer().show();
         this.$input().val(this.props.value);
         this.$label().hide();
@@ -84,6 +90,10 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
      */
     private saveChanges(): boolean {
         let userInput: string = this.$input().val() as string;
+        if (userInput === null) {
+            return true; // Just silently eat this... Likely case for selecting nothing on a dropdown.
+        }
+
         userInput = userInput.trim(); // There's really no convincing use case for leading or trailing spaces.
 
         let oldValueFormatted: string = this.props.value;
@@ -203,9 +213,85 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
         }
     }
 
+    /**
+     * Just for the selection style input, when the value is changed attempt to save it.
+     * @param e The event.
+     */
+    private editModeChange(e): void {
+        if (this.saveChanges()) {
+            this.switchToLabelMode();
+        } else {
+            this.raiseValidationError();
+        }
+    }
+
 
     render() {
 
+        let inputComponent = null;
+
+        if (this.props.inputType !== DynamicLabelType.SELECT) {
+            inputComponent =
+                <p
+                    id={"dynamicLabelInputContainer_" + this.props.elementId}
+
+                    className="control has-icons-left"
+                    style={{display: "none"}}
+                >
+                    <input
+                        id={"dynamicLabelInput_" + this.props.elementId}
+
+                        className="input"
+                        type={DynamicLabelHelpers.mapTypeToInputTypeAttr(this.props.inputType)}
+
+                        onKeyDown={e => {
+                            this.editModeKeyDown(e);
+                        }}
+                        onBlur={e => {
+                            this.editModeBlur(e);
+                        }}
+                    />
+                    <span className="icon is-left">
+                        <i className={"fa " + this.props.iconClassName}> </i>
+                    </span>
+                </p>
+        } else {
+            // TODO: should really key these off of something unique.. oh well, current assumption is that selectValues
+            // is all unique.
+
+            let selectComponents = this.props.selectValues.map((val:string): any => {
+                return <option key={val}>{val}</option>
+            });
+
+            inputComponent =
+                <div
+                    id={"dynamicLabelInputContainer_" + this.props.elementId}
+
+                    className="control has-icons-left"
+                    style={{display: "none"}}
+                >
+
+                    <div className="select">
+                        <select
+                            id={"dynamicLabelInput_" + this.props.elementId}
+
+                            onChange={e => {
+                                this.editModeChange(e);
+                            }}
+                            onBlur={e => {
+                                this.editModeBlur(e);
+                            }}
+
+                        >
+
+                            {selectComponents}
+                        </select>
+                    </div>
+                    <div className="icon is-left">
+                        <i className={"fa " + this.props.iconClassName}> </i>
+                    </div>
+                </div>
+        }
 
         return (
             <div>
@@ -229,29 +315,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
                     {this.props.value}
                 </p>
 
-                <p
-                    id={"dynamicLabelInputContainer_" + this.props.elementId}
-
-                    className="control has-icon"
-                    style={{display: "none"}}
-                >
-                    <input
-                        id={"dynamicLabelInput_" + this.props.elementId}
-
-                        className="input"
-                        type={DynamicLabelHelpers.mapTypeToInputTypeAttr(this.props.inputType)}
-
-                        onKeyDown={e => {
-                            this.editModeKeyDown(e);
-                        }}
-                        onBlur={e => {
-                            this.editModeBlur(e);
-                        }}
-                    />
-                    <span className="icon">
-                        <i className={"fa " + this.props.iconClassName}> </i>
-                    </span>
-                </p>
+                {inputComponent}
             </div>
         );
     }

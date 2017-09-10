@@ -53,6 +53,7 @@ export function partyReducer(state: Array<VmParty> = [], action: IPartyAction): 
         case PartyActionType.DELETE_PARTY:
             let actDP = <IDeletePartyAction> action;
 
+            // TODO: We'll have to remove this party from any receipts that have them listed as the payer.
             return state.filter((party: VmParty) : boolean => {
                 return party.id !== actDP.id;
             });

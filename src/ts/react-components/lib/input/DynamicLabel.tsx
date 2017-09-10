@@ -60,7 +60,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
     private switchToEditMode(): void {
         // If we don't have any choices as a select, don't let user change to edit mode.
         if (this.props.inputType === DynamicLabelType.SELECT && (!this.props.selectValues || this.props.selectValues.length === 0)) {
-      //      return;
+            return;
         }
 
         this.$inputContainer().show();

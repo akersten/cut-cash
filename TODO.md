@@ -1,0 +1,3 @@
+- Add customizable placeholder text for dynamic labels when there is no data
+- Verify date control is working on all platforms (it's not defaulting in value on android)
+- Hook up remaining DLs to objects

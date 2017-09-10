@@ -3,7 +3,7 @@
  */
 
 import * as React from "react";
-import {DynamicLabel, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
+import {DynamicLabel, DynamicLabelProps, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
 import {DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 import {Party} from "../../../core/party/party";
 
@@ -13,9 +13,9 @@ class ReceiptInfoProps {
     public payer: string;
     public parties: Party[];
 
-    onReceiptDateChange: IDynamicLabelValueChangeEvent;
-    onReceiptPayerChange: IDynamicLabelValueChangeEvent;
-    onReceiptTotalChange: IDynamicLabelValueChangeEvent;
+    onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
+    onReceiptPayerChange: IDynamicLabelValueChangeEvent<string>;
+    onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
 }
 
 export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any> {
@@ -30,43 +30,41 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
             }
         );
 
+        let amountLabelProps: DynamicLabelProps<number> = new DynamicLabelProps<number>();
+        amountLabelProps.elementId = this.props.receiptId + "_total";
+        amountLabelProps.objectId = this.props.receiptId;
+        amountLabelProps.iconClassName = "fa-money";
+        amountLabelProps.inputType = DynamicLabelType.CURRENCY;
+        amountLabelProps.ghostText = "$0.00";
+        amountLabelProps.onValueChange = this.props.onReceiptTotalChange;
+        let amountLabel: any = React.createElement(DynamicLabel, amountLabelProps);
+
+        let payerLabelProps: DynamicLabelProps<string> = new DynamicLabelProps<string>();
+        payerLabelProps.elementId = this.props.receiptId + "_payer";
+        payerLabelProps.objectId = this.props.receiptId;
+        payerLabelProps.iconClassName = "fa-user";
+        payerLabelProps.inputType = DynamicLabelType.SELECT;
+        payerLabelProps.ghostText = "Who paid?";
+        payerLabelProps.selectValues = partyNames;
+        payerLabelProps.onValueChange = this.props.onReceiptPayerChange;
+        let payerLabel: any = React.createElement(DynamicLabel, payerLabelProps);
+
+        let dateLabelProps: DynamicLabelProps<Date> = new DynamicLabelProps<Date>();
+        dateLabelProps.elementId = this.props.receiptId + "_date";
+        dateLabelProps.objectId = this.props.receiptId;
+        dateLabelProps.iconClassName = "fa-calendar";
+        dateLabelProps.inputType = DynamicLabelType.DATE;
+        dateLabelProps.ghostText = "When was this?";
+        dateLabelProps.onValueChange = this.props.onReceiptDateChange;
+        let dateLabel: any = React.createElement(DynamicLabel, dateLabelProps);
+
         return (
+
+
             <div>
-                <DynamicLabel
-                    elementId={this.props.receiptId + "_total"}
-
-                    objectId={this.props.receiptId}
-                    iconClassName="fa-money"
-                    inputType={DynamicLabelType.NUMBER}
-                    ghostText="$0.00"
-
-                    onValueChange={this.props.onReceiptTotalChange}
-
-                />
-                <DynamicLabel
-                    elementId={this.props.receiptId + "_payer"}
-
-                    objectId={this.props.receiptId}
-                    iconClassName="fa-user"
-                    inputType={DynamicLabelType.SELECT}
-                    ghostText="Who paid?"
-                    selectValues={partyNames}
-                    value={this.props.payer}
-
-                    onValueChange={this.props.onReceiptPayerChange}/>
-
-                <DynamicLabel
-                    elementId={this.props.receiptId + "_date"}
-
-                    objectId={this.props.receiptId}
-                    iconClassName="fa-calendar"
-                    inputType={DynamicLabelType.DATE}
-                    ghostText="When was this?"
-                    value={this.props.date.toDateString()}
-
-                    onValueChange={this.props.onReceiptDateChange}/>
-
-
+                {amountLabel}
+                {payerLabel}
+                {dateLabel}
             </div>
         );
     }

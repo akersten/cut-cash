@@ -10,6 +10,7 @@ export const enum DynamicLabelType {
     TEXT,
     NUMBER,
     DATE,
+    CURRENCY,
     SELECT,
 }
 
@@ -24,12 +25,10 @@ export class DynamicLabelHelpers {
         switch (type) {
             case DynamicLabelType.DATE:
                 return "Date";
-            case DynamicLabelType.TEXT:
-                return "";
-            case DynamicLabelType.NUMBER:
-                return "";
             case DynamicLabelType.SELECT:
                 return ""; // It's actually special HTML for this one, not just putting something in the type attribute.
+            default:
+                return "";
         }
     }
 
@@ -40,17 +39,20 @@ export class DynamicLabelHelpers {
      * @param       type The type of DL this is.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    public static validateGenericValue(newValue: string, type: DynamicLabelType): boolean {
+    public static validateGenericValue<typeOfRawValue>(newValue: typeOfRawValue, type: DynamicLabelType): boolean {
         switch (type) {
             case DynamicLabelType.DATE:
-                return this.validateGenericDate(newValue);
+                return this.validateGenericDate<typeOfRawValue>(newValue);
             case DynamicLabelType.NUMBER:
-                return this.validateGenericNumber(newValue);
+                return this.validateGenericNumber<typeOfRawValue>(newValue);
             case DynamicLabelType.SELECT:
-                return this.validateGenericSelection(newValue);
+                return this.validateGenericSelection<typeOfRawValue>(newValue);
             case DynamicLabelType.TEXT:
-                return this.validateGenericText(newValue);
-
+                return this.validateGenericText<typeOfRawValue>(newValue);
+            case DynamicLabelType.CURRENCY:
+                return this.validateGenericCurrency<typeOfRawValue>(newValue);
+            default:
+                return true;
         }
     }
 
@@ -61,7 +63,7 @@ export class DynamicLabelHelpers {
      * @param   newValue The value trying to be set.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    private static validateGenericText(newValue: string): boolean {
+    private static validateGenericText<typeOfRawValue>(newValue: typeOfRawValue): boolean {
         return true;
     }
 
@@ -71,16 +73,17 @@ export class DynamicLabelHelpers {
      * @param   newValue The value trying to be set.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    private static validateGenericSelection(newValue: string): boolean {
+    private static validateGenericSelection<typeOfRawValue>(newValue: typeOfRawValue): boolean {
         return true;
     }
+
     /**
      * Validate a number being input into a DynamicLabel. Check things like whether this is actually a number.
      *
      * @param   newValue The value trying to be set.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    private static validateGenericNumber(newValue: string): boolean {
+    private static validateGenericNumber<typeOfRawValue>(newValue: typeOfRawValue): boolean {
         //TODO: Validate
         return true;
     }
@@ -92,7 +95,12 @@ export class DynamicLabelHelpers {
      * @param   newValue The value trying to be set.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    private static validateGenericDate(newValue: string): boolean {
+    private static validateGenericDate<typeOfRawValue>(newValue: typeOfRawValue): boolean {
+        // TODO: Validate
+        return true;
+    }
+
+    private static validateGenericCurrency<typeOfRawValue>(newValue: typeOfRawValue): boolean {
         // TODO: Validate
         return true;
     }
@@ -105,41 +113,49 @@ export class DynamicLabelHelpers {
      * @param      type The type of DL.
      * @return {string} A formatted version of the raw value.
      */
-    public static format(rawValue: string, type: DynamicLabelType): string {
+    public static format<typeOfRawValue>(rawValue: typeOfRawValue, type: DynamicLabelType): string {
         switch (type) {
             case DynamicLabelType.TEXT:
-                return rawValue;
+                return <string><any>rawValue;
             case DynamicLabelType.NUMBER:
-                return rawValue;
+                return <string><any>rawValue;
             case DynamicLabelType.DATE:
                 // Given a date object,
                 // TODO: format
-                return rawValue;
+                return <string><any>rawValue;
             case DynamicLabelType.SELECT:
-                return rawValue;
+                return <string><any>rawValue;
+            case DynamicLabelType.CURRENCY:
+                // TODO: format
+                return <string><any>rawValue;
+            default:
+                return <string><any>rawValue;
         }
     }
 
     /**
-     * Given a value and a type, remove any formatting that may be present.
+     * Given a value and a type, remove any formatting that may be present. Fix up the value too (e.g. round currency or
+     * interpret short dates) since the return value here is what is used as the new user-specified raw value.
      *
      * @param     value A formatted or raw value.
      * @param      type The type of DL.
      * @return {string} An unformatted version of the value.
      */
-    public static unformat(value: string, type: DynamicLabelType): string {
+    public static unformat<typeOfRawValue>(value: string, type: DynamicLabelType): typeOfRawValue {
         switch (type) {
-            case DynamicLabelType.TEXT:
-                return value;
             case DynamicLabelType.NUMBER:
-                return value;
+                // TODO: Parse out commas
+                return <typeOfRawValue><any>value;
             case DynamicLabelType.DATE:
                 // There are lots of ways to represent a date. Try to put it in the standard format given by the Date
                 // object..
                 // TODO: unformat
-                return value;
-            case DynamicLabelType.SELECT:
-                return value;
+                return <typeOfRawValue><any>value;
+            case DynamicLabelType.CURRENCY:
+                // TODO: Parse
+                return <typeOfRawValue><any>value;
+            default:
+                return <typeOfRawValue><any>value;
         }
     }
 

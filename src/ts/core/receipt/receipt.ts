@@ -7,6 +7,7 @@ export class Receipt {
     public id: string;
     public title: string;
     public payer: string;
+    public total: number; // Currency amount in cents.
     public date: Date;
     public lines: ReceiptLine[];
 
@@ -21,9 +22,9 @@ export class Receipt {
 export class ReceiptLine {
     public title: string;
     public id: string;
+    public amount: number; // Currency amount in cents.
 
-    constructor(id: string, title: string) {
+    constructor(id: string) {
         this.id = id;
-        this.title = title;
     }
 }

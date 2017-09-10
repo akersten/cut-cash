@@ -18,9 +18,9 @@ class ReceiptsProps {
     public onKeyPress: (event) => void;
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
-    public onReceiptDateChange: IDynamicLabelValueChangeEvent;
-    public onReceiptPayerChange: IDynamicLabelValueChangeEvent;
-    public onReceiptTotalChange: IDynamicLabelValueChangeEvent;
+    public onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
+    public onReceiptPayerChange: IDynamicLabelValueChangeEvent<string>;
+    public onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {

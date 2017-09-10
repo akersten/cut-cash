@@ -2,7 +2,7 @@ import {ReceiptsComponent} from "./ReceiptsComponent";
 import {connect} from "react-redux";
 import {partyToggleOnReceipt} from "../../redux-actions/partyActions";
 import {IDynamicLabelValueChangeEventArgs} from "../lib/input/DynamicLabel";
-import {receiptChangePayer, receiptCreate, receiptDelete} from "../../redux-actions/receiptActions";
+import {receiptChangePayer, receiptChangeTotal, receiptCreate, receiptDelete} from "../../redux-actions/receiptActions";
 
 /**
  * Created by akersten on 6/4/17.
@@ -49,22 +49,22 @@ const mapDispatchToProps = (dispatch) => {
             );
         },
 
-        onReceiptDateChange: (e: IDynamicLabelValueChangeEventArgs) => {
+        onReceiptDateChange: (e: IDynamicLabelValueChangeEventArgs<Date>) => {
             // TODO: Parse and change date
 
             return true;
         },
 
-        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs) => {
+        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs<string>) => {
             // TODO
             dispatch(receiptChangePayer(e.objectId, e.formatter(e.newValueRaw)));
 
             return true;
         },
 
-        onReceiptTotalChange: (e: IDynamicLabelValueChangeEventArgs) => {
+        onReceiptTotalChange: (e: IDynamicLabelValueChangeEventArgs<number>) => {
             // TODO:
-
+            dispatch(receiptChangeTotal(e.objectId, e.newValueRaw, e.formatter(e.newValueRaw)));
             return true;
         }
     }

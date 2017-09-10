@@ -9,22 +9,23 @@ import {
     ICreateReceiptAction, IDeleteReceiptAction, IReceiptAction, ISetPayerAction, ISetTitleAction,
     ReceiptActionType
 } from "../redux-actions/receiptActions";
+import {VmReceipt} from "../viewmodels/receipt/vmReceipt";
 
-export function receiptReducer(state: Array<Receipt> = [], action: IReceiptAction): Array<Receipt> {
+export function receiptReducer(state: Array<VmReceipt> = [], action: IReceiptAction): Array<VmReceipt> {
     switch (action.type) {
         case ReceiptActionType.CREATE_RECEIPT:
             let actCR = <ICreateReceiptAction>action;
             return [
-                new Receipt(actCR.id, actCR.title, actCR.date),
+                new VmReceipt(actCR.id, actCR.title, actCR.date),
                 ...state,
             ];
 
         case ReceiptActionType.SET_TITLE:
             let actST = <ISetTitleAction>action;
-            return <Array<Receipt>> state.map(
-                (receipt: Receipt): Receipt => {
+            return <Array<VmReceipt>> state.map(
+                (receipt: VmReceipt): Receipt => {
                     if (receipt.id === actST.id) {
-                        return <Receipt> Object.assign({}, receipt, <Receipt> {
+                        return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
                             title: actST.title,
                         });
                     }
@@ -39,7 +40,7 @@ export function receiptReducer(state: Array<Receipt> = [], action: IReceiptActio
             let actDR = <IDeleteReceiptAction>action;
 
             return state.filter(
-                (receipt: Receipt): boolean => {
+                (receipt: VmReceipt): boolean => {
                     return receipt.id !== actDR.id;
                 }
             );
@@ -47,10 +48,10 @@ export function receiptReducer(state: Array<Receipt> = [], action: IReceiptActio
         case ReceiptActionType.SET_PAYER:
             let actSP = <ISetPayerAction>action;
 
-            return <Array<Receipt>> state.map(
-                (receipt: Receipt): Receipt => {
+            return <Array<VmReceipt>> state.map(
+                (receipt: VmReceipt): VmReceipt => {
                     if (receipt.id === actSP.receiptId) {
-                        return <Receipt> Object.assign({}, receipt, <Receipt> {
+                        return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
                             payer: actSP.payer,
                         });
                     }

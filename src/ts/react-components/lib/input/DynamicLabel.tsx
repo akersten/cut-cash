@@ -2,18 +2,18 @@ import * as React from "react";
 import {DynamicLabelHelpers, DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 
 
-export interface IDynamicLabelValueChangeEventArgs {
+export interface IDynamicLabelValueChangeEventArgs<typeOfRawValue> {
     objectId: string,
-    newValueRaw: string,
-    oldValueRaw: string,
+    newValueRaw: typeOfRawValue,
+    oldValueRaw: typeOfRawValue,
     formatter: (string) => string
 }
 
-export interface IDynamicLabelValueChangeEvent {
-    (args: IDynamicLabelValueChangeEventArgs): boolean;
+export interface IDynamicLabelValueChangeEvent<typeOfRawValue> {
+    (args: IDynamicLabelValueChangeEventArgs<typeOfRawValue>): boolean;
 }
 
-class DynamicLabelProps {
+export class DynamicLabelProps<typeOfRawValue> {
     public elementId: string;
     public objectId: string;
     public value?: string;
@@ -23,11 +23,11 @@ class DynamicLabelProps {
     public inputType: DynamicLabelType;
 
     public iconClassName: string;
-    public onValueChange?: IDynamicLabelValueChangeEvent
+    public onValueChange?: IDynamicLabelValueChangeEvent<typeOfRawValue>
 }
 
-export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
-    constructor(props: DynamicLabelProps) {
+export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelProps<typeOfRawValue>, any> {
+    constructor(props: DynamicLabelProps<typeOfRawValue>) {
         super(props);
     }
 
@@ -98,11 +98,11 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
         userInput = userInput.trim(); // There's really no convincing use case for leading or trailing spaces.
 
         let oldValueFormatted: string = this.props.value;
-        let oldValueRaw: string = DynamicLabelHelpers.unformat(oldValueFormatted, this.props.inputType);
+        let oldValueRaw: typeOfRawValue = DynamicLabelHelpers.unformat<typeOfRawValue>(oldValueFormatted, this.props.inputType);
 
         // First, try to un-format the user's input. It might evaluate to "" if they just put in some junk that couldn't
         // be unformatted. This is fine and we'll treat it as if they tried to clear out the field.
-        let newValueRaw: string = DynamicLabelHelpers.unformat(userInput, this.props.inputType);
+        let newValueRaw: typeOfRawValue = DynamicLabelHelpers.unformat<typeOfRawValue>(userInput, this.props.inputType);
 
         if (!this.validateChange(newValueRaw)) {
             return false;
@@ -133,7 +133,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
      * @return {boolean} Whether this is an acceptable change. True if we pass generic and local validation.
      *                   False otherwise.
      */
-    private validateChange(newValue: string): boolean {
+    private validateChange(newValue: typeOfRawValue): boolean {
         let oldValue: string = this.props.value;
 
 

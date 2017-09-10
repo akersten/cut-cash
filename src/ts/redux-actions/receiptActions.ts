@@ -8,7 +8,7 @@ let nextReceiptId = 0;
 
 export const enum ReceiptActionType {
     CREATE_RECEIPT = 1000,
-    SET_AMOUNT,
+    SET_TOTAL,
     SET_DATE,
     SET_TITLE,
     SET_PAYER,
@@ -40,6 +40,11 @@ export interface ISetPayerAction extends IReceiptAction {
     payer: string,
 }
 
+export interface ISetTotalAction extends IReceiptAction {
+    receiptId: string,
+    totalRaw: number,
+    totalFormatted: string,
+}
 
 export function receiptCreate(title: string): ICreateReceiptAction {
     return {type: ReceiptActionType.CREATE_RECEIPT, title, id: "CR_" + nextReceiptId++, date: new Date()};
@@ -55,4 +60,8 @@ export function receiptDelete(id: string): IDeleteReceiptAction {
 
 export function receiptChangePayer(receiptId: string, payer: string): ISetPayerAction {
     return {type: ReceiptActionType.SET_PAYER, receiptId, payer};
+}
+
+export function receiptChangeTotal(receiptId: string, totalRaw: number, totalFormatted: string): ISetTotalAction {
+    return {type: ReceiptActionType.SET_TOTAL, receiptId, totalRaw, totalFormatted};
 }

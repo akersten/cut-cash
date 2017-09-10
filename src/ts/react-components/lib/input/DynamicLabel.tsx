@@ -18,6 +18,7 @@ class DynamicLabelProps {
     public objectId: string;
     public value?: string;
     public selectValues?: string[];
+    public ghostText: string;
 
     public inputType: DynamicLabelType;
 
@@ -229,69 +230,71 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
     render() {
 
         let inputComponent = null;
+        let labelComponent = null;
 
         if (this.props.inputType !== DynamicLabelType.SELECT) {
             inputComponent =
-                <p
-                    id={"dynamicLabelInputContainer_" + this.props.elementId}
 
-                    className="control has-icons-left"
-                    style={{display: "none"}}
-                >
-                    <input
-                        id={"dynamicLabelInput_" + this.props.elementId}
+                <input
+                    id={"dynamicLabelInput_" + this.props.elementId}
 
-                        className="input"
-                        type={DynamicLabelHelpers.mapTypeToInputTypeAttr(this.props.inputType)}
+                    className="input"
+                    type={DynamicLabelHelpers.mapTypeToInputTypeAttr(this.props.inputType)}
 
-                        onKeyDown={e => {
-                            this.editModeKeyDown(e);
-                        }}
-                        onBlur={e => {
-                            this.editModeBlur(e);
-                        }}
-                    />
-                    <span className="icon is-left">
-                        <i className={"fa " + this.props.iconClassName}> </i>
-                    </span>
-                </p>
+                    onKeyDown={e => {
+                        this.editModeKeyDown(e);
+                    }}
+                    onBlur={e => {
+                        this.editModeBlur(e);
+                    }}
+                />
+
+
         } else {
             // TODO: should really key these off of something unique.. oh well, current assumption is that selectValues
             // is all unique.
 
-            let selectComponents = this.props.selectValues.map((val:string): any => {
+            let selectComponents = this.props.selectValues.map((val: string): any => {
                 return <option key={val}>{val}</option>
             });
 
             inputComponent =
-                <div
-                    id={"dynamicLabelInputContainer_" + this.props.elementId}
+                <div className="select">
+                    <select
+                        id={"dynamicLabelInput_" + this.props.elementId}
 
-                    className="control has-icons-left"
-                    style={{display: "none"}}
-                >
+                        onChange={e => {
+                            this.editModeChange(e);
+                        }}
+                        onBlur={e => {
+                            this.editModeBlur(e);
+                        }}
 
-                    <div className="select">
-                        <select
-                            id={"dynamicLabelInput_" + this.props.elementId}
+                    >
 
-                            onChange={e => {
-                                this.editModeChange(e);
-                            }}
-                            onBlur={e => {
-                                this.editModeBlur(e);
-                            }}
-
-                        >
-
-                            {selectComponents}
-                        </select>
-                    </div>
-                    <div className="icon is-left">
-                        <i className={"fa " + this.props.iconClassName}> </i>
-                    </div>
+                        {selectComponents}
+                    </select>
                 </div>
         }
+
+
+        let labelInnerText = null;
+        let labelInnerClasses = "";
+
+        if (this.props.value == null || this.props.value === "") {
+            labelInnerText = this.props.ghostText;
+            labelInnerClasses = "has-text-grey";
+        } else {
+            labelInnerText = this.props.value;
+        }
+
+        labelComponent =
+                <span>
+                    <span className="icon">
+                        <i className={"fa " + this.props.iconClassName}> </i>
+                    </span>
+                    <span className={labelInnerClasses}>{labelInnerText}</span>
+                </span>;
 
         return (
             <div>
@@ -308,14 +311,20 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
                         this.labelKeyDown(e);
                     }}
                 >
+                    {labelComponent}
+                </p>
+                <div
+                    id={"dynamicLabelInputContainer_" + this.props.elementId}
 
-                    <span className="icon">
+                    className="control has-icons-left"
+                    style={{display: "none"}}
+                >
+                    {inputComponent}
+                    <span
+                        className="icon is-left">
                         <i className={"fa " + this.props.iconClassName}> </i>
                     </span>
-                    {this.props.value}
-                </p>
-
-                {inputComponent}
+                </div>
             </div>
         );
     }

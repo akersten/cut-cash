@@ -22,10 +22,13 @@ export class ReceiptsControls extends React.Component<ReceiptsControlsProps, any
     render() {
         return (
             <div className="column is-one-third">
-                <p className="control">
+                <div className="control has-icons-left">
                     <input className="input" type="text" placeholder="Create receipt"
                            onKeyPress={this.props.onKeyPress}/>
-                </p>
+                    <span className="icon is-left">
+                        <i className="fa fa-list-alt"> </i>
+                    </span>
+                </div>
             </div>
 
         );

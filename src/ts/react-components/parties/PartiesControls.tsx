@@ -12,12 +12,12 @@ export class PartiesControls extends React.Component<PartiesControlsProps, any> 
     render() {
         return (
             <div className="column is-one-third">
-                <div className="control has-icon">
+                <div className="control has-icons-left">
 
                     <input className="input" type="text" placeholder="Add person"
                            onKeyPress={this.props.onKeyPress}/>
-                    <span className="icon is-right">
-                        <i className="fa fa-user"></i>
+                    <span className="icon is-left">
+                        <i className="fa fa-user"> </i>
                     </span>
                 </div>
             </div>

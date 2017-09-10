@@ -34,16 +34,22 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
             <div>
                 <DynamicLabel
                     elementId={this.props.receiptId + "_total"}
+
                     objectId={this.props.receiptId}
                     iconClassName="fa-money"
                     inputType={DynamicLabelType.NUMBER}
+                    ghostText="$0.00"
+
                     onValueChange={this.props.onReceiptTotalChange}
+
                 />
                 <DynamicLabel
                     elementId={this.props.receiptId + "_payer"}
+
                     objectId={this.props.receiptId}
-                    iconClassName="fa-credit-card"
+                    iconClassName="fa-user"
                     inputType={DynamicLabelType.SELECT}
+                    ghostText="Who paid?"
                     selectValues={partyNames}
                     value={this.props.payer}
 
@@ -51,10 +57,13 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
 
                 <DynamicLabel
                     elementId={this.props.receiptId + "_date"}
+
                     objectId={this.props.receiptId}
                     iconClassName="fa-calendar"
                     inputType={DynamicLabelType.DATE}
+                    ghostText="When was this?"
                     value={this.props.date.toDateString()}
+
                     onValueChange={this.props.onReceiptDateChange}/>
 
 

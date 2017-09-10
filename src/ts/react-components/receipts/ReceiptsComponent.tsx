@@ -10,6 +10,7 @@ import {ReceiptFooterComponent} from "./receipt/ReceiptFooterComponent";
 import {ReceiptComponent} from "./receipt/ReceiptComponent";
 import {ReceiptsControls} from "./ReceiptsControls";
 import {Party} from "../../core/party/party";
+import {IDynamicLabelValueChangeEvent} from "../lib/input/DynamicLabel";
 
 class ReceiptsProps {
     public receipts: Array<Receipt>;
@@ -17,9 +18,9 @@ class ReceiptsProps {
     public onKeyPress: (event) => void;
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
-    public onReceiptDateChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
-    public onReceiptPayorChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
-    public onReceiptTotalChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
+    public onReceiptDateChange: IDynamicLabelValueChangeEvent;
+    public onReceiptPayorChange: IDynamicLabelValueChangeEvent;
+    public onReceiptTotalChange: IDynamicLabelValueChangeEvent;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {

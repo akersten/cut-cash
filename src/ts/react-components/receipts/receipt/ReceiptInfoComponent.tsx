@@ -3,16 +3,16 @@
  */
 
 import * as React from "react";
-import {DynamicLabel} from "../../lib/input/DynamicLabel";
-import {DynamicLabelHelpers, DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
+import {DynamicLabel, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
+import {DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 
 class ReceiptInfoProps {
     public receiptId: string;
     public date: Date;
 
-    onReceiptDateChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
-    onReceiptPayorChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
-    onReceiptTotalChange: (e, receiptId: string, newValue: string, oldValue: string) => void;
+    onReceiptDateChange: IDynamicLabelValueChangeEvent;
+    onReceiptPayorChange: IDynamicLabelValueChangeEvent;
+    onReceiptTotalChange: IDynamicLabelValueChangeEvent;
 }
 
 export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any> {

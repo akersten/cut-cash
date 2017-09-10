@@ -1,6 +1,17 @@
-///<reference path="../../../../../node_modules/@types/jquery/index.d.ts"/>
 import * as React from "react";
 import {DynamicLabelHelpers, DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
+
+
+export interface IDynamicLabelValueChangeEventArgs {
+    objectId: string,
+    newValueRaw: string,
+    oldValueRaw: string,
+    formatter: (string) => string
+}
+
+export interface IDynamicLabelValueChangeEvent {
+    (args: IDynamicLabelValueChangeEventArgs): boolean;
+}
 
 class DynamicLabelProps {
     public id: string;
@@ -9,7 +20,7 @@ class DynamicLabelProps {
     public inputType: DynamicLabelType;
 
     public iconClassName: string;
-    public onValueChange?: (id: string, newValue: string, oldValue: string) => boolean;
+    public onValueChange?: IDynamicLabelValueChangeEvent
 }
 
 export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
@@ -17,29 +28,48 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
         super(props);
     }
 
-    private $label(): JQuery  {
+    /**
+     * The label element.
+     * @return {JQuery<TElement>} The jQuery element.
+     */
+    private $label() {
         return $("#dynamicLabelLabel_" + this.props.id);
-}
+    }
 
-    private $labelContainer(): JQuery {
+    /**
+     * The input container element.
+     * @return {JQuery<TElement>} The jQuery element.
+     */
+    private $inputContainer() {
+        return $("#dynamicLabelInputContainer_" + this.props.id);
+    }
 
-}
+    /**
+     * The input element.
+     * @return {JQuery<TElement>} The jQuery element.
+     */
+    private $input() {
+        return $("#dynamicLabelInput_" + this.props.id);
+    }
+
     /**
      * Switch the control to edit mode and focus the input field.
      */
     private switchToEditMode(): void {
-        $("#dynamicLabelInputContainer_" + this.props.id).show();
-        $("#dynamicLabelInput_" + this.props.id).val(this.props.value);
-        $("#dynamicLabelLabel_" + this.props.id).hide();
-        $("#dynamicLabelInput_" + this.props.id).focus();
+        this.$inputContainer().show();
+        this.$input().val(this.props.value);
+        this.$label().hide();
+        this.$input().focus();
     }
 
     /**
      * Switch the control to label mode.
      */
     private switchToLabelMode(): void {
-        $("#dynamicLabelInputContainer_" + this.props.id).hide();
-        $("#dynamicLabelLabel_" + this.props.id).show();
+        this.clearValidationError();
+
+        this.$inputContainer().hide();
+        this.$label().show();
     }
 
     /**
@@ -47,21 +77,76 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
      * want to save.
      *
      * @return {boolean} Whether validation passed when saving the changes. This is based on the label type validator
-     *                   and any additional validation by the owning control in its onValueChange.
+     *                   and any additional validation by the owning control in its onValueChange. True if we
+     *                   successfully saved the changes. False if we could not save the changes and should raise a
+     *                   validation error.
      */
     private saveChanges(): boolean {
+        let userInput: string = this.$input().val() as string;
+        userInput = userInput.trim(); // There's really no convincing use case for leading or trailing spaces.
 
-        let valueToSave: string;
-        valueToSave = $("dynamicLabelInput_" + this.props.)
+        let oldValueFormatted: string = this.props.value;
+        let oldValueRaw: string = DynamicLabelHelpers.unformat(oldValueFormatted, this.props.inputType);
 
+        // First, try to un-format the user's input. It might evaluate to "" if they just put in some junk that couldn't
+        // be unformatted. This is fine and we'll treat it as if they tried to clear out the field.
+        let newValueRaw: string = DynamicLabelHelpers.unformat(userInput, this.props.inputType);
 
-        // TODO: Determine if there is any special formatting that we need to make.
-        this.props.onValueChange(this.props.id, $("#dynamicLabelInput_" + this.props.id).val() as string, this.props.value);
+        if (!this.validateChange(newValueRaw)) {
+            return false;
+        }
 
-        // TODO: Raise event up the chain so the host can do additional validation and save the change. Might still be
-        // invalid at this point.
+        // Raise event up the chain so the host can do additional validation and save the change. Might still be invalid
+        // at this point.
+        if (!this.props.onValueChange(
+                {
+                    objectId: this.props.id,
+                    newValueRaw,
+                    oldValueRaw,
+                    formatter: DynamicLabelHelpers.getFormatter(this.props.inputType)
+                }
+            )) {
+            return false;
+        }
+
+        return true;
     }
 
+    /**
+     * Validate a change that is being made to the value of this DL. First, we call the generic validator for this type
+     * of field to rule out obvious errors. Then, we do local validation in case we want to compare against e.g. the
+     * previous value or something known only to this control.
+     *
+     * @param   newValue The value to try to set.
+     * @return {boolean} Whether this is an acceptable change. True if we pass generic and local validation.
+     *                   False otherwise.
+     */
+    private validateChange(newValue: string): boolean {
+        let oldValue: string = this.props.value;
+
+
+        if (!DynamicLabelHelpers.validateGenericValue(newValue, this.props.inputType)) {
+            return false;
+        }
+
+        // TODO: Any local validation based on things only this control knows about.
+
+        return true;
+    }
+
+    /**
+     * Mark the field as having a validation error.
+     */
+    private raiseValidationError(): void {
+
+    }
+
+    /**
+     * Clear the validation error from the field.
+     */
+    private clearValidationError(): void {
+
+    }
 
     /**
      * Click event for a DL when it's in read mode. Switches to edit mode.
@@ -98,7 +183,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
         if (this.saveChanges()) {
             this.switchToLabelMode();
         } else {
-            //TODO: Raise validation error
+            this.raiseValidationError();
         }
 
     }
@@ -107,9 +192,8 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
         if (this.saveChanges()) {
             this.switchToLabelMode();
         } else {
-            //TODO: Raise validation error
+            this.raiseValidationError();
         }
-
     }
 
 

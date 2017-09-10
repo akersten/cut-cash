@@ -2,6 +2,7 @@ import {ReceiptsComponent} from "./ReceiptsComponent";
 import {connect} from "react-redux";
 import {createReceipt, deleteReceipt} from "../../redux-actions/receiptActions";
 import {togglePartyOnReceipt} from "../../redux-actions/partyActions";
+import {IDynamicLabelValueChangeEventArgs} from "../lib/input/DynamicLabel";
 
 /**
  * Created by akersten on 6/4/17.
@@ -37,6 +38,7 @@ const mapDispatchToProps = (dispatch) => {
 
 
         onReceiptDeleteClick: (event, receiptId: string): void => {
+            // TODO: Move this component-specific stuff down to the actual component and just call this function in the callback
             let $el = $(".cw-fx-expand-on-create[data-id='" + receiptId + "']");
             $el.removeClass("cw-fx-expand-on-create");
             $el.addClass("cw-fx-collapse");
@@ -47,16 +49,23 @@ const mapDispatchToProps = (dispatch) => {
             );
         },
 
-        onReceiptDateChange: (event, receiptId: string, newValue: string, oldValue: string): void => {
+        onReceiptDateChange: (e: IDynamicLabelValueChangeEventArgs) => {
             // TODO: Parse and change date
+
+            return true;
         },
 
-        onReceiptPayorChange: (event, receiptId: string, newValue: string, oldValue: string): void => {
+        onReceiptPayorChange: (e: IDynamicLabelValueChangeEventArgs) => {
             // TODO
+            //dispatch(changePayorOnReceipt(e.objectId, e.formatter(e.newValueRaw)));
+
+            return true;
         },
 
-        onReceiptTotalChange: (event, receiptId: string, newValue: string, oldValue: string): void => {
+        onReceiptTotalChange: (e: IDynamicLabelValueChangeEventArgs) => {
             // TODO:
+
+            return true;
         }
     }
 };

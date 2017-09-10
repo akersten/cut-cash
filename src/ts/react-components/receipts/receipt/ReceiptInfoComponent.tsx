@@ -4,6 +4,7 @@
 
 import * as React from "react";
 import {DynamicLabel} from "../../lib/input/DynamicLabel";
+import {DynamicLabelHelpers, DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 
 class ReceiptInfoProps {
     public receiptId: string;
@@ -22,14 +23,26 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
     render() {
         return (
             <div>
-                <DynamicLabel id={this.props.receiptId + "_total"} iconClassName="fa-money"
-                              onValueChange={this.props.onReceiptTotalChange}
+                <DynamicLabel
+                    id={this.props.receiptId + "_total"}
+                    iconClassName="fa-money"
+                    inputType={DynamicLabelType.NUMBER}
+                    onValueChange={this.props.onReceiptTotalChange}
                 />
-                <DynamicLabel id={this.props.receiptId + "_payer"}  iconClassName="fa-credit-card"
-                    onValueChange={this.props.onReceiptPayorChange} />
+                <DynamicLabel
+                    id={this.props.receiptId + "_payer"}
+                    iconClassName="fa-credit-card"
+                    inputType={DynamicLabelType.TEXT}
 
-                <DynamicLabel id={this.props.receiptId + "_date"} iconClassName="fa-calendar"
-                              value={this.props.date.toDateString()} onValueChange={this.props.onReceiptDateChange}/>
+                    onValueChange={this.props.onReceiptPayorChange}/>
+
+                <DynamicLabel
+                    id={this.props.receiptId + "_date"}
+                    iconClassName="fa-calendar"
+                    inputType={DynamicLabelType.DATE}
+                    value={this.props.date.toDateString()}
+                    onValueChange={this.props.onReceiptDateChange}/>
+
 
             </div>
         );

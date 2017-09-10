@@ -37,7 +37,7 @@ export function createParty(name: string): ICreatePartyAction {
     return {type: PartyActionType.CREATE_PARTY, name, id: "PARTY_" + nextPartyId++}
 }
 
-export function togglePartyOnReceipt(id: string, partyId: string, checked: boolean): ITogglePartyOnReceiptAction {
+export function partyToggleOnReceipt(id: string, partyId: string, checked: boolean): ITogglePartyOnReceiptAction {
     return {type: PartyActionType.TOGGLE_PARTY_ON_RECEIPT, id, partyId, checked};
 }
 

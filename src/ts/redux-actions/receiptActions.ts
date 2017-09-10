@@ -35,15 +35,24 @@ export interface IDeleteReceiptAction extends IReceiptAction {
     id: string,
 }
 
+export interface ISetPayerAction extends IReceiptAction {
+    receiptId: string,
+    payer: string,
+}
 
-export function createReceipt(title: string): ICreateReceiptAction {
+
+export function receiptCreate(title: string): ICreateReceiptAction {
     return {type: ReceiptActionType.CREATE_RECEIPT, title, id: "CR_" + nextReceiptId++, date: new Date()};
 }
 
-export function setReceiptTitle(id: string, title: string): ISetTitleAction {
+export function receiptSetTitle(id: string, title: string): ISetTitleAction {
     return {type: ReceiptActionType.SET_TITLE, title, id};
 }
 
-export function deleteReceipt(id: string): IDeleteReceiptAction {
+export function receiptDelete(id: string): IDeleteReceiptAction {
     return {type: ReceiptActionType.DELETE_RECEIPT, id};
+}
+
+export function receiptChangePayer(receiptId: string, payer: string): ISetPayerAction {
+    return {type: ReceiptActionType.SET_PAYER, receiptId, payer};
 }

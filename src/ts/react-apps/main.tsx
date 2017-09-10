@@ -11,7 +11,6 @@ import {Provider} from "react-redux";
 
 import {CutCashApp} from "../react-components/CutCashApp";
 import {mainReducer} from "../redux-reducers/main";
-import {createReceipt, setReceiptTitle} from "../redux-actions/receiptActions";
 
 let store = createStore(mainReducer);
 

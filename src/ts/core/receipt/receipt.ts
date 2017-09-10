@@ -6,6 +6,7 @@ import {Party} from "../party/party";
 export class Receipt {
     public id: string;
     public title: string;
+    public payer: string;
     public date: Date;
     public lines: ReceiptLine[];
 

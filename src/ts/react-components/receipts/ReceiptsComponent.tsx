@@ -19,7 +19,7 @@ class ReceiptsProps {
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
     public onReceiptDateChange: IDynamicLabelValueChangeEvent;
-    public onReceiptPayorChange: IDynamicLabelValueChangeEvent;
+    public onReceiptPayerChange: IDynamicLabelValueChangeEvent;
     public onReceiptTotalChange: IDynamicLabelValueChangeEvent;
 }
 
@@ -36,11 +36,12 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 lines={receipt.lines}
                 id={receipt.id}
                 key={receipt.id}
+                payer={receipt.payer}
                 parties={this.props.parties}
                 onReceiptPartyChange={this.props.onReceiptPartyChange}
                 onReceiptDeleteClick={this.props.onReceiptDeleteClick}
                 onReceiptDateChange={this.props.onReceiptDateChange}
-                onReceiptPayorChange={this.props.onReceiptPayorChange}
+                onReceiptPayerChange={this.props.onReceiptPayerChange}
                 onReceiptTotalChange={this.props.onReceiptTotalChange}
             />);
 

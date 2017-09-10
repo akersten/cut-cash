@@ -14,7 +14,8 @@ export interface IDynamicLabelValueChangeEvent {
 }
 
 class DynamicLabelProps {
-    public id: string;
+    public elementId: string;
+    public objectId: string;
     public value?: string;
 
     public inputType: DynamicLabelType;
@@ -33,7 +34,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
      * @return {JQuery<TElement>} The jQuery element.
      */
     private $label() {
-        return $("#dynamicLabelLabel_" + this.props.id);
+        return $("#dynamicLabelLabel_" + this.props.elementId);
     }
 
     /**
@@ -41,7 +42,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
      * @return {JQuery<TElement>} The jQuery element.
      */
     private $inputContainer() {
-        return $("#dynamicLabelInputContainer_" + this.props.id);
+        return $("#dynamicLabelInputContainer_" + this.props.elementId);
     }
 
     /**
@@ -49,7 +50,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
      * @return {JQuery<TElement>} The jQuery element.
      */
     private $input() {
-        return $("#dynamicLabelInput_" + this.props.id);
+        return $("#dynamicLabelInput_" + this.props.elementId);
     }
 
     /**
@@ -100,7 +101,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
         // at this point.
         if (!this.props.onValueChange(
                 {
-                    objectId: this.props.id,
+                    objectId: this.props.objectId,
                     newValueRaw,
                     oldValueRaw,
                     formatter: DynamicLabelHelpers.getFormatter(this.props.inputType)
@@ -189,6 +190,12 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
     }
 
     private editModeBlur(e): void {
+        // Maybe we are blurring because we're being switched into label mode (e.g. we were in the field and hit enter).
+        // In this case, don't try to save because we've already gone through the process.
+        if (!this.$inputContainer().is(":visible")) {
+            return;
+        }
+
         if (this.saveChanges()) {
             this.switchToLabelMode();
         } else {
@@ -203,7 +210,7 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
         return (
             <div>
                 <p
-                    id={"dynamicLabelLabel_" + this.props.id}
+                    id={"dynamicLabelLabel_" + this.props.elementId}
 
                     className="label cw-dynamicLabel"
                     tabIndex={0}
@@ -223,13 +230,13 @@ export class DynamicLabel extends React.Component<DynamicLabelProps, any> {
                 </p>
 
                 <p
-                    id={"dynamicLabelInputContainer_" + this.props.id}
+                    id={"dynamicLabelInputContainer_" + this.props.elementId}
 
                     className="control has-icon"
                     style={{display: "none"}}
                 >
                     <input
-                        id={"dynamicLabelInput_" + this.props.id}
+                        id={"dynamicLabelInput_" + this.props.elementId}
 
                         className="input"
                         type={DynamicLabelHelpers.mapTypeToInputTypeAttr(this.props.inputType)}

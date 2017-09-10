@@ -1,8 +1,8 @@
 import {ReceiptsComponent} from "./ReceiptsComponent";
 import {connect} from "react-redux";
-import {createReceipt, deleteReceipt} from "../../redux-actions/receiptActions";
-import {togglePartyOnReceipt} from "../../redux-actions/partyActions";
+import {partyToggleOnReceipt} from "../../redux-actions/partyActions";
 import {IDynamicLabelValueChangeEventArgs} from "../lib/input/DynamicLabel";
+import {receiptChangePayer, receiptCreate, receiptDelete} from "../../redux-actions/receiptActions";
 
 /**
  * Created by akersten on 6/4/17.
@@ -28,12 +28,12 @@ const mapDispatchToProps = (dispatch) => {
             }
 
             // Create a new receipt!
-            dispatch(createReceipt($t.val() as string));
+            dispatch(receiptCreate($t.val() as string));
             $t.val("");
         },
 
         onReceiptPartyChange: (event, receiptId, partyId) => {
-            dispatch(togglePartyOnReceipt(receiptId, partyId, event.currentTarget.checked))
+            dispatch(partyToggleOnReceipt(receiptId, partyId, event.currentTarget.checked))
         },
 
 
@@ -44,7 +44,7 @@ const mapDispatchToProps = (dispatch) => {
             $el.addClass("cw-fx-collapse");
             $el.on("animationend",
                 () => {
-                    dispatch(deleteReceipt(receiptId));
+                    dispatch(receiptDelete(receiptId));
                 }
             );
         },
@@ -55,9 +55,9 @@ const mapDispatchToProps = (dispatch) => {
             return true;
         },
 
-        onReceiptPayorChange: (e: IDynamicLabelValueChangeEventArgs) => {
+        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs) => {
             // TODO
-            //dispatch(changePayorOnReceipt(e.objectId, e.formatter(e.newValueRaw)));
+            dispatch(receiptChangePayer(e.objectId, e.formatter(e.newValueRaw)));
 
             return true;
         },

@@ -9,9 +9,10 @@ import {DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 class ReceiptInfoProps {
     public receiptId: string;
     public date: Date;
+    public payer: string;
 
     onReceiptDateChange: IDynamicLabelValueChangeEvent;
-    onReceiptPayorChange: IDynamicLabelValueChangeEvent;
+    onReceiptPayerChange: IDynamicLabelValueChangeEvent;
     onReceiptTotalChange: IDynamicLabelValueChangeEvent;
 }
 
@@ -24,20 +25,24 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
         return (
             <div>
                 <DynamicLabel
-                    id={this.props.receiptId + "_total"}
+                    elementId={this.props.receiptId + "_total"}
+                    objectId={this.props.receiptId}
                     iconClassName="fa-money"
                     inputType={DynamicLabelType.NUMBER}
                     onValueChange={this.props.onReceiptTotalChange}
                 />
                 <DynamicLabel
-                    id={this.props.receiptId + "_payer"}
+                    elementId={this.props.receiptId + "_payer"}
+                    objectId={this.props.receiptId}
                     iconClassName="fa-credit-card"
                     inputType={DynamicLabelType.TEXT}
+                    value={this.props.payer}
 
-                    onValueChange={this.props.onReceiptPayorChange}/>
+                    onValueChange={this.props.onReceiptPayerChange}/>
 
                 <DynamicLabel
-                    id={this.props.receiptId + "_date"}
+                    elementId={this.props.receiptId + "_date"}
+                    objectId={this.props.receiptId}
                     iconClassName="fa-calendar"
                     inputType={DynamicLabelType.DATE}
                     value={this.props.date.toDateString()}

@@ -6,7 +6,7 @@
 
 import {Receipt} from "../core/receipt/receipt";
 import {
-    ICreateReceiptAction, IDeleteReceiptAction, IReceiptAction, ISetTitleAction,
+    ICreateReceiptAction, IDeleteReceiptAction, IReceiptAction, ISetPayerAction, ISetTitleAction,
     ReceiptActionType
 } from "../redux-actions/receiptActions";
 
@@ -39,6 +39,20 @@ export function receiptReducer(state: Array<Receipt> = [], action: IReceiptActio
             return state.filter(
                 (receipt: Receipt): boolean => {
                     return receipt.id !== actDR.id;
+                }
+            );
+
+        case ReceiptActionType.SET_PAYER:
+            let actSP = <ISetPayerAction>action;
+
+            return <Array<Receipt>> state.map(
+                (receipt: Receipt): Receipt => {
+                    if (receipt.id === actSP.receiptId) {
+                        return <Receipt> Object.assign({}, receipt, <Receipt> {
+                            payer: actSP.payer,
+                        });
+                    }
+                    return receipt;
                 }
             );
         default:

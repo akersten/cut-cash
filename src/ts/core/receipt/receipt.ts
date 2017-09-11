@@ -16,6 +16,7 @@ export class Receipt {
         this.title = title;
         this.date = date;
         this.lines = [];
+        this.total = 0;
     }
 }
 
@@ -26,5 +27,6 @@ export class ReceiptLine {
 
     constructor(id: string) {
         this.id = id;
+        this.amount = 0;
     }
 }

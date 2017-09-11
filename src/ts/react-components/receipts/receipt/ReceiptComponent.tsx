@@ -14,10 +14,11 @@ import {IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
 
 class ReceiptProps {
     public title: string;
-    public date: Date;
+    public date: string;
     public lines: ReceiptLine[];
     public id: string;
     public payer: string;
+    public total: string;
     public parties: Party[];
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
@@ -40,7 +41,7 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
 
                     <div className="card-content">
                         <ReceiptInfoComponent receiptId={this.props.id} date={this.props.date} payer={this.props.payer}
-                                              parties={this.props.parties}
+                                              parties={this.props.parties} total={this.props.total}
                                               onReceiptDateChange={this.props.onReceiptDateChange}
                                               onReceiptPayerChange={this.props.onReceiptPayerChange}
                                               onReceiptTotalChange={this.props.onReceiptTotalChange}

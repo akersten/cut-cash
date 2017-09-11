@@ -6,7 +6,7 @@ export interface IDynamicLabelValueChangeEventArgs<typeOfRawValue> {
     objectId: string,
     newValueRaw: typeOfRawValue,
     oldValueRaw: typeOfRawValue,
-    formatter: (string) => string
+    formatter: (typeOfRawValue) => string
 }
 
 export interface IDynamicLabelValueChangeEvent<typeOfRawValue> {
@@ -16,7 +16,7 @@ export interface IDynamicLabelValueChangeEvent<typeOfRawValue> {
 export class DynamicLabelProps<typeOfRawValue> {
     public elementId: string;
     public objectId: string;
-    public value?: string;
+    public value: string;
     public selectValues?: string[];
     public ghostText: string;
 
@@ -68,6 +68,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         this.$input().val(this.props.value);
         this.$label().hide();
         this.$input().focus();
+        this.$input().select();
     }
 
     /**

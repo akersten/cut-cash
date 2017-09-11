@@ -11,9 +11,10 @@ import {ReceiptComponent} from "./receipt/ReceiptComponent";
 import {ReceiptsControls} from "./ReceiptsControls";
 import {Party} from "../../core/party/party";
 import {IDynamicLabelValueChangeEvent} from "../lib/input/DynamicLabel";
+import {VmReceipt} from "../../viewmodels/receipt/vmReceipt";
 
 class ReceiptsProps {
-    public receipts: Array<Receipt>;
+    public receipts: Array<VmReceipt>;
     public parties: Party[];
     public onKeyPress: (event) => void;
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
@@ -32,12 +33,13 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
         let rows = this.props.receipts.map(
             receipt => <ReceiptComponent
                 title={receipt.title}
-                date={receipt.date}
+                date={receipt.dateFormatted}
                 lines={receipt.lines}
                 id={receipt.id}
                 key={receipt.id}
                 payer={receipt.payer}
                 parties={this.props.parties}
+                total={receipt.totalFormatted}
                 onReceiptPartyChange={this.props.onReceiptPartyChange}
                 onReceiptDeleteClick={this.props.onReceiptDeleteClick}
                 onReceiptDateChange={this.props.onReceiptDateChange}

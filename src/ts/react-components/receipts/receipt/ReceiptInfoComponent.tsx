@@ -9,9 +9,10 @@ import {Party} from "../../../core/party/party";
 
 class ReceiptInfoProps {
     public receiptId: string;
-    public date: Date;
+    public date: string;
     public payer: string;
     public parties: Party[];
+    public total: string;
 
     onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
     onReceiptPayerChange: IDynamicLabelValueChangeEvent<string>;
@@ -36,6 +37,7 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
         amountLabelProps.iconClassName = "fa-money";
         amountLabelProps.inputType = DynamicLabelType.CURRENCY;
         amountLabelProps.ghostText = "$0.00";
+        amountLabelProps.value = this.props.total;
         amountLabelProps.onValueChange = this.props.onReceiptTotalChange;
         let amountLabel: any = React.createElement(DynamicLabel, amountLabelProps);
 
@@ -46,6 +48,7 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
         payerLabelProps.inputType = DynamicLabelType.SELECT;
         payerLabelProps.ghostText = "Who paid?";
         payerLabelProps.selectValues = partyNames;
+        payerLabelProps.value = this.props.payer;
         payerLabelProps.onValueChange = this.props.onReceiptPayerChange;
         let payerLabel: any = React.createElement(DynamicLabel, payerLabelProps);
 
@@ -55,6 +58,7 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
         dateLabelProps.iconClassName = "fa-calendar";
         dateLabelProps.inputType = DynamicLabelType.DATE;
         dateLabelProps.ghostText = "When was this?";
+        dateLabelProps.value = this.props.date;
         dateLabelProps.onValueChange = this.props.onReceiptDateChange;
         let dateLabel: any = React.createElement(DynamicLabel, dateLabelProps);
 

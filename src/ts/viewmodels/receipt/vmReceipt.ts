@@ -14,7 +14,7 @@ export class VmReceipt extends Receipt {
     constructor(id: string, title: string, date: Date) {
         super(id, title, date);
         this.dateFormatted = DynamicLabelHelpers.format(this.date.toString(), DynamicLabelType.DATE);
-        //this.totalFormatted = DynamicLabelHelpers.format(this.total.toString(), DynamicLabelType.CURRENCY);
+        this.totalFormatted = DynamicLabelHelpers.format(this.total.toString(), DynamicLabelType.CURRENCY);
     }
 }
 
@@ -25,5 +25,6 @@ export class VmReceiptLine extends ReceiptLine {
 
     constructor(id: string) {
         super(id);
+        this.amountFormatted = DynamicLabelHelpers.format(this.amount.toString(), DynamicLabelType.CURRENCY);
     }
 }

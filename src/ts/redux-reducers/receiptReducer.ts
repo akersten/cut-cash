@@ -6,7 +6,7 @@
 
 import {Receipt} from "../core/receipt/receipt";
 import {
-    ICreateReceiptAction, IDeleteReceiptAction, IReceiptAction, ISetPayerAction, ISetTitleAction,
+    ICreateReceiptAction, IDeleteReceiptAction, IReceiptAction, ISetPayerAction, ISetTitleAction, ISetTotalAction,
     ReceiptActionType
 } from "../redux-actions/receiptActions";
 import {VmReceipt} from "../viewmodels/receipt/vmReceipt";
@@ -53,6 +53,21 @@ export function receiptReducer(state: Array<VmReceipt> = [], action: IReceiptAct
                     if (receipt.id === actSP.receiptId) {
                         return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
                             payer: actSP.payer,
+                        });
+                    }
+                    return receipt;
+                }
+            );
+
+        case ReceiptActionType.SET_TOTAL:
+            let actSTA = <ISetTotalAction>action;
+
+            return <Array<VmReceipt>> state.map(
+                (receipt: VmReceipt): VmReceipt => {
+                    if (receipt.id === actSTA.receiptId) {
+                        return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
+                            total: actSTA.totalRaw,
+                            totalFormatted: actSTA.totalFormatted,
                         });
                     }
                     return receipt;

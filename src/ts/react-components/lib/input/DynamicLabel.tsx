@@ -109,11 +109,11 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         userInput = userInput.trim(); // There's really no convincing use case for leading or trailing spaces.
 
         let oldValueFormatted: string = this.props.value;
-        let oldValueRaw: typeOfRawValue = DynamicLabelHelpers.unformat<typeOfRawValue>(oldValueFormatted, this.props.inputType);
+        let oldValueRaw: typeOfRawValue = DynamicLabelHelpers.parse<typeOfRawValue>(oldValueFormatted, this.props.inputType);
 
         // First, try to un-format the user's input. It might evaluate to "" if they just put in some junk that couldn't
         // be unformatted. This is fine and we'll treat it as if they tried to clear out the field.
-        let newValueRaw: typeOfRawValue = DynamicLabelHelpers.unformat<typeOfRawValue>(userInput, this.props.inputType);
+        let newValueRaw: typeOfRawValue = DynamicLabelHelpers.parse<typeOfRawValue>(userInput, this.props.inputType);
 
         if (!this.validateChange(newValueRaw)) {
             return false;

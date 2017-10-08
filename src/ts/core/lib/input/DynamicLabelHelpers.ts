@@ -141,7 +141,7 @@ export class DynamicLabelHelpers {
      * @param      type The type of DL.
      * @return {string} An unformatted version of the value.
      */
-    public static unformat<typeOfRawValue>(value: string, type: DynamicLabelType): typeOfRawValue {
+    public static parse<typeOfRawValue>(value: string, type: DynamicLabelType): typeOfRawValue {
         switch (type) {
             case DynamicLabelType.NUMBER:
                 // TODO: Parse out commas

@@ -6,6 +6,7 @@ import {
     receiptChangePayer, receiptChangeTitle, receiptChangeTotal, receiptCreate,
     receiptDelete
 } from "../../redux-actions/receiptActions";
+import {ValidationResult} from "../../core/lib/input/DynamicLabelHelpers";
 
 /**
  * Created by akersten on 6/4/17.
@@ -52,29 +53,33 @@ const mapDispatchToProps = (dispatch) => {
             );
         },
 
-        onReceiptDateChange: (e: IDynamicLabelValueChangeEventArgs<Date>): boolean => {
+        onReceiptDateChange: (e: IDynamicLabelValueChangeEventArgs<Date>): ValidationResult => {
             // TODO: Parse and change date
 
-            return true;
+            return new ValidationResult(true);
         },
 
-        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs<string>): boolean => {
+        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs<string>): ValidationResult => {
             // TODO: Validation?
             dispatch(receiptChangePayer(e.objectId, e.formatter(e.newValueRaw)));
 
-            return true;
+            return new ValidationResult(true);
         },
 
-        onReceiptTotalChange: (e: IDynamicLabelValueChangeEventArgs<number>): boolean => {
+        onReceiptTotalChange: (e: IDynamicLabelValueChangeEventArgs<number>): ValidationResult => {
+            if (e.newValueRaw < 0) {
+                return new ValidationResult(false, "Amount cannot be negative.");
+            }
+
             // TODO: Validation?
             dispatch(receiptChangeTotal(e.objectId, e.newValueRaw, e.formatter(e.newValueRaw)));
-            return true;
+            return new ValidationResult(true);
         },
 
-        onReceiptTitleChange: (e: IDynamicLabelValueChangeEventArgs<string>): boolean => {
+        onReceiptTitleChange: (e: IDynamicLabelValueChangeEventArgs<string>): ValidationResult => {
             // TODO: Any other validation?
             dispatch(receiptChangeTitle(e.objectId, e.formatter(e.newValueRaw)));
-            return true;
+            return new ValidationResult(true);
         },
     }
 };

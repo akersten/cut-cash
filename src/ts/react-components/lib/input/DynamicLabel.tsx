@@ -13,7 +13,7 @@ export interface IDynamicLabelValueChangeEventArgs<typeOfRawValue> {
 }
 
 export interface IDynamicLabelValueChangeEvent<typeOfRawValue> {
-    (args: IDynamicLabelValueChangeEventArgs<typeOfRawValue>): boolean;
+    (args: IDynamicLabelValueChangeEventArgs<typeOfRawValue>): ValidationResult;
 }
 
 export class DynamicLabelProps<typeOfRawValue> {
@@ -171,15 +171,17 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
         // Raise event up the chain so the host can do additional validation and save the change. Might still be invalid
         // at this point.
-        if (!this.props.onValueChange(
-                {
-                    objectId: this.props.objectId,
-                    newValueRaw,
-                    oldValueRaw,
-                    formatter: DynamicLabelHelpers.getFormatter(this.props.inputType)
-                }
-            )) {
-            return new ValidationResult(false, "Higher-order validation failed.");
+        let higherOrderValidationResult: ValidationResult = this.props.onValueChange(
+            {
+                objectId: this.props.objectId,
+                newValueRaw,
+                oldValueRaw,
+                formatter: DynamicLabelHelpers.getFormatter(this.props.inputType)
+            }
+        );
+
+        if (!higherOrderValidationResult.isValid()) {
+            return higherOrderValidationResult;
         }
 
         return new ValidationResult(true);
@@ -431,7 +433,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                     {inputIconContent}
                     {inputValidationIconContent}
                 </div>
-                <p className="help is-danger cw-dynamicLabel-validation-help-warning" style={{display: "none"}}> </p>
+                <p className="help is-danger cw-dynamicLabel-validation-help-warning" style={{display: "none"}}></p>
             </div>
         );
     }

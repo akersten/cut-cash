@@ -52,7 +52,7 @@ export class FormatHelpers {
         if (rawValue === null || rawValue.length === 0) {
             return "";
         }
-        
+
         let divisor: number = Math.pow(10, LocaleHelpers.getCurrencyDecimalPlaces());
         return (parseFloat(rawValue) / divisor).toLocaleString(LocaleHelpers.getLocaleString(), {style: "currency", currency: LocaleHelpers.getLocaleCurrencyString()});
     }

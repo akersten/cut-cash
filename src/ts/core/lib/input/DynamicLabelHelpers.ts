@@ -33,13 +33,15 @@ export class DynamicLabelHelpers {
     }
 
     /**
-     * Entry point from a DynamicLabel to validate its new value against generic rules for that value type.
+     * Entry point from a DynamicLabel to validate its new value against generic rules for that value type. The new
+     * value here should be an unformatted value, but post-parse (so any logic like converting syntactic sugar has
+     * already run).
      *
-     * @param   newValue The raw value trying to be set.
-     * @param       type The type of DL this is.
-     * @return {boolean} Whether this is an acceptable value for this type of DL.
+     * @param            newValue The raw value trying to be set.
+     * @param                type The type of DL this is.
+     * @return {ValidationResult} Whether this is an acceptable value for this type of DL.
      */
-    public static validateGenericValue<typeOfRawValue>(newValue: typeOfRawValue, type: DynamicLabelType): boolean {
+    public static validateGenericValue<typeOfRawValue>(newValue: typeOfRawValue, type: DynamicLabelType): ValidationResult {
         switch (type) {
             case DynamicLabelType.DATE:
                 return this.validateGenericDate<typeOfRawValue>(newValue);
@@ -52,7 +54,7 @@ export class DynamicLabelHelpers {
             case DynamicLabelType.CURRENCY:
                 return this.validateGenericCurrency<typeOfRawValue>(newValue);
             default:
-                return true;
+                return new ValidationResult(true);
         }
     }
 
@@ -63,8 +65,9 @@ export class DynamicLabelHelpers {
      * @param   newValue The value trying to be set.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    private static validateGenericText<typeOfRawValue>(newValue: typeOfRawValue): boolean {
-        return true;
+    private static validateGenericText<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
+        // TODO: Prevent emoji and crazy combinational characters
+        return new ValidationResult(true);
     }
 
     /**
@@ -73,8 +76,8 @@ export class DynamicLabelHelpers {
      * @param   newValue The value trying to be set.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    private static validateGenericSelection<typeOfRawValue>(newValue: typeOfRawValue): boolean {
-        return true;
+    private static validateGenericSelection<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
+        return new ValidationResult(true);
     }
 
     /**
@@ -83,9 +86,9 @@ export class DynamicLabelHelpers {
      * @param   newValue The value trying to be set.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    private static validateGenericNumber<typeOfRawValue>(newValue: typeOfRawValue): boolean {
+    private static validateGenericNumber<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
         //TODO: Validate
-        return true;
+         return new ValidationResult(true);
     }
 
     /**
@@ -95,14 +98,14 @@ export class DynamicLabelHelpers {
      * @param   newValue The value trying to be set.
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
-    private static validateGenericDate<typeOfRawValue>(newValue: typeOfRawValue): boolean {
+    private static validateGenericDate<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
         // TODO: Validate
-        return true;
+        return new ValidationResult(true);
     }
 
-    private static validateGenericCurrency<typeOfRawValue>(newValue: typeOfRawValue): boolean {
+    private static validateGenericCurrency<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
         // TODO: Validate
-        return true;
+        return new ValidationResult(true);
     }
 
 
@@ -137,28 +140,29 @@ export class DynamicLabelHelpers {
      * Given a value and a type, remove any formatting that may be present. Fix up the value too (e.g. round currency or
      * interpret short dates) since the return value here is what is used as the new user-specified raw value.
      *
-     * @param     value A formatted or raw value.
-     * @param      type The type of DL.
-     * @return {string} An unformatted version of the value.
+     * @param          value A formatted or raw value.
+     * @param           type The type of DL.
+     * @return {ParseResult} An unformatted version of the value, with metadata indicating if it was successfully parsed
+     *                       or the input was malformed.
      */
-    public static parse<typeOfRawValue>(value: string, type: DynamicLabelType): typeOfRawValue {
+    public static parse<typeOfRawValue>(value: string, type: DynamicLabelType): ParseResult<typeOfRawValue> {
         switch (type) {
             case DynamicLabelType.NUMBER:
                 // TODO: Parse out commas
-                return <typeOfRawValue><any>value;
+
+                return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
             case DynamicLabelType.DATE:
                 // There are lots of ways to represent a date. Try to put it in the standard format given by the Date
                 // object..
                 // TODO: unformat
-                return <typeOfRawValue><any>value;
+                return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
             case DynamicLabelType.CURRENCY:
                 // TODO: Parse
-                return <typeOfRawValue><any>value;
+                return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
             default:
-                return <typeOfRawValue><any>value;
+                return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
         }
     }
-
 
     /**
      * Constructs a formatter object to be used by upstream validation functions after receiving a raw value that has
@@ -171,5 +175,59 @@ export class DynamicLabelHelpers {
         return (rawValue: string) => {
             return this.format(rawValue, type);
         }
+    }
+}
+
+export class ParseResult<typeOfRawValue> {
+    private success: boolean;
+    private rawValue: typeOfRawValue;
+
+    constructor(success: boolean, rawValue: typeOfRawValue) {
+        this.success = success;
+        this.rawValue = rawValue;
+    }
+
+    /**
+     * Determine if this parse was successful.
+     *
+     * @return {boolean} True if the raw value associated with this parse was the result of a successful parse. False
+     *                   otherwise.
+     */
+    wasSuccessful(): boolean {
+        return this.success;
+    }
+
+    getRawValue(): typeOfRawValue {
+        return this.rawValue;
+    }
+
+}
+
+export class ValidationResult {
+    private valid: boolean;
+    private message: string;
+
+    constructor(valid: boolean, message?: string) {
+        this.valid = valid;
+        this.message = message;
+    }
+
+    /**
+     * Determine if there were any problems during the validation.
+     *
+     * @return {boolean} True if there is nothing to alert the user about regarding validation. False if there is a
+     *                   validation message for the user.
+     */
+    isValid(): boolean {
+        return this.valid;
+    }
+
+    /**
+     * Return the validation message for the user to see.
+     *
+     * @return {string} The validation message for the user.
+     */
+    getMessage(): string {
+        return this.message;
     }
 }

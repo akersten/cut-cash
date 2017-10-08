@@ -1,5 +1,8 @@
 import * as React from "react";
-import {DynamicLabelHelpers, DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
+import {
+    DynamicLabelHelpers, DynamicLabelType, ParseResult,
+    ValidationResult
+} from "../../../core/lib/input/DynamicLabelHelpers";
 
 
 export interface IDynamicLabelValueChangeEventArgs<typeOfRawValue> {
@@ -78,13 +81,27 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
     }
 
     /**
-     * Switch the control to label mode.
+     * Switch the control to label mode. Assumes validation has already been done and we have no errors preventing the
+     * switch.
      */
     private switchToLabelMode(): void {
-        this.clearValidationError();
+        this.clearValidationErrors();
 
         this.$inputContainer().hide();
         this.$label().show();
+    }
+
+    /**
+     * Called when the user action is to update the value from edit mode. We'll do validation and try to save the input.
+     */
+    private attemptSaveAndSwitchToLabelMode(): void {
+        let saveChangesValidationResult: ValidationResult = this.saveChanges();
+
+        if (saveChangesValidationResult.isValid()) {
+            this.switchToLabelMode();
+        } else {
+            this.raiseValidationError(saveChangesValidationResult);
+        }
     }
 
     //#endregion
@@ -95,28 +112,43 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
      * Save any changes that have been made in edit mode. Assume that the DL input field currently has the value we
      * want to save.
      *
-     * @return {boolean} Whether validation passed when saving the changes. This is based on the label type validator
-     *                   and any additional validation by the owning control in its onValueChange. True if we
-     *                   successfully saved the changes. False if we could not save the changes and should raise a
-     *                   validation error.
+     * @return {ValidationResult} Whether validation passed when saving the changes. This is based on the label type
+     *                            validator and any additional validation by the owning control in its onValueChange.
+     *                            True if we successfully saved the changes. False if we could not save the changes and
+     *                            should raise a validation error.
      */
-    private saveChanges(): boolean {
+    private saveChanges(): ValidationResult {
         let userInput: string = this.$input().val() as string;
         if (userInput === null) {
-            return true; // Just silently eat this... Likely case for selecting nothing on a dropdown.
+            return new ValidationResult(true); // Just silently eat this... Likely case for selecting nothing on a dropdown.
         }
 
         userInput = userInput.trim(); // There's really no convincing use case for leading or trailing spaces.
 
         let oldValueFormatted: string = this.props.value;
-        let oldValueRaw: typeOfRawValue = DynamicLabelHelpers.parse<typeOfRawValue>(oldValueFormatted, this.props.inputType);
+        let oldValueParseResult: ParseResult<typeOfRawValue> = DynamicLabelHelpers.parse<typeOfRawValue>(oldValueFormatted, this.props.inputType);
+
+        if (!oldValueParseResult.wasSuccessful()) {
+            // TODO: There probably isn't a way for the user to fix this - what to do in that scenario? We'll just have an un-editable field.
+            return new ValidationResult(false, "Previous value could not be parsed.");
+        }
+
+        let oldValueRaw: typeOfRawValue = oldValueParseResult.getRawValue();
 
         // First, try to un-format the user's input. It might evaluate to "" if they just put in some junk that couldn't
         // be unformatted. This is fine and we'll treat it as if they tried to clear out the field.
-        let newValueRaw: typeOfRawValue = DynamicLabelHelpers.parse<typeOfRawValue>(userInput, this.props.inputType);
+        let newValueParseResult: ParseResult<typeOfRawValue> = DynamicLabelHelpers.parse<typeOfRawValue>(userInput, this.props.inputType);
 
-        if (!this.validateChange(newValueRaw)) {
-            return false;
+        if (!newValueParseResult.wasSuccessful()) {
+            return new ValidationResult(false, "Invalid input.");
+        }
+
+        let newValueRaw: typeOfRawValue = newValueParseResult.getRawValue();
+
+        let validateChangeResult = this.validateChange(newValueRaw);
+
+        if (!validateChangeResult.isValid()) {
+            return validateChangeResult;
         }
 
         // Raise event up the chain so the host can do additional validation and save the change. Might still be invalid
@@ -129,10 +161,10 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                     formatter: DynamicLabelHelpers.getFormatter(this.props.inputType)
                 }
             )) {
-            return false;
+            return new ValidationResult(false, "Higher-order validation failed.");
         }
 
-        return true;
+        return new ValidationResult(true);
     }
 
     /**
@@ -140,21 +172,25 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
      * of field to rule out obvious errors. Then, we do local validation in case we want to compare against e.g. the
      * previous value or something known only to this control.
      *
-     * @param   newValue The value to try to set.
-     * @return {boolean} Whether this is an acceptable change. True if we pass generic and local validation.
-     *                   False otherwise.
+     * This is mostly about bounds/sanity checking - the actual parse for e.g. valid characters happens earlier.
+     *
+     * @param            newValue The value to try to set.
+     * @return {ValidationResult} Whether this is an acceptable change. True if we pass generic and local validation.
+     *                            False otherwise, with a corresponding message..
      */
-    private validateChange(newValue: typeOfRawValue): boolean {
+    private validateChange(newValue: typeOfRawValue): ValidationResult {
         let oldValue: string = this.props.value;
 
 
-        if (!DynamicLabelHelpers.validateGenericValue(newValue, this.props.inputType)) {
-            return false;
+        let genericValidationResult: ValidationResult = DynamicLabelHelpers.validateGenericValue(newValue, this.props.inputType);
+
+        if (!genericValidationResult.isValid()) {
+            return genericValidationResult;
         }
 
         // TODO: Any local validation based on things only this control knows about.
 
-        return true;
+        return new ValidationResult(true);
     }
 
     /**
@@ -163,14 +199,14 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
      * A braver person than I would make this part of the React state and have it automatically appear in the DOM, but
      * it seems way too specific to this control to have it exist in global state like that.
      */
-    private raiseValidationError(): void {
+    private raiseValidationError(validationResult: ValidationResult): void {
         //TODO: Display validation error
     }
 
     /**
      * Clear the validation error from the field.
      */
-    private clearValidationError(): void {
+    private clearValidationErrors(): void {
         //TODO: Clear the existing validation error
     }
 
@@ -210,12 +246,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
             return;
         }
 
-        if (this.saveChanges()) {
-            this.switchToLabelMode();
-        } else {
-            this.raiseValidationError();
-        }
-
+        this.attemptSaveAndSwitchToLabelMode();
     }
 
     private editModeBlur(e): void {
@@ -225,11 +256,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
             return;
         }
 
-        if (this.saveChanges()) {
-            this.switchToLabelMode();
-        } else {
-            this.raiseValidationError();
-        }
+        this.attemptSaveAndSwitchToLabelMode();
     }
 
     /**
@@ -237,11 +264,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
      * @param e The event.
      */
     private editModeChange(e): void {
-        if (this.saveChanges()) {
-            this.switchToLabelMode();
-        } else {
-            this.raiseValidationError();
-        }
+        this.attemptSaveAndSwitchToLabelMode();
     }
 
     //#endregion

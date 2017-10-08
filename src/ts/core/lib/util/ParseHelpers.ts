@@ -48,8 +48,26 @@ export class ParseHelpers {
         replaceRegEx = new RegExp(RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()), "g");
         userInput = userInput.replace(replaceRegEx, ".");
 
-        // Round to # of decimal places for currency.
-        return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>+(parseFloat(userInput)).toFixed(LocaleHelpers.getCurrencyDecimalPlaces()));
+
+        // We don't want to store currency as float. We'll store an integer amount of the lowest denomination (e.g.
+        // cents). Piece out the whole value, shift by the # of decimal places expected, and then add the fractional
+        // value.
+        let numberOfCents: number = null;
+
+        if (userInput.indexOf(LocaleHelpers.getDecimalSeparator()) > 0) {
+            let wholeValue: number = parseInt(userInput.substr(0, userInput.indexOf(LocaleHelpers.getDecimalSeparator())), 10);
+            wholeValue *= parseInt("" + Math.pow(10, LocaleHelpers.getCurrencyDecimalPlaces()));
+            wholeValue = parseInt("" + wholeValue); // In case there is any precision error from the multiplication.
+
+            let fractionalValue: number = parseInt(userInput.substr(userInput.indexOf(LocaleHelpers.getDecimalSeparator()) + 1, LocaleHelpers.getCurrencyDecimalPlaces()));
+            numberOfCents = wholeValue + fractionalValue;
+        } else {
+            numberOfCents = parseInt(userInput);
+            numberOfCents *= parseInt("" + Math.pow(10, LocaleHelpers.getCurrencyDecimalPlaces()));
+            numberOfCents = parseInt("" + numberOfCents); // In case there is any precision error from the multiplication.
+        }
+
+        return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>numberOfCents);
     }
 
 }

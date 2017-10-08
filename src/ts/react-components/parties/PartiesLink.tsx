@@ -25,7 +25,9 @@ const mapDispatchToProps = (dispatch) => {
                 return;
             }
 
-            // Create a new receipt!
+            // Create a new party!
+            // TODO: should really check for duplicates. RIght now our select is keyed off of the name which is not ideal
+            // and can be prevented. but for now let's not allow two payers with the same name.
             dispatch(createParty($t.val() as string));
             $t.val("");
         },

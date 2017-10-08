@@ -3,11 +3,15 @@
  */
 
 import * as React from "react";
+import {DynamicLabel, DynamicLabelProps, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
+import {DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 
 class ReceiptHeaderProps {
     public title: string;
     public id: string;
+
     public onReceiptDeleteClick: (e, id: string) => void;
+    public onReceiptTitleChange: IDynamicLabelValueChangeEvent<string>;
 }
 
 export class ReceiptHeaderComponent extends React.Component<ReceiptHeaderProps, any> {
@@ -17,12 +21,24 @@ export class ReceiptHeaderComponent extends React.Component<ReceiptHeaderProps, 
     }
 
     render() {
+        let receiptTitleLabelProps: DynamicLabelProps<string> = new DynamicLabelProps<string>();
+        receiptTitleLabelProps.elementId = this.props.id + "_title";
+        receiptTitleLabelProps.objectId = this.props.id;
+        receiptTitleLabelProps.iconClassName = "";
+        receiptTitleLabelProps.inputType = DynamicLabelType.TEXT;
+        receiptTitleLabelProps.ghostText = "Receipt title?";
+        receiptTitleLabelProps.value = this.props.title;
+        receiptTitleLabelProps.onValueChange = this.props.onReceiptTitleChange;
+        let receiptTitleLabel: any = React.createElement(DynamicLabel, receiptTitleLabelProps);
+
         return (
             <header className="card-header">
-                <p className="card-header-title">{this.props.title}</p>
+                <p className="card-header-title">
+                    {receiptTitleLabel}
+                </p>
 
                 <a className="card-header-icon" onClick={e => this.props.onReceiptDeleteClick(e, this.props.id)}>
-                    <button className="delete"></button>
+                    <button className="delete"> </button>
                 </a>
             </header>
         );

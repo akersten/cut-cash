@@ -22,6 +22,7 @@ class ReceiptsProps {
     public onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
     public onReceiptPayerChange: IDynamicLabelValueChangeEvent<string>;
     public onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
+    public onReceiptTitleChange: IDynamicLabelValueChangeEvent<string>;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
@@ -45,6 +46,7 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 onReceiptDateChange={this.props.onReceiptDateChange}
                 onReceiptPayerChange={this.props.onReceiptPayerChange}
                 onReceiptTotalChange={this.props.onReceiptTotalChange}
+                onReceiptTitleChange={this.props.onReceiptTitleChange}
             />);
 
         return (

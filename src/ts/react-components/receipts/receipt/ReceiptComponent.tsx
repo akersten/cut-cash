@@ -25,6 +25,7 @@ class ReceiptProps {
     public onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
     public onReceiptPayerChange: IDynamicLabelValueChangeEvent<string>;
     public onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
+    public onReceiptTitleChange: IDynamicLabelValueChangeEvent<string>;
 }
 
 export class ReceiptComponent extends React.Component<ReceiptProps, any> {
@@ -37,7 +38,8 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
             <div className="column is-one-third cw-fx-expand-on-create" data-id={this.props.id}>
                 <div className="card">
                     <ReceiptHeaderComponent title={this.props.title} id={this.props.id}
-                                            onReceiptDeleteClick={this.props.onReceiptDeleteClick}/>
+                                            onReceiptDeleteClick={this.props.onReceiptDeleteClick}
+                                            onReceiptTitleChange={this.props.onReceiptTitleChange}/>
 
                     <div className="card-content">
                         <ReceiptInfoComponent receiptId={this.props.id} date={this.props.date} payer={this.props.payer}

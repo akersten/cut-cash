@@ -26,11 +26,6 @@ export interface ICreateReceiptAction extends IReceiptAction {
     date: Date,
 }
 
-export interface ISetTitleAction extends IReceiptAction {
-    id: string,
-    title: string,
-}
-
 export interface IDeleteReceiptAction extends IReceiptAction {
     id: string,
 }
@@ -46,12 +41,13 @@ export interface ISetTotalAction extends IReceiptAction {
     totalFormatted: string,
 }
 
-export function receiptCreate(title: string): ICreateReceiptAction {
-    return {type: ReceiptActionType.CREATE_RECEIPT, title, id: "CR_" + nextReceiptId++, date: new Date()};
+export interface ISetTitleAction extends IReceiptAction {
+    receiptId: string,
+    title: string,
 }
 
-export function receiptSetTitle(id: string, title: string): ISetTitleAction {
-    return {type: ReceiptActionType.SET_TITLE, title, id};
+export function receiptCreate(title: string): ICreateReceiptAction {
+    return {type: ReceiptActionType.CREATE_RECEIPT, title, id: "CR_" + nextReceiptId++, date: new Date()};
 }
 
 export function receiptDelete(id: string): IDeleteReceiptAction {
@@ -64,4 +60,8 @@ export function receiptChangePayer(receiptId: string, payer: string): ISetPayerA
 
 export function receiptChangeTotal(receiptId: string, totalRaw: number, totalFormatted: string): ISetTotalAction {
     return {type: ReceiptActionType.SET_TOTAL, receiptId, totalRaw, totalFormatted};
+}
+
+export function receiptChangeTitle(receiptId: string, title: string): ISetTitleAction {
+    return {type: ReceiptActionType.SET_TITLE, receiptId, title};
 }

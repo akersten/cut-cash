@@ -23,7 +23,7 @@ export class DynamicLabelProps<typeOfRawValue> {
     public inputType: DynamicLabelType;
 
     public iconClassName: string;
-    public onValueChange?: IDynamicLabelValueChangeEvent<typeOfRawValue>
+    public onValueChange?: IDynamicLabelValueChangeEvent<typeOfRawValue>;
 }
 
 export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelProps<typeOfRawValue>, any> {
@@ -74,6 +74,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         this.$input().val(this.props.value);
         this.$label().hide();
         this.$input().focus();
+        this.$input().select(); // Default-highlight the input so it's easy to change without having to click again.
     }
 
     /**
@@ -299,8 +300,8 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
 
         } else {
-            // TODO: should really key these off of something unique.. oh well, current assumption is that selectValues
-            // is all unique.
+            // TODO: should really key these off of something unique.. Like create a wrapping object and pass the
+            // object ID too.
 
             let selectComponents = this.props.selectValues.map((val: string): any => {
                 return <option key={val}>{val}</option>

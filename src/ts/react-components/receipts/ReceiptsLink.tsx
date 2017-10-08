@@ -2,7 +2,10 @@ import {ReceiptsComponent} from "./ReceiptsComponent";
 import {connect} from "react-redux";
 import {partyToggleOnReceipt} from "../../redux-actions/partyActions";
 import {IDynamicLabelValueChangeEventArgs} from "../lib/input/DynamicLabel";
-import {receiptChangePayer, receiptChangeTotal, receiptCreate, receiptDelete} from "../../redux-actions/receiptActions";
+import {
+    receiptChangePayer, receiptChangeTitle, receiptChangeTotal, receiptCreate,
+    receiptDelete
+} from "../../redux-actions/receiptActions";
 
 /**
  * Created by akersten on 6/4/17.
@@ -49,24 +52,30 @@ const mapDispatchToProps = (dispatch) => {
             );
         },
 
-        onReceiptDateChange: (e: IDynamicLabelValueChangeEventArgs<Date>) => {
+        onReceiptDateChange: (e: IDynamicLabelValueChangeEventArgs<Date>): boolean => {
             // TODO: Parse and change date
 
             return true;
         },
 
-        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs<string>) => {
-            // TODO
+        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs<string>): boolean => {
+            // TODO: Validation?
             dispatch(receiptChangePayer(e.objectId, e.formatter(e.newValueRaw)));
 
             return true;
         },
 
-        onReceiptTotalChange: (e: IDynamicLabelValueChangeEventArgs<number>) => {
-            // TODO:
+        onReceiptTotalChange: (e: IDynamicLabelValueChangeEventArgs<number>): boolean => {
+            // TODO: Validation?
             dispatch(receiptChangeTotal(e.objectId, e.newValueRaw, e.formatter(e.newValueRaw)));
             return true;
-        }
+        },
+
+        onReceiptTitleChange: (e: IDynamicLabelValueChangeEventArgs<string>): boolean => {
+            // TODO: Any other validation?
+            dispatch(receiptChangeTitle(e.objectId, e.formatter(e.newValueRaw)));
+            return true;
+        },
     }
 };
 

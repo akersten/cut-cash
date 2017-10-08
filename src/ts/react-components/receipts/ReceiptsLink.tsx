@@ -77,7 +77,6 @@ const mapDispatchToProps = (dispatch) => {
         },
 
         onReceiptTitleChange: (e: IDynamicLabelValueChangeEventArgs<string>): ValidationResult => {
-            // TODO: Any other validation?
             dispatch(receiptChangeTitle(e.objectId, e.formatter(e.newValueRaw)));
             return new ValidationResult(true);
         },

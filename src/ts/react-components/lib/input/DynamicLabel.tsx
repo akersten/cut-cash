@@ -27,6 +27,7 @@ export class DynamicLabelProps<typeOfRawValue> {
 
     public iconClassName?: string;
     public onValueChange?: IDynamicLabelValueChangeEvent<typeOfRawValue>;
+    public maxLength?: number;
 }
 
 export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelProps<typeOfRawValue>, any> {
@@ -343,6 +344,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                     id={"dynamicLabelInput_" + this.props.elementId}
 
                     className="input"
+                    maxLength={this.props.maxLength ? this.props.maxLength : -1}
                     type={DynamicLabelHelpers.mapTypeToInputTypeAttr(this.props.inputType)}
 
                     onKeyDown={e => {

@@ -27,14 +27,15 @@ export class ReceiptHeaderComponent extends React.Component<ReceiptHeaderProps, 
         receiptTitleLabelProps.inputType = DynamicLabelType.TEXT;
         receiptTitleLabelProps.ghostText = "Receipt title?";
         receiptTitleLabelProps.value = this.props.title;
+        receiptTitleLabelProps.maxLength = 40;
         receiptTitleLabelProps.onValueChange = this.props.onReceiptTitleChange;
         let receiptTitleLabel: any = React.createElement(DynamicLabel, receiptTitleLabelProps);
 
         return (
             <header className="card-header">
-                <p className="card-header-title">
+                <div className="card-header-title">
                     {receiptTitleLabel}
-                </p>
+                </div>
 
                 <a className="card-header-icon" onClick={e => this.props.onReceiptDeleteClick(e, this.props.id)}>
                     <button className="delete"> </button>

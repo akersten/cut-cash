@@ -15,6 +15,7 @@ export class PartiesControls extends React.Component<PartiesControlsProps, any> 
                 <div className="control has-icons-left">
 
                     <input className="input" type="text" placeholder="Add person"
+                           maxLength={40}
                            onKeyPress={this.props.onKeyPress}/>
                     <span className="icon is-left">
                         <i className="fa fa-user"> </i>

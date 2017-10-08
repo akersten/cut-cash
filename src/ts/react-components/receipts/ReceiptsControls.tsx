@@ -24,6 +24,7 @@ export class ReceiptsControls extends React.Component<ReceiptsControlsProps, any
             <div className="column is-one-third">
                 <div className="control has-icons-left">
                     <input className="input" type="text" placeholder="Create receipt"
+                           maxLength={40}
                            onKeyPress={this.props.onKeyPress}/>
                     <span className="icon is-left">
                         <i className="fa fa-list-alt"> </i>

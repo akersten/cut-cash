@@ -31,6 +31,8 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         super(props);
     }
 
+    //#region Selectors
+
     /**
      * The label element.
      * @return {JQuery<TElement>} The jQuery element.
@@ -55,6 +57,10 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         return $("#dynamicLabelInput_" + this.props.elementId);
     }
 
+    //#endregion
+
+    //#region Local state mutators
+
     /**
      * Switch the control to edit mode and focus the input field.
      */
@@ -68,7 +74,6 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         this.$input().val(this.props.value);
         this.$label().hide();
         this.$input().focus();
-        this.$input().select();
     }
 
     /**
@@ -80,6 +85,10 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         this.$inputContainer().hide();
         this.$label().show();
     }
+
+    //#endregion
+
+    //#region Saving and validation
 
     /**
      * Save any changes that have been made in edit mode. Assume that the DL input field currently has the value we
@@ -149,17 +158,24 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
     /**
      * Mark the field as having a validation error.
+     *
+     * A braver person than I would make this part of the React state and have it automatically appear in the DOM, but
+     * it seems way too specific to this control to have it exist in global state like that.
      */
     private raiseValidationError(): void {
-
+        //TODO: Display validation error
     }
 
     /**
      * Clear the validation error from the field.
      */
     private clearValidationError(): void {
-
+        //TODO: Clear the existing validation error
     }
+
+    //#endregion
+
+    //#region Event listeners
 
     /**
      * Click event for a DL when it's in read mode. Switches to edit mode.
@@ -227,14 +243,45 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         }
     }
 
+    //#endregion
 
-    render() {
+    //#region React generators and helpers
 
-        let inputComponent = null;
-        let labelComponent = null;
+    /**
+     * Generates the read-only portion of the control.
+     */
+    private generateLabelComponent() {
+        let ret = null;
+        let extraLabelContent = null;
+        let labelInnerText = null;
+        let labelInnerClasses = "";
 
+        if (this.props.value == null || this.props.value === "") {
+            labelInnerText = this.props.ghostText;
+            labelInnerClasses = "has-text-grey";
+        } else {
+            labelInnerText = this.props.value;
+        }
+
+        ret =
+            <span>
+                    <span className="icon">
+                        <i className={"fa " + this.props.iconClassName}> </i>
+                    </span>
+                    <span className={labelInnerClasses}>{labelInnerText}</span>
+                {extraLabelContent}
+                </span>;
+
+        return ret;
+    }
+
+    /**
+     * Generates the input portion of the control.
+     */
+    private generateInputComponent() {
+        let ret = null;
         if (this.props.inputType !== DynamicLabelType.SELECT) {
-            inputComponent =
+            ret =
 
                 <input
                     id={"dynamicLabelInput_" + this.props.elementId}
@@ -259,7 +306,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                 return <option key={val}>{val}</option>
             });
 
-            inputComponent =
+            ret =
                 <div className="select">
                     <select
                         id={"dynamicLabelInput_" + this.props.elementId}
@@ -278,24 +325,12 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                 </div>
         }
 
+        return ret;
+    }
 
-        let labelInnerText = null;
-        let labelInnerClasses = "";
-
-        if (this.props.value == null || this.props.value === "") {
-            labelInnerText = this.props.ghostText;
-            labelInnerClasses = "has-text-grey";
-        } else {
-            labelInnerText = this.props.value;
-        }
-
-        labelComponent =
-                <span>
-                    <span className="icon">
-                        <i className={"fa " + this.props.iconClassName}> </i>
-                    </span>
-                    <span className={labelInnerClasses}>{labelInnerText}</span>
-                </span>;
+    render() {
+        let labelComponent = this.generateLabelComponent();
+        let inputComponent = this.generateInputComponent();
 
         return (
             <div>
@@ -329,4 +364,6 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
             </div>
         );
     }
+
+    //#endregion
 }

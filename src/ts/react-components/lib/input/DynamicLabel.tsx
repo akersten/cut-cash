@@ -60,6 +60,22 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         return $("#dynamicLabelInput_" + this.props.elementId);
     }
 
+    /**
+     * The warning icon element for a validation warning.
+     * @return {JQuery<TElement>} The jQuery element.
+     */
+    private $validationWarningIcons() {
+        return this.$inputContainer().find(".cw-dynamicLabel-validation-icon-warning");
+    }
+
+    /**
+     * The help text element for a validation warning.
+     * @return {JQuery<IElement>} The jQuery element.
+     */
+    private $validationWarningHelp() {
+        return this.$inputContainer().parent().find(".cw-dynamicLabel-validation-help-warning");
+    }
+
     //#endregion
 
     //#region Local state mutators
@@ -95,6 +111,8 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
      * Called when the user action is to update the value from edit mode. We'll do validation and try to save the input.
      */
     private attemptSaveAndSwitchToLabelMode(): void {
+        this.clearValidationErrors();
+
         let saveChangesValidationResult: ValidationResult = this.saveChanges();
 
         if (saveChangesValidationResult.isValid()) {
@@ -200,14 +218,20 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
      * it seems way too specific to this control to have it exist in global state like that.
      */
     private raiseValidationError(validationResult: ValidationResult): void {
-        //TODO: Display validation error
+        this.$validationWarningHelp().show();
+        this.$validationWarningHelp().text(validationResult.getMessage());
+        this.$validationWarningIcons().show();
+        this.$input().addClass("is-danger");
     }
 
     /**
      * Clear the validation error from the field.
      */
     private clearValidationErrors(): void {
-        //TODO: Clear the existing validation error
+        this.$validationWarningHelp().hide();
+        this.$validationWarningHelp().text("");
+        this.$validationWarningIcons().hide();
+        this.$input().removeClass("is-danger");
     }
 
     //#endregion
@@ -363,6 +387,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         let inputComponent = this.generateInputComponent();
 
         let inputIconContent = null;
+        let inputValidationIconContent = null;
         let inputClasses = "control";
 
         if (this.props.iconClassName) {
@@ -372,6 +397,12 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                 </span>;
             inputClasses += " has-icons-left";
         }
+
+        inputValidationIconContent =
+            <span className="icon is-right cw-dynamicLabel-validation-icon-warning" style={{display: "none"}}>
+                <i className="fa fa-warning"> </i>
+            </span>;
+        inputClasses += " has-icons-right";
 
         return (
             <div className="cw-dynamicLabelContainer">
@@ -398,7 +429,9 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                 >
                     {inputComponent}
                     {inputIconContent}
+                    {inputValidationIconContent}
                 </div>
+                <p className="help is-danger cw-dynamicLabel-validation-help-warning" style={{display: "none"}}> </p>
             </div>
         );
     }

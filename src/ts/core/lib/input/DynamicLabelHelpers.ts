@@ -88,7 +88,17 @@ export class DynamicLabelHelpers {
      */
     private static validateGenericNumber<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
         //TODO: Validate
-         return new ValidationResult(true);
+        let testVal = <string><any> newValue;
+
+        if (testVal.length === 0) {
+            return new ValidationResult(true);
+        }
+
+        if (!/^-{0,1}\d+$/.test(testVal)) {
+            return new ValidationResult(false, "Not a valid number.");
+        }
+
+        return new ValidationResult(true);
     }
 
     /**

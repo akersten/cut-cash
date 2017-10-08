@@ -8,6 +8,7 @@
  */
 import {RegExHelpers} from "../util/RegExHelpers";
 import {LocaleHelpers} from "../util/LocaleHelpers";
+import {ParseHelpers} from "../util/ParseHelpers";
 export const enum DynamicLabelType {
     TEXT,
     NUMBER,
@@ -85,49 +86,34 @@ export class DynamicLabelHelpers {
     /**
      * Validate a number being input into a DynamicLabel. Check things like whether this is actually a number.
      *
-     * @param   newValue The value trying to be set.
-     * @return {boolean} Whether this is an acceptable value for this type of DL.
+     * @param            newValue The value trying to be set.
+     * @return {ValidationResult} Whether this is an acceptable value for this type of DL.
      */
     private static validateGenericNumber<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
-        //TODO: Allow commas in user input?
-        let testVal = <string><any> newValue;
-
-        if (testVal.length === 0) {
-            return new ValidationResult(true);
-        }
-
-        let numberRegEx = new RegExp("^-?\\d+(" + RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()) + "\\d+)?$");
-        if (!numberRegEx.test(testVal)) {
-            return new ValidationResult(false, "Not a valid number.");
-        }
+        //TODO: I don't think there's any additional validation for numbers we need to do?
 
         return new ValidationResult(true);
     }
 
     /**
-     * Validate a date being input into a DynamicLabel. Make sure this can actually be parsed when we go to format the
-     * date.
+     * Validate that a raw date value is a valid date value.
      *
-     * @param   newValue The value trying to be set.
-     * @return {boolean} Whether this is an acceptable value for this type of DL.
+     * @param            newValue The value trying to be set.
+     * @return {ValidationResult} Whether this is an acceptable value for this type of DL.
      */
     private static validateGenericDate<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
         // TODO: Validate
         return new ValidationResult(true);
     }
 
+    /**
+     * Validate that a raw currency value is a valid currency value.
+     *
+     * @param            newValue The value trying to be set.
+     * @return {ValidationResult} Whether this is an acceptable value for this type of DL.
+     */
     private static validateGenericCurrency<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
-        // TODO: Allow commas in user input?
-        let testVal = <string><any> newValue;
-
-        if (testVal.length === 0) {
-            return new ValidationResult(true);
-        }
-
-        let currencyRegEx = new RegExp("^-?\\s*" + RegExHelpers.escape(LocaleHelpers.getCurrencySymbol()) + "?\\s*\\d+(" + RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()) + "\\d{" + LocaleHelpers.getCurrencyDecimalPlaces() + "})?$");
-        if (!currencyRegEx.test(testVal)) {
-            return new ValidationResult(false, "Not a valid currency amount.");
-        }
+        // TODO: I don't think there's any additional validation for currency?
 
         return new ValidationResult(true);
     }
@@ -151,6 +137,7 @@ export class DynamicLabelHelpers {
                 // TODO: format
                 return <string><any>rawValue;
             case DynamicLabelType.SELECT:
+                // No special formatting for a select option.
                 return <string><any>rawValue;
             case DynamicLabelType.CURRENCY:
                 // TODO: format
@@ -174,19 +161,21 @@ export class DynamicLabelHelpers {
             case DynamicLabelType.NUMBER:
                 // TODO: Parse out commas (if we wind up allowing them) and convert the decimal separator
 
-                return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
+                return ParseHelpers.parseNumber<typeOfRawValue>(value);
             case DynamicLabelType.DATE:
-                // There are lots of ways to represent a date. Try to put it in the standard format given by the Date
-                // object..
-                // TODO: unformat
+                // There are lots of ways to represent a date.
+                // TODO: Should we just parse to unix time, and then we can format etc from there?
+
                 return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
             case DynamicLabelType.CURRENCY:
                 // TODO: Parse out commas (if we wind up allowing them) and convert the decimal separator, remove spaces, remove symbol, ensure we have the right number of decimal places
-                return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
+                return ParseHelpers.parseCurrency<typeOfRawValue>(value);
             default:
                 return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
         }
     }
+
+
 
     /**
      * Constructs a formatter object to be used by upstream validation functions after receiving a raw value that has
@@ -205,10 +194,12 @@ export class DynamicLabelHelpers {
 export class ParseResult<typeOfRawValue> {
     private success: boolean;
     private rawValue: typeOfRawValue;
+    private message: string;
 
-    constructor(success: boolean, rawValue: typeOfRawValue) {
+    constructor(success: boolean, rawValue: typeOfRawValue, message?: string) {
         this.success = success;
         this.rawValue = rawValue;
+        this.message = message;
     }
 
     /**
@@ -225,6 +216,14 @@ export class ParseResult<typeOfRawValue> {
         return this.rawValue;
     }
 
+    /**
+     * Return the validation message for the user to see.
+     *
+     * @return {string} The validation message for the user.
+     */
+    getMessage(): string {
+        return this.message;
+    }
 }
 
 export class ValidationResult {

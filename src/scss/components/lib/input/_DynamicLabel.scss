@@ -1,5 +1,10 @@
 
-.cw-dynamicLabel {
+/* The outer div containing the entire control. Should take the width of whatever element it's placed in by default. */
+.cw-dynamicLabelContainer {
+  width: 100%;
+}
+
+.cw-dynamicLabelLabel {
   .icon {
     vertical-align: text-bottom;
   }
@@ -7,6 +12,6 @@
   cursor: pointer;
 }
 
-.cw-dynamicLabel:hover {
+.cw-dynamicLabelLabel:hover {
   background-color: #eee;
 }

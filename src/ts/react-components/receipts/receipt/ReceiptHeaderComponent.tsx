@@ -24,7 +24,6 @@ export class ReceiptHeaderComponent extends React.Component<ReceiptHeaderProps, 
         let receiptTitleLabelProps: DynamicLabelProps<string> = new DynamicLabelProps<string>();
         receiptTitleLabelProps.elementId = this.props.id + "_title";
         receiptTitleLabelProps.objectId = this.props.id;
-        receiptTitleLabelProps.iconClassName = "";
         receiptTitleLabelProps.inputType = DynamicLabelType.TEXT;
         receiptTitleLabelProps.ghostText = "Receipt title?";
         receiptTitleLabelProps.value = this.props.title;

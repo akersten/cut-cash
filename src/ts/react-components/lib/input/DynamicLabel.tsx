@@ -22,7 +22,7 @@ export class DynamicLabelProps<typeOfRawValue> {
 
     public inputType: DynamicLabelType;
 
-    public iconClassName: string;
+    public iconClassName?: string;
     public onValueChange?: IDynamicLabelValueChangeEvent<typeOfRawValue>;
 }
 
@@ -255,6 +255,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         let ret = null;
         let extraLabelContent = null;
         let labelInnerText = null;
+        let labelIconContent = null;
         let labelInnerClasses = "";
 
         if (this.props.value == null || this.props.value === "") {
@@ -264,14 +265,19 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
             labelInnerText = this.props.value;
         }
 
+        if (this.props.iconClassName) {
+            labelIconContent =
+                <span className="icon">
+                        <i className={"fa " + this.props.iconClassName}> </i>
+                </span>;
+        }
+
         ret =
             <span>
-                    <span className="icon">
-                        <i className={"fa " + this.props.iconClassName}> </i>
-                    </span>
-                    <span className={labelInnerClasses}>{labelInnerText}</span>
+                {labelIconContent}
+                <span className={labelInnerClasses}>{labelInnerText}</span>
                 {extraLabelContent}
-                </span>;
+            </span>;
 
         return ret;
     }
@@ -333,12 +339,23 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         let labelComponent = this.generateLabelComponent();
         let inputComponent = this.generateInputComponent();
 
+        let inputIconContent = null;
+        let inputClasses = "control";
+
+        if (this.props.iconClassName) {
+            inputIconContent =
+                <span className="icon is-left">
+                    <i className={"fa " + this.props.iconClassName}> </i>
+                </span>;
+            inputClasses += " has-icons-left";
+        }
+
         return (
-            <div>
+            <div className="cw-dynamicLabelContainer">
                 <p
                     id={"dynamicLabelLabel_" + this.props.elementId}
 
-                    className="label cw-dynamicLabel"
+                    className="label cw-dynamicLabelLabel"
                     tabIndex={0}
 
                     onClick={e => {
@@ -353,14 +370,11 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                 <div
                     id={"dynamicLabelInputContainer_" + this.props.elementId}
 
-                    className="control has-icons-left"
+                    className={inputClasses}
                     style={{display: "none"}}
                 >
                     {inputComponent}
-                    <span
-                        className="icon is-left">
-                        <i className={"fa " + this.props.iconClassName}> </i>
-                    </span>
+                    {inputIconContent}
                 </div>
             </div>
         );

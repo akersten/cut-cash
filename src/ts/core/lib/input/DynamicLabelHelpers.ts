@@ -6,6 +6,8 @@
 /**
  * The types of input that a DynamicLabel can support.
  */
+import {RegExHelpers} from "../util/RegExHelpers";
+import {LocaleHelpers} from "../util/LocaleHelpers";
 export const enum DynamicLabelType {
     TEXT,
     NUMBER,
@@ -87,14 +89,15 @@ export class DynamicLabelHelpers {
      * @return {boolean} Whether this is an acceptable value for this type of DL.
      */
     private static validateGenericNumber<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
-        //TODO: Validate
+        //TODO: Allow commas in user input?
         let testVal = <string><any> newValue;
 
         if (testVal.length === 0) {
             return new ValidationResult(true);
         }
 
-        if (!/^-{0,1}\d+$/.test(testVal)) {
+        let numberRegEx = new RegExp("^-?\\d+(" + RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()) + "\\d+)?$");
+        if (!numberRegEx.test(testVal)) {
             return new ValidationResult(false, "Not a valid number.");
         }
 
@@ -114,7 +117,18 @@ export class DynamicLabelHelpers {
     }
 
     private static validateGenericCurrency<typeOfRawValue>(newValue: typeOfRawValue): ValidationResult {
-        // TODO: Validate
+        // TODO: Allow commas in user input?
+        let testVal = <string><any> newValue;
+
+        if (testVal.length === 0) {
+            return new ValidationResult(true);
+        }
+
+        let currencyRegEx = new RegExp("^-?\\s*" + RegExHelpers.escape(LocaleHelpers.getCurrencySymbol()) + "?\\s*\\d+(" + RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()) + "\\d{" + LocaleHelpers.getCurrencyDecimalPlaces() + "})?$");
+        if (!currencyRegEx.test(testVal)) {
+            return new ValidationResult(false, "Not a valid currency amount.");
+        }
+
         return new ValidationResult(true);
     }
 
@@ -158,7 +172,7 @@ export class DynamicLabelHelpers {
     public static parse<typeOfRawValue>(value: string, type: DynamicLabelType): ParseResult<typeOfRawValue> {
         switch (type) {
             case DynamicLabelType.NUMBER:
-                // TODO: Parse out commas
+                // TODO: Parse out commas (if we wind up allowing them) and convert the decimal separator
 
                 return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
             case DynamicLabelType.DATE:
@@ -167,7 +181,7 @@ export class DynamicLabelHelpers {
                 // TODO: unformat
                 return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
             case DynamicLabelType.CURRENCY:
-                // TODO: Parse
+                // TODO: Parse out commas (if we wind up allowing them) and convert the decimal separator, remove spaces, remove symbol, ensure we have the right number of decimal places
                 return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);
             default:
                 return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>value);

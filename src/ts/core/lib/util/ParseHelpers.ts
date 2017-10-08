@@ -7,35 +7,35 @@ import {LocaleHelpers} from "./LocaleHelpers";
 export class ParseHelpers {
 
     public static parseNumber<typeOfRawValue>(userInput: string): ParseResult<typeOfRawValue> {
-        // TODO: Allow commas in user input? If we do, we'll need to take them out here.
-
-        userInput = userInput + ""; // JS decides this is a number at some point, so force it to a string.
-
-        if (userInput.length === 0) {
+        if (userInput === null || userInput.length === 0) {
             return new ParseResult(true, null);
         }
 
-        let numberRegEx = new RegExp("^-?\\d+(" + RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()) + "\\d+)?$");
+        userInput = userInput + ""; // JS decides this is a number at some point, so force it to a string.
+
+        let numberRegEx: RegExp = new RegExp("^-?(\\d|" + RegExHelpers.escape(LocaleHelpers.getGroupSeparator()) + ")+(" + RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()) + "\\d+)?$");
         if (!numberRegEx.test(userInput)) {
             return new ParseResult(false, null, "Not a valid number.");
         }
 
+        let replaceRegEx = new RegExp(RegExHelpers.escape(LocaleHelpers.getGroupSeparator()), "g");
+        userInput = userInput.replace(replaceRegEx, "");
+
         // Convert decimal separator to period
-        let replaceRegEx = new RegExp(RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()), "g");
+        replaceRegEx = new RegExp(RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()), "g");
         userInput = userInput.replace(replaceRegEx, ".");
 
         return new ParseResult<typeOfRawValue>(true, <typeOfRawValue><any>parseFloat(userInput));
     }
 
     public static parseCurrency<typeOfRawValue>(userInput: string): ParseResult<typeOfRawValue> {
-        // TODO: Allow commas in user input? If we do, we'll need to take them out here.
-        if (userInput.length === 0) {
+        if (userInput === null || userInput.length === 0) {
             return new ParseResult(true, null);
         }
 
         userInput = userInput + ""; // JS decides this is a number at some point, so force it to a string.
 
-        let currencyRegEx = new RegExp("^-?\\s*" + RegExHelpers.escape(LocaleHelpers.getCurrencySymbol()) + "?\\s*\\d+(" + RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()) + "\\d{" + LocaleHelpers.getCurrencyDecimalPlaces() + "})?\\s*" + RegExHelpers.escape(LocaleHelpers.getCurrencySymbol()) + "?$");
+        let currencyRegEx = new RegExp("^-?\\s*" + RegExHelpers.escape(LocaleHelpers.getCurrencySymbol()) + "?\\s*(\\d|" + RegExHelpers.escape(LocaleHelpers.getGroupSeparator()) + ")+(" + RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()) + "\\d{" + LocaleHelpers.getCurrencyDecimalPlaces() + "})?\\s*" + RegExHelpers.escape(LocaleHelpers.getCurrencySymbol()) + "?$");
         if (!currencyRegEx.test(userInput)) {
             return new ParseResult(false, null, "Not a valid currency amount.");
         }
@@ -44,10 +44,12 @@ export class ParseHelpers {
         let replaceRegEx = new RegExp(RegExHelpers.escape(LocaleHelpers.getCurrencySymbol()), "g");
         userInput = userInput.replace(replaceRegEx, "");
 
+        replaceRegEx = new RegExp(RegExHelpers.escape(LocaleHelpers.getGroupSeparator()), "g");
+        userInput = userInput.replace(replaceRegEx, "");
+
         // Convert decimal separator to period
         replaceRegEx = new RegExp(RegExHelpers.escape(LocaleHelpers.getDecimalSeparator()), "g");
         userInput = userInput.replace(replaceRegEx, ".");
-
 
         // We don't want to store currency as float. We'll store an integer amount of the lowest denomination (e.g.
         // cents). Piece out the whole value, shift by the # of decimal places expected, and then add the fractional

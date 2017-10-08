@@ -158,7 +158,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         let newValueParseResult: ParseResult<typeOfRawValue> = DynamicLabelHelpers.parse<typeOfRawValue>(userInput, this.props.inputType);
 
         if (!newValueParseResult.wasSuccessful()) {
-            return new ValidationResult(false, "Invalid input.");
+            return new ValidationResult(false, newValueParseResult.getMessage());
         }
 
         let newValueRaw: typeOfRawValue = newValueParseResult.getRawValue();

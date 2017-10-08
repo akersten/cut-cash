@@ -9,6 +9,7 @@
 import {RegExHelpers} from "../util/RegExHelpers";
 import {LocaleHelpers} from "../util/LocaleHelpers";
 import {ParseHelpers} from "../util/ParseHelpers";
+import {FormatHelpers} from "../util/FormatHelpers";
 export const enum DynamicLabelType {
     TEXT,
     NUMBER,
@@ -129,19 +130,17 @@ export class DynamicLabelHelpers {
     public static format<typeOfRawValue>(rawValue: typeOfRawValue, type: DynamicLabelType): string {
         switch (type) {
             case DynamicLabelType.TEXT:
+                // No special formatting for text.
                 return <string><any>rawValue;
             case DynamicLabelType.NUMBER:
-                return <string><any>rawValue;
+                return FormatHelpers.formatNumber(<string><any>rawValue);
             case DynamicLabelType.DATE:
-                // Given a date object,
-                // TODO: format
-                return <string><any>rawValue;
+                return FormatHelpers.formatDate(<string><any>rawValue);
             case DynamicLabelType.SELECT:
                 // No special formatting for a select option.
                 return <string><any>rawValue;
             case DynamicLabelType.CURRENCY:
-                // TODO: format
-                return <string><any>rawValue;
+                return FormatHelpers.formatCurrency(<string><any>rawValue);
             default:
                 return <string><any>rawValue;
         }

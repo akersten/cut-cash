@@ -126,10 +126,9 @@ export class DynamicLabelHelpers {
      *
      * @param   rawValue The raw value of this type.
      * @param       type The type of DL.
-     * @param selectList The list of selection input options to map the raw value to the title in the list.
      * @return  {string} A formatted version of the raw value.
      */
-    public static format<typeOfRawValue>(rawValue: typeOfRawValue, type: DynamicLabelType, selectList?: DynamicLabelSelectionListItem[]): string {
+    public static format<typeOfRawValue>(rawValue: typeOfRawValue, type: DynamicLabelType): string {
         switch (type) {
             case DynamicLabelType.TEXT:
                 // No special formatting for text.
@@ -139,18 +138,8 @@ export class DynamicLabelHelpers {
             case DynamicLabelType.DATE:
                 return FormatHelpers.formatDate(<string><any>rawValue);
             case DynamicLabelType.SELECT:
-                let filtered: DynamicLabelSelectionListItem[];
-
-                filtered = selectList.filter((listItem: DynamicLabelSelectionListItem): boolean => {
-                   if (listItem.getKey() === <string><any>rawValue) {
-                       return true;
-                   }
-                });
-
-                // Should have only one result...
-                if (filtered.length > 0) {
-                    return filtered[0].getTitle();
-                }
+                // Shouldn't be using the formatter for this. We have the value and the title in the DL already - the
+                // select options should be driven off of an object list.
                 return "";
             case DynamicLabelType.CURRENCY:
                 return FormatHelpers.formatCurrency(<string><any>rawValue);
@@ -193,12 +182,11 @@ export class DynamicLabelHelpers {
      * been validated generically. This formatter will be used to generate the value for display.
      *
      * @param                         type The type of the DL to format.
-     * @param                   selectList The list of options in a selection dropdown, to map the raw value (ID) to the title.
      * @return {(rawValue:string)=>string} A function that maps the raw value to a formatted value.
      */
-    public static getFormatter(type: DynamicLabelType, selectList?: DynamicLabelSelectionListItem[]): (string) => string {
+    public static getFormatter(type: DynamicLabelType): (string) => string {
         return (rawValue: string) => {
-            return this.format(rawValue, type, selectList);
+            return this.format(rawValue, type);
         }
     }
 }

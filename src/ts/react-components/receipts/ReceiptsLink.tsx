@@ -7,6 +7,7 @@ import {
     receiptDelete
 } from "../../redux-actions/receiptActions";
 import {ValidationResult} from "../../core/lib/input/DynamicLabelHelpers";
+import {Party} from "../../core/party/party";
 
 /**
  * Created by akersten on 6/4/17.
@@ -54,15 +55,13 @@ const mapDispatchToProps = (dispatch) => {
         },
 
         onReceiptDateChange: (e: IDynamicLabelValueChangeEventArgs<Date>): ValidationResult => {
-            // TODO: Parse and change date
+            // TODO: Parse and change date (that should be in the parsing code).
 
             return new ValidationResult(true);
         },
 
-        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs<string>): ValidationResult => {
-            // TODO: Validation?
-
-            dispatch(receiptChangePayer(e.objectId, e.formatter(e.newValueRaw)));
+        onReceiptPayerChange: (e: IDynamicLabelValueChangeEventArgs<Party>): ValidationResult => {
+            dispatch(receiptChangePayer(e.objectId, e.newValueRaw));
             return new ValidationResult(true);
         },
 
@@ -71,7 +70,6 @@ const mapDispatchToProps = (dispatch) => {
                 return new ValidationResult(false, "Amount cannot be negative.");
             }
 
-            // TODO: Validation?
             dispatch(receiptChangeTotal(e.objectId, e.newValueRaw, e.formatter(e.newValueRaw)));
             return new ValidationResult(true);
         },

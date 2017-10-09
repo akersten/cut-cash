@@ -193,7 +193,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                 objectId: this.props.objectId,
                 newValueRaw,
                 oldValueRaw,
-                formatter: DynamicLabelHelpers.getFormatter(this.props.inputType, this.props.selectValues)
+                formatter: DynamicLabelHelpers.getFormatter(this.props.inputType)
             }
         );
 

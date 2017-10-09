@@ -17,7 +17,7 @@ class ReceiptProps {
     public date: string;
     public lines: ReceiptLine[];
     public id: string;
-    public payer: string;
+    public payer: Party;
     public total: string;
     public parties: Party[];
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;

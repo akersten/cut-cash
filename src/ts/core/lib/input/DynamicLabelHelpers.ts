@@ -10,6 +10,7 @@ import {RegExHelpers} from "../util/RegExHelpers";
 import {LocaleHelpers} from "../util/LocaleHelpers";
 import {ParseHelpers} from "../util/ParseHelpers";
 import {FormatHelpers} from "../util/FormatHelpers";
+
 export const enum DynamicLabelType {
     TEXT,
     NUMBER,
@@ -123,11 +124,12 @@ export class DynamicLabelHelpers {
     /**
      * Format a raw value for display. This will not check if the value is already formatted.
      *
-     * @param  rawValue The raw value of this type.
-     * @param      type The type of DL.
-     * @return {string} A formatted version of the raw value.
+     * @param   rawValue The raw value of this type.
+     * @param       type The type of DL.
+     * @param selectList The list of selection input options to map the raw value to the title in the list.
+     * @return  {string} A formatted version of the raw value.
      */
-    public static format<typeOfRawValue>(rawValue: typeOfRawValue, type: DynamicLabelType): string {
+    public static format<typeOfRawValue>(rawValue: typeOfRawValue, type: DynamicLabelType, selectList?: DynamicLabelSelectionListItem[]): string {
         switch (type) {
             case DynamicLabelType.TEXT:
                 // No special formatting for text.
@@ -137,8 +139,19 @@ export class DynamicLabelHelpers {
             case DynamicLabelType.DATE:
                 return FormatHelpers.formatDate(<string><any>rawValue);
             case DynamicLabelType.SELECT:
-                // No special formatting for a select option.
-                return <string><any>rawValue;
+                let filtered: DynamicLabelSelectionListItem[];
+
+                filtered = selectList.filter((listItem: DynamicLabelSelectionListItem): boolean => {
+                   if (listItem.getKey() === <string><any>rawValue) {
+                       return true;
+                   }
+                });
+
+                // Should have only one result...
+                if (filtered.length > 0) {
+                    return filtered[0].getTitle();
+                }
+                return "";
             case DynamicLabelType.CURRENCY:
                 return FormatHelpers.formatCurrency(<string><any>rawValue);
             default:
@@ -175,17 +188,17 @@ export class DynamicLabelHelpers {
     }
 
 
-
     /**
      * Constructs a formatter object to be used by upstream validation functions after receiving a raw value that has
      * been validated generically. This formatter will be used to generate the value for display.
      *
-     * @param type
-     * @return {(rawValue:string)=>string}
+     * @param                         type The type of the DL to format.
+     * @param                   selectList The list of options in a selection dropdown, to map the raw value (ID) to the title.
+     * @return {(rawValue:string)=>string} A function that maps the raw value to a formatted value.
      */
-    public static getFormatter(type: DynamicLabelType): (string) => string {
+    public static getFormatter(type: DynamicLabelType, selectList?: DynamicLabelSelectionListItem[]): (string) => string {
         return (rawValue: string) => {
-            return this.format(rawValue, type);
+            return this.format(rawValue, type, selectList);
         }
     }
 }
@@ -251,5 +264,27 @@ export class ValidationResult {
      */
     getMessage(): string {
         return this.message;
+    }
+}
+
+/**
+ * Represents an item in a DynamicLabel selection list, so we have something unique to key it off of. The key should be
+ * the object ID from the state, that we can use to reference the specific object.
+ */
+export class DynamicLabelSelectionListItem {
+    private key: string;
+    private title: string;
+
+    constructor(key: string, title: string) {
+        this.key = key;
+        this.title = title;
+    }
+
+    getKey(): string {
+        return this.key;
+    }
+
+    getTitle(): string {
+        return this.title;
     }
 }

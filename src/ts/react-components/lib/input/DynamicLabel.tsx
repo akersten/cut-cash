@@ -1,6 +1,6 @@
 import * as React from "react";
 import {
-    DynamicLabelHelpers, DynamicLabelType, ParseResult,
+    DynamicLabelHelpers, DynamicLabelSelectionListItem, DynamicLabelType, ParseResult,
     ValidationResult
 } from "../../../core/lib/input/DynamicLabelHelpers";
 
@@ -19,8 +19,11 @@ export interface IDynamicLabelValueChangeEvent<typeOfRawValue> {
 export class DynamicLabelProps<typeOfRawValue> {
     public elementId: string;
     public objectId: string;
-    public value: string;
-    public selectValues?: string[];
+
+    public value: string;           // The formatted value to display.
+    public selectListValue?: string; // For a select list, the key that we have selected.
+
+    public selectValues?: DynamicLabelSelectionListItem[];
     public ghostText: string;
 
     public inputType: DynamicLabelType;
@@ -91,7 +94,13 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         }
 
         this.$inputContainer().show();
-        this.$input().val(this.props.value);
+
+        if (this.props.inputType === DynamicLabelType.SELECT) {
+            this.$input().val(this.props.selectListValue);
+        } else {
+            this.$input().val(this.props.value);
+        }
+
         this.$label().hide();
         this.$input().focus();
         this.$input().select(); // Default-highlight the input so it's easy to change without having to click again.
@@ -137,8 +146,15 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
      *                            should raise a validation error.
      */
     private saveChanges(): ValidationResult {
-        let userInput: string = this.$input().val() as string;
-        if (userInput === null) {
+        let userInput: string = null;
+
+        if (this.props.inputType === DynamicLabelType.SELECT) {
+            userInput = this.$input().find(":selected").val() as string;
+        } else {
+            userInput = this.$input().val() as string;
+        }
+
+        if (typeof userInput === "undefined" || userInput === null) {
             return new ValidationResult(true); // Just silently eat this... Likely case for selecting nothing on a dropdown.
         }
 
@@ -177,7 +193,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
                 objectId: this.props.objectId,
                 newValueRaw,
                 oldValueRaw,
-                formatter: DynamicLabelHelpers.getFormatter(this.props.inputType)
+                formatter: DynamicLabelHelpers.getFormatter(this.props.inputType, this.props.selectValues)
             }
         );
 
@@ -357,11 +373,8 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
 
         } else {
-            // TODO: should really key these off of something unique.. Like create a wrapping object and pass the
-            // object ID too.
-
-            let selectComponents = this.props.selectValues.map((val: string): any => {
-                return <option key={val}>{val}</option>
+            let selectComponents = this.props.selectValues.map((val: DynamicLabelSelectionListItem): any => {
+                return <option key={val.getKey()} value={val.getKey()}>{val.getTitle()}</option>
             });
 
             ret =

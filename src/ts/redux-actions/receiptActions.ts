@@ -1,3 +1,4 @@
+import {Party} from "../core/party/party";
 /**
  * Created by akersten on 5/27/17.
  */
@@ -32,7 +33,7 @@ export interface IDeleteReceiptAction extends IReceiptAction {
 
 export interface ISetPayerAction extends IReceiptAction {
     receiptId: string,
-    payer: string,
+    payer: Party,
 }
 
 export interface ISetTotalAction extends IReceiptAction {
@@ -54,7 +55,7 @@ export function receiptDelete(id: string): IDeleteReceiptAction {
     return {type: ReceiptActionType.DELETE_RECEIPT, id};
 }
 
-export function receiptChangePayer(receiptId: string, payer: string): ISetPayerAction {
+export function receiptChangePayer(receiptId: string, payer: Party): ISetPayerAction {
     return {type: ReceiptActionType.SET_PAYER, receiptId, payer};
 }
 

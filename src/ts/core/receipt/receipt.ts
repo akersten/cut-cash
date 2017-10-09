@@ -6,7 +6,7 @@ import {Party} from "../party/party";
 export class Receipt {
     public id: string;
     public title: string;
-    public payer: string;
+    public payer: Party;
     public total: number; // Currency amount in cents.
     public date: Date;
     public lines: ReceiptLine[];

@@ -12,3 +12,4 @@
 -- account for carveouts
 
 - better overall style/formatting
+- different font size and colors

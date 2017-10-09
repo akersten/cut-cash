@@ -4,13 +4,13 @@
 
 import * as React from "react";
 import {DynamicLabel, DynamicLabelProps, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
-import {DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
+import {DynamicLabelSelectionListItem, DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 import {Party} from "../../../core/party/party";
 
 class ReceiptInfoProps {
     public receiptId: string;
     public date: string;
-    public payer: string;
+    public payer: Party;
     public parties: Party[];
     public total: string;
 
@@ -25,9 +25,9 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
     }
 
     render() {
-        let partyNames: string[] = this.props.parties.map(
-            (party: Party): string => {
-                return party.name;
+        let partyNames: DynamicLabelSelectionListItem[] = this.props.parties.map(
+            (party: Party): DynamicLabelSelectionListItem => {
+                return new DynamicLabelSelectionListItem(party.id, party.name);
             }
         );
 
@@ -48,7 +48,8 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
         payerLabelProps.inputType = DynamicLabelType.SELECT;
         payerLabelProps.ghostText = "Who paid?";
         payerLabelProps.selectValues = partyNames;
-        payerLabelProps.value = this.props.payer;
+        payerLabelProps.value = this.props.payer.name;
+        payerLabelProps.selectListValue = this.props.payer.id;
         payerLabelProps.onValueChange = this.props.onReceiptPayerChange;
         let payerLabel: any = React.createElement(DynamicLabel, payerLabelProps);
 

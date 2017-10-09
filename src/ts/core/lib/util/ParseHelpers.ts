@@ -61,6 +61,8 @@ export class ParseHelpers {
             wholeValue *= parseInt("" + Math.pow(10, LocaleHelpers.getCurrencyDecimalPlaces()));
             wholeValue = parseInt("" + wholeValue); // In case there is any precision error from the multiplication.
 
+            // TODO/BUG: If the user enters -0.xx we'll drop the negative, the way this is implemented now.
+
             let fractionalValue: number = parseInt(userInput.substr(userInput.indexOf(LocaleHelpers.getDecimalSeparator()) + 1, LocaleHelpers.getCurrencyDecimalPlaces()));
             numberOfCents = wholeValue + fractionalValue;
         } else {

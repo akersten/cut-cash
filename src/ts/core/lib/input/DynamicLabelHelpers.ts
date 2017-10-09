@@ -254,25 +254,3 @@ export class ValidationResult {
         return this.message;
     }
 }
-
-/**
- * Represents an item in a DynamicLabel selection list, so we have something unique to key it off of. The key should be
- * the object ID from the state, that we can use to reference the specific object.
- */
-export class DynamicLabelSelectionListItem {
-    private key: string;
-    private title: string;
-
-    constructor(key: string, title: string) {
-        this.key = key;
-        this.title = title;
-    }
-
-    getKey(): string {
-        return this.key;
-    }
-
-    getTitle(): string {
-        return this.title;
-    }
-}

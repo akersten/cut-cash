@@ -4,7 +4,7 @@
 
 import * as React from "react";
 import {DynamicLabel, DynamicLabelProps, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
-import {DynamicLabelSelectionListItem, DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
+import {DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 import {Party} from "../../../core/party/party";
 
 class ReceiptInfoProps {
@@ -15,7 +15,7 @@ class ReceiptInfoProps {
     public total: string;
 
     onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
-    onReceiptPayerChange: IDynamicLabelValueChangeEvent<string>;
+    onReceiptPayerChange: IDynamicLabelValueChangeEvent<Party>;
     onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
 }
 
@@ -25,12 +25,6 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
     }
 
     render() {
-        let partyNames: DynamicLabelSelectionListItem[] = this.props.parties.map(
-            (party: Party): DynamicLabelSelectionListItem => {
-                return new DynamicLabelSelectionListItem(party.id, party.name);
-            }
-        );
-
         let amountLabelProps: DynamicLabelProps<number> = new DynamicLabelProps<number>();
         amountLabelProps.elementId = this.props.receiptId + "_total";
         amountLabelProps.objectId = this.props.receiptId;
@@ -41,15 +35,14 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
         amountLabelProps.onValueChange = this.props.onReceiptTotalChange;
         let amountLabel: any = React.createElement(DynamicLabel, amountLabelProps);
 
-        let payerLabelProps: DynamicLabelProps<string> = new DynamicLabelProps<string>();
+        let payerLabelProps: DynamicLabelProps<Party> = new DynamicLabelProps<Party>();
         payerLabelProps.elementId = this.props.receiptId + "_payer";
         payerLabelProps.objectId = this.props.receiptId;
         payerLabelProps.iconClassName = "fa-user";
         payerLabelProps.inputType = DynamicLabelType.SELECT;
         payerLabelProps.ghostText = "Who paid?";
-        payerLabelProps.selectValues = partyNames;
-        payerLabelProps.value = this.props.payer.name;
-        payerLabelProps.selectListValue = this.props.payer.id;
+        payerLabelProps.selectValues = this.props.parties;
+        payerLabelProps.valueObject = this.props.payer;
         payerLabelProps.onValueChange = this.props.onReceiptPayerChange;
         let payerLabel: any = React.createElement(DynamicLabel, payerLabelProps);
 

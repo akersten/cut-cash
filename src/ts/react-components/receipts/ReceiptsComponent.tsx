@@ -20,7 +20,7 @@ class ReceiptsProps {
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
     public onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
-    public onReceiptPayerChange: IDynamicLabelValueChangeEvent<string>;
+    public onReceiptPayerChange: IDynamicLabelValueChangeEvent<Party>;
     public onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
     public onReceiptTitleChange: IDynamicLabelValueChangeEvent<string>;
 }

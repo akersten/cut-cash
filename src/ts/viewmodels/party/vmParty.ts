@@ -1,7 +1,8 @@
 import {Party} from "../../core/party/party";
 import {Color} from "../../core/lib/color";
+import {IDynamicLabelListSelectable} from "../../react-components/lib/input/IDynamicLabelListSelectable";
 
-export class VmParty extends Party {
+export class VmParty extends Party implements IDynamicLabelListSelectable{
 
     public excludedReceipts: string[];
 

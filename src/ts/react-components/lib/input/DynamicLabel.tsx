@@ -1,8 +1,9 @@
 import * as React from "react";
 import {
-    DynamicLabelHelpers, DynamicLabelSelectionListItem, DynamicLabelType, ParseResult,
+    DynamicLabelHelpers, DynamicLabelType, ParseResult,
     ValidationResult
 } from "../../../core/lib/input/DynamicLabelHelpers";
+import {IDynamicLabelListSelectable} from "./IDynamicLabelListSelectable";
 
 
 export interface IDynamicLabelValueChangeEventArgs<typeOfRawValue> {
@@ -20,10 +21,11 @@ export class DynamicLabelProps<typeOfRawValue> {
     public elementId: string;
     public objectId: string;
 
-    public value: string;           // The formatted value to display.
-    public selectListValue?: string; // For a select list, the key that we have selected.
+    public value: string;                                // The formatted value to display, in non-select mode.
 
-    public selectValues?: DynamicLabelSelectionListItem[];
+    public valueObject: IDynamicLabelListSelectable;     // A selected item from the selectValues list, in select mode.
+    public selectValues?: IDynamicLabelListSelectable[]; // The options for selection in select mode.
+
     public ghostText: string;
 
     public inputType: DynamicLabelType;
@@ -96,7 +98,11 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         this.$inputContainer().show();
 
         if (this.props.inputType === DynamicLabelType.SELECT) {
-            this.$input().val(this.props.selectListValue);
+            if (this.props.valueObject && this.props.valueObject.getId()) {
+                this.$input().val(this.props.valueObject.getId());
+            } else {
+                this.$input().val("");
+            }
         } else {
             this.$input().val(this.props.value);
         }
@@ -160,7 +166,16 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
         userInput = userInput.trim(); // There's really no convincing use case for leading or trailing spaces.
 
-        let oldValueFormatted: string = this.props.value;
+        let oldValueFormatted: string = null;
+
+        if (this.props.inputType === DynamicLabelType.SELECT) {
+            if (this.props.valueObject) {
+                oldValueFormatted = this.props.valueObject.getName();
+            }
+        } else {
+            oldValueFormatted = this.props.value;
+        }
+
         let oldValueParseResult: ParseResult<typeOfRawValue> = DynamicLabelHelpers.parse<typeOfRawValue>(oldValueFormatted, this.props.inputType);
 
         if (!oldValueParseResult.wasSuccessful()) {
@@ -184,6 +199,22 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
         if (!validateChangeResult.isValid()) {
             return validateChangeResult;
+        }
+
+
+        if (this.props.inputType === DynamicLabelType.SELECT) {
+            // Map newValueRaw (which was previously the key) to the actual object.
+            let selection: IDynamicLabelListSelectable[] = this.props.selectValues.filter(
+                (item: IDynamicLabelListSelectable): boolean => {
+                    return item.getId() === newValueRaw as any as string;
+                }
+            );
+
+            if (selection.length > 0) {
+                newValueRaw = selection[0] as any as typeOfRawValue;
+            } else {
+                newValueRaw = null;
+            }
         }
 
         // Raise event up the chain so the host can do additional validation and save the change. Might still be invalid
@@ -216,8 +247,9 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
      *                            False otherwise, with a corresponding message..
      */
     private validateChange(newValue: typeOfRawValue): ValidationResult {
-        let oldValue: string = this.props.value;
-
+        if (this.props.inputType === DynamicLabelType.SELECT) {
+            return new ValidationResult(true);
+        }
 
         let genericValidationResult: ValidationResult = DynamicLabelHelpers.validateGenericValue(newValue, this.props.inputType);
 
@@ -324,12 +356,22 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         let labelIconContent = null;
         let labelInnerClasses = "";
 
-        if (this.props.value == null || this.props.value === "") {
-            labelInnerText = this.props.ghostText;
-            labelInnerClasses = "has-text-grey";
+        if (this.props.inputType === DynamicLabelType.SELECT) {
+            if (this.props.valueObject && this.props.valueObject.getName()) {
+                labelInnerText = this.props.valueObject.getName();
+            } else {
+                labelInnerText = this.props.ghostText;
+                labelInnerClasses = "has-text-grey";
+            }
         } else {
-            labelInnerText = this.props.value;
+            if (this.props.value == null || this.props.value === "") {
+                labelInnerText = this.props.ghostText;
+                labelInnerClasses = "has-text-grey";
+            } else {
+                labelInnerText = this.props.value;
+            }
         }
+
 
         if (this.props.iconClassName) {
             labelIconContent =
@@ -373,8 +415,8 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
 
         } else {
-            let selectComponents = this.props.selectValues.map((val: DynamicLabelSelectionListItem): any => {
-                return <option key={val.getKey()} value={val.getKey()}>{val.getTitle()}</option>
+            let selectComponents = this.props.selectValues.map((val: IDynamicLabelListSelectable): any => {
+                return <option key={val.getId()} value={val.getId()}>{val.getName()}</option>
             });
 
             ret =

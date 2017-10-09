@@ -1,9 +1,8 @@
-- unique keying
 - Verify date control is working on all platforms (it's not defaulting in value on android)
 -- Formatter and parser
 
 - Adding carveouts
-- on delete of payer, remove from corresponding receipts (and carveouts)
+-- on delete of payer, remove from corresponding receipts (and carveouts)
 
 - footer with the math in it
 

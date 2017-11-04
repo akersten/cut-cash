@@ -41,9 +41,16 @@ const mapDispatchToProps = (dispatch) => {
                     dispatch(deleteParty(partyId));
                 }
             );
+        },
+
+        getPartyContribution: (partyId: string): number => {
+            return 2;
+        },
+
+        getPartyValueReceived: (partyId: string): number => {
+            return 4;
         }
     }
 };
-
 
 export const PartiesLink = connect(mapStateToProps, mapDispatchToProps)(PartiesComponent);

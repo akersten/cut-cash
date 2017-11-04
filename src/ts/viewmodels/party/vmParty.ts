@@ -6,9 +6,6 @@ export class VmParty extends Party implements IDynamicLabelListSelectable{
 
     public excludedReceipts: string[];
 
-    public contributions: number;
-    public valueReceived: number;
-
     constructor(id: string, name: string, color?: Color) {
         super(id, name, color);
         this.excludedReceipts = [];

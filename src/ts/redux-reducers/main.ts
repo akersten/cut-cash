@@ -10,3 +10,4 @@ export const mainReducer = combineReducers({
     receipts: receiptReducer,
     parties: partyReducer,
 });
+

@@ -10,6 +10,8 @@ class PartiesProps {
     public parties: Array<VmParty>;
     public onKeyPress: (event) => void;
     public onPartyDeleteClick: (e, partyId: string) => void;
+    public getPartyContribution: (partyId: string) => number;
+    public getPartyValueReceived: (partyId: string) => number;
 }
 
 export class PartiesComponent extends React.Component<PartiesProps, any> {
@@ -25,8 +27,8 @@ export class PartiesComponent extends React.Component<PartiesProps, any> {
                 name={party.name}
                 color={party.color}
                 initials={party.initials}
-                contributions={FormatHelpers.formatCurrency(party.contributions as any as string)}
-                valueReceived={FormatHelpers.formatCurrency(party.valueReceived as any as string)}
+                contributions={FormatHelpers.formatCurrency(this.props.getPartyContribution(party.id) as any as string)}
+                valueReceived={FormatHelpers.formatCurrency(this.props.getPartyValueReceived(party.id) as any as string)}
                 onPartyDeleteClick={this.props.onPartyDeleteClick}
 
             />);

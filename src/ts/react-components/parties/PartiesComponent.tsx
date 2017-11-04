@@ -2,9 +2,12 @@ import * as React from "react";
 import {Party} from "../../core/party/party";
 import {PartyComponent} from "./party/PartyComponent";
 import {PartiesControls} from "./PartiesControls";
+import {VmParty} from "../../viewmodels/party/vmParty";
+import {ParseHelpers} from "../../core/lib/util/ParseHelpers";
+import {FormatHelpers} from "../../core/lib/util/FormatHelpers";
 
 class PartiesProps {
-    public parties: Array<Party>;
+    public parties: Array<VmParty>;
     public onKeyPress: (event) => void;
     public onPartyDeleteClick: (e, partyId: string) => void;
 }
@@ -22,6 +25,8 @@ export class PartiesComponent extends React.Component<PartiesProps, any> {
                 name={party.name}
                 color={party.color}
                 initials={party.initials}
+                contributions={FormatHelpers.formatCurrency(party.contributions as any as string)}
+                valueReceived={FormatHelpers.formatCurrency(party.valueReceived as any as string)}
                 onPartyDeleteClick={this.props.onPartyDeleteClick}
 
             />);

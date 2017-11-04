@@ -49,8 +49,8 @@ export class FormatHelpers {
      * @return {string} The formatted value.
      */
     public static formatCurrency(rawValue: string): string {
-        if (rawValue === null || rawValue.length === 0) {
-            return "";
+        if (rawValue == null || rawValue.length === 0) {
+            return "—";
         }
 
         let divisor: number = Math.pow(10, LocaleHelpers.getCurrencyDecimalPlaces());

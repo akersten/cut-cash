@@ -23,12 +23,4 @@ export class Party {
             }
         }
     }
-
-    getName(): string {
-        return this.name;
-    }
-
-    getId(): string {
-        return this.id;
-    }
 }

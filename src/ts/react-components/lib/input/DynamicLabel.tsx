@@ -98,8 +98,8 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         this.$inputContainer().show();
 
         if (this.props.inputType === DynamicLabelType.SELECT) {
-            if (this.props.valueObject && this.props.valueObject.getId()) {
-                this.$input().val(this.props.valueObject.getId());
+            if (this.props.valueObject && this.props.valueObject.id) {
+                this.$input().val(this.props.valueObject.id);
             } else {
                 this.$input().val("");
             }
@@ -170,7 +170,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
         if (this.props.inputType === DynamicLabelType.SELECT) {
             if (this.props.valueObject) {
-                oldValueFormatted = this.props.valueObject.getName();
+                oldValueFormatted = this.props.valueObject.name;
             }
         } else {
             oldValueFormatted = this.props.value;
@@ -206,7 +206,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
             // Map newValueRaw (which was previously the key) to the actual object.
             let selection: IDynamicLabelListSelectable[] = this.props.selectValues.filter(
                 (item: IDynamicLabelListSelectable): boolean => {
-                    return item.getId() === newValueRaw as any as string;
+                    return item.id === newValueRaw as any as string;
                 }
             );
 
@@ -357,8 +357,8 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
         let labelInnerClasses = "";
 
         if (this.props.inputType === DynamicLabelType.SELECT) {
-            if (this.props.valueObject && this.props.valueObject.getName()) {
-                labelInnerText = this.props.valueObject.getName();
+            if (this.props.valueObject && this.props.valueObject.name) {
+                labelInnerText = this.props.valueObject.name;
             } else {
                 labelInnerText = this.props.ghostText;
                 labelInnerClasses = "has-text-grey";
@@ -416,7 +416,7 @@ export class DynamicLabel<typeOfRawValue> extends React.Component<DynamicLabelPr
 
         } else {
             let selectComponents = this.props.selectValues.map((val: IDynamicLabelListSelectable): any => {
-                return <option key={val.getId()} value={val.getId()}>{val.getName()}</option>
+                return <option key={val.id} value={val.id}>{val.name}</option>
             });
 
             ret =

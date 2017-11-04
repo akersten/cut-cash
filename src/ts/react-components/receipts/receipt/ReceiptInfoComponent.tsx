@@ -6,16 +6,17 @@ import * as React from "react";
 import {DynamicLabel, DynamicLabelProps, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
 import {DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
 import {Party} from "../../../core/party/party";
+import {VmParty} from "../../../viewmodels/party/vmParty";
 
 class ReceiptInfoProps {
     public receiptId: string;
     public date: string;
-    public payer: Party;
-    public parties: Party[];
+    public payer: VmParty;
+    public parties: VmParty[];
     public total: string;
 
     onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
-    onReceiptPayerChange: IDynamicLabelValueChangeEvent<Party>;
+    onReceiptPayerChange: IDynamicLabelValueChangeEvent<VmParty>;
     onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
 }
 
@@ -35,7 +36,7 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
         amountLabelProps.onValueChange = this.props.onReceiptTotalChange;
         let amountLabel: any = React.createElement(DynamicLabel, amountLabelProps);
 
-        let payerLabelProps: DynamicLabelProps<Party> = new DynamicLabelProps<Party>();
+        let payerLabelProps: DynamicLabelProps<VmParty> = new DynamicLabelProps<VmParty>();
         payerLabelProps.elementId = this.props.receiptId + "_payer";
         payerLabelProps.objectId = this.props.receiptId;
         payerLabelProps.iconClassName = "fa-user";

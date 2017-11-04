@@ -7,6 +7,6 @@
  * identify itself with an ID and also have a display name.
  */
 export interface IDynamicLabelListSelectable {
-    getName(): string;
-    getId(): string;
+    name: string;
+    id: string;
 }

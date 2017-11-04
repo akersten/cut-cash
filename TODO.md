@@ -1,7 +1,5 @@
 - footer with the math in it
 
-- deselecting payers isn't working
-
 - Verify date control is working on all platforms (it's not defaulting in value on android)
 -- Formatter and parser
 

@@ -11,19 +11,20 @@ import {Party} from "../../../core/party/party";
 import {ReceiptPartiesComponent} from "./ReceiptPartiesComponent";
 import {ReceiptInfoComponent} from "./ReceiptInfoComponent";
 import {IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
+import {VmParty} from "../../../viewmodels/party/vmParty";
 
 class ReceiptProps {
     public title: string;
     public date: string;
     public lines: ReceiptLine[];
     public id: string;
-    public payer: Party;
+    public payer: VmParty;
     public total: string;
-    public parties: Party[];
+    public parties: VmParty[];
     public onReceiptPartyChange: (e, receiptId: string, partyId: string) => void;
     public onReceiptDeleteClick: (e, id: string) => void;
     public onReceiptDateChange: IDynamicLabelValueChangeEvent<Date>;
-    public onReceiptPayerChange: IDynamicLabelValueChangeEvent<Party>;
+    public onReceiptPayerChange: IDynamicLabelValueChangeEvent<VmParty>;
     public onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
     public onReceiptTitleChange: IDynamicLabelValueChangeEvent<string>;
 }

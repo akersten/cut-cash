@@ -120,7 +120,6 @@ export class DynamicLabelHelpers {
         return new ValidationResult(true);
     }
 
-
     /**
      * Format a raw value for display. This will not check if the value is already formatted.
      *

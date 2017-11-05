@@ -6,6 +6,7 @@ import {Party} from "../core/party/party";
 
 // TODO: Better way of doing this so we have unique IDs?
 let nextReceiptId = 0;
+let nextReceiptLineId = 0;
 
 export const enum ReceiptActionType {
     CREATE_RECEIPT = 1000,
@@ -22,37 +23,38 @@ export const enum ReceiptActionType {
 
 
 export interface IReceiptAction {
-    type: ReceiptActionType,
+    type: ReceiptActionType;
 }
 
 export interface ICreateReceiptAction extends IReceiptAction {
-    id: string,
-    title: string,
-    date: Date,
+    id: string;
+    title: string;
+    date: Date;
 }
 
 export interface IDeleteReceiptAction extends IReceiptAction {
-    id: string,
+    id: string;
 }
 
 export interface ISetPayerAction extends IReceiptAction {
-    receiptId: string,
-    payer: Party,
+    receiptId: string;
+    payer: Party;
 }
 
 export interface ISetTotalAction extends IReceiptAction {
-    receiptId: string,
-    totalRaw: number,
-    totalFormatted: string,
+    receiptId: string;
+    totalRaw: number;
+    totalFormatted: string;
 }
 
 export interface ISetTitleAction extends IReceiptAction {
-    receiptId: string,
-    title: string,
+    receiptId: string;
+    title: string;
 }
 
 export interface ICreateCarveoutAction extends IReceiptAction {
-    receiptId: string,
+    receiptId: string;
+    rowId: string;
 }
 
 export interface ISetCarveoutTitleAction extends IReceiptAction {
@@ -92,7 +94,7 @@ export function receiptChangeTitle(receiptId: string, title: string): ISetTitleA
 }
 
 export function receiptCreateCarveout(receiptId: string): ICreateCarveoutAction {
-    return {type: ReceiptActionType.CREATE_CARVEOUT, receiptId};
+    return {type: ReceiptActionType.CREATE_CARVEOUT, receiptId, rowId: "RL_" + receiptId + "_" + nextReceiptLineId++};
 }
 
 export function receiptSetCarveoutTitle(rowId: string, title: string): ISetCarveoutTitleAction {

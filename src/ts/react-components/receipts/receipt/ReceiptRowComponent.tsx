@@ -5,21 +5,25 @@
 import * as React from "react";
 import {DynamicLabel, DynamicLabelProps, IDynamicLabelValueChangeEvent} from "../../lib/input/DynamicLabel";
 import {DynamicLabelHelpers, DynamicLabelType} from "../../../core/lib/input/DynamicLabelHelpers";
+import {VmParty} from "../../../viewmodels/party/vmParty";
+import {ReceiptPartiesLineComponent} from "./ReceiptPartiesLineComponent";
 
 class ReceiptRowProps {
     public id: string;
     public receiptId: string;
     public title: string;
     public amount: string;
+    public parties: Array<VmParty>;
 
     public onRowDelete: (e, receiptId: string, rowId: string) => void;
     public onRowTitleChange: IDynamicLabelValueChangeEvent<string>;
     public onRowAmountChange: IDynamicLabelValueChangeEvent<number>;
+    public onReceiptPartyLineChange: (e, rowId: string, partyId: string) => void;
 }
 
 export class ReceiptRowComponent extends React.Component<ReceiptRowProps, any> {
 
-    constructor(props:ReceiptRowProps) {
+    constructor(props: ReceiptRowProps) {
         super(props);
     }
 
@@ -44,15 +48,28 @@ export class ReceiptRowComponent extends React.Component<ReceiptRowProps, any> {
         receiptRowAmountProps.onValueChange = this.props.onRowAmountChange;
         let receiptRowAmountLabel: any = React.createElement(DynamicLabel, receiptRowAmountProps);
 
+
+        // Note that below we're re-using receiptId to store the rowId in ReceiptPartiesLineComponent. This is ok.
         return (
             <li>
-                {receiptRowTitleLabel}
-                {receiptRowAmountLabel}
-                <a className="is-pulled-right" onClick={e => this.props.onRowDelete(e, this.props.receiptId, this.props.id)}>x</a>
-                <ul>
-                    <li>Alex</li>
-                    <li>Wendy</li>
-                </ul>
+                <div className="columns is-mobile">
+                    <div className="column">
+                        {receiptRowTitleLabel}
+                    </div>
+                    <div className="column">
+                        {receiptRowAmountLabel}
+                    </div>
+                    <div className="column is-narrow">
+                        <a className="delete is-small"
+                           onClick={e => this.props.onRowDelete(e, this.props.receiptId, this.props.id)}> </a>
+                    </div>
+                </div>
+
+                <ReceiptPartiesLineComponent
+                        receiptId={this.props.id}
+                        parties={this.props.parties}
+                        onReceiptPartyLineChange={this.props.onReceiptPartyLineChange}
+                />
             </li>
         );
     }

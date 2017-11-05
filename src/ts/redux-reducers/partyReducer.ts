@@ -5,7 +5,7 @@
 import {Party} from "../core/party/party";
 import {
     ICreatePartyAction, IPartyAction, ITogglePartyOnReceiptAction,
-    PartyActionType, IDeletePartyAction
+    PartyActionType, IDeletePartyAction, ITogglePartyOnReceiptLineAction
 } from "../redux-actions/partyActions";
 import {VmParty} from "../viewmodels/party/vmParty";
 
@@ -57,6 +57,37 @@ export function partyReducer(state: Array<VmParty> = [], action: IPartyAction): 
             return state.filter((party: VmParty) : boolean => {
                 return party.id !== actDP.id;
             });
+
+        case PartyActionType.TOGGLE_PARTY_ON_RECEIPT_LINE:
+            let actTPRL = <ITogglePartyOnReceiptLineAction> action;
+
+              return state.map(
+                (party: VmParty): VmParty => {
+                    if (party.id === actTPRL.partyId) {
+                        if (actTPRL.checked) {
+                            // Remove this party from the list.
+                            let newList = party.excludedReceiptLines.filter(
+                                (rowId: string): boolean => {
+                                    return rowId !== actTPRL.rowId;
+                                }
+                            );
+
+                            return <VmParty> Object.assign({}, party, <VmParty> {
+                                excludedReceiptLines: newList
+                            });
+                        } else {
+                            // Add party to excluded list.
+                            return <VmParty> Object.assign({}, party, <VmParty> {
+                               excludedReceiptLines: [
+                                   ...party.excludedReceiptLines,
+                                   actTPRL.rowId
+                               ]
+                            });
+                        }
+                    }
+                    return party;
+                }
+            );
 
 
         default:

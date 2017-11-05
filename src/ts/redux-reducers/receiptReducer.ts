@@ -87,7 +87,7 @@ export function receiptReducer(state: Array<VmReceipt> = [], action: IReceiptAct
                         return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
                             lines: [
                                 ...receipt.lines,
-                                new ReceiptLine("RL_" + receipt.id + "_" + receipt.lines.length)
+                                new ReceiptLine(actCC.rowId)
                             ]
                         });
                     }

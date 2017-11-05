@@ -8,7 +8,8 @@ let nextPartyId = 0;
 export const enum PartyActionType {
     CREATE_PARTY=1100,
     TOGGLE_PARTY_ON_RECEIPT,
-    DELETE_PARTY
+    DELETE_PARTY,
+    TOGGLE_PARTY_ON_RECEIPT_LINE,
 }
 
 
@@ -28,6 +29,13 @@ export interface ITogglePartyOnReceiptAction extends IPartyAction {
     checked: boolean
 }
 
+export interface ITogglePartyOnReceiptLineAction extends IPartyAction {
+    rowId: string,
+    partyId: string,
+    checked: boolean
+}
+
+
 export interface IDeletePartyAction extends IPartyAction {
     id: string,
 }
@@ -43,4 +51,8 @@ export function partyToggleOnReceipt(id: string, partyId: string, checked: boole
 
 export function deleteParty(id: string): IDeletePartyAction {
     return {type: PartyActionType.DELETE_PARTY, id};
+}
+
+export function partyToggleOnReceiptLine(rowId: string, partyId: string, checked: boolean): ITogglePartyOnReceiptLineAction {
+    return {type: PartyActionType.TOGGLE_PARTY_ON_RECEIPT_LINE, rowId, partyId, checked};
 }

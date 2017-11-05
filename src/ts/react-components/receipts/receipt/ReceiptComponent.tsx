@@ -31,6 +31,7 @@ class ReceiptProps {
     public onRowDelete: (e, receiptId: string, rowId: string) => void;
     public onRowTitleChange: IDynamicLabelValueChangeEvent<string>;
     public onRowAmountChange: IDynamicLabelValueChangeEvent<number>;
+    public onReceiptPartyLineChange: (e, rowId: string, partyId: string) => void;
 }
 
 export class ReceiptComponent extends React.Component<ReceiptProps, any> {
@@ -53,12 +54,15 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
                                               onReceiptPayerChange={this.props.onReceiptPayerChange}
                                               onReceiptTotalChange={this.props.onReceiptTotalChange}
                         />
+                        <ReceiptPartiesComponent parties={this.props.parties} receiptId={this.props.id}
+                                                 onReceiptPartyChange={this.props.onReceiptPartyChange}/>
                         <ReceiptBodyComponent lines={this.props.lines} onRowDelete={this.props.onRowDelete}
                             onRowTitleChange={this.props.onRowTitleChange} receiptId={this.props.id}
                                               onRowAmountChange={this.props.onRowAmountChange}
+                                              parties={this.props.parties}
+                                              onReceiptPartyLineChange={this.props.onReceiptPartyLineChange}
                         />
-                        <ReceiptPartiesComponent parties={this.props.parties} receiptId={this.props.id}
-                                                 onReceiptPartyChange={this.props.onReceiptPartyChange}/>
+
                     </div>
                     <ReceiptFooterComponent
                         receiptId={this.props.id}

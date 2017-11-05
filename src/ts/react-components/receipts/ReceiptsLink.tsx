@@ -1,6 +1,6 @@
 import {ReceiptsComponent} from "./ReceiptsComponent";
 import {connect} from "react-redux";
-import {partyToggleOnReceipt} from "../../redux-actions/partyActions";
+import {partyToggleOnReceipt, partyToggleOnReceiptLine} from "../../redux-actions/partyActions";
 import {IDynamicLabelValueChangeEventArgs} from "../lib/input/DynamicLabel";
 import {
     receiptChangePayer, receiptChangeTitle, receiptChangeTotal, receiptCreate, receiptCreateCarveout,
@@ -95,6 +95,10 @@ const mapDispatchToProps = (dispatch) => {
         onRowAmountChange: (e: IDynamicLabelValueChangeEventArgs<number>): ValidationResult => {
             dispatch(receiptSetCarveoutAmount(e.objectId, e.newValueRaw, e.formatter(e.newValueRaw)));
             return new ValidationResult(true);
+        },
+
+        onReceiptPartyLineChange: (e, rowId: string, partyId: string): void => {
+            dispatch(partyToggleOnReceiptLine(rowId, partyId, e.currentTarget.checked));
         },
     }
 };

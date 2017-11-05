@@ -59,9 +59,13 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
 
         // TODO: Add {dateLabel} below once it's working.
         return (
-            <div>
-                {amountLabel}
-                {payerLabel}
+            <div className="columns is-mobile">
+                <div className="column">
+                    {amountLabel}
+                </div>
+                <div className="column">
+                    {payerLabel}
+                </div>
             </div>
         );
     }

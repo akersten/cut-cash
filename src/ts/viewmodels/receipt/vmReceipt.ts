@@ -44,6 +44,37 @@ export class VmReceipt extends Receipt {
             return 0;
         }
 
-        return Math.round(receipt.total / splitWays); // Since we store as whole cents, we can easily round.
+        let totalForParty = receipt.total;
+
+        for (let ln of receipt.lines) {
+            totalForParty -= ln.amount;
+        }
+
+        totalForParty = Math.round(totalForParty/splitWays);
+
+        // Subtract any line items that this party didn't receive value from.
+        for (let ln of receipt.lines) {
+            // How many parties received value from this line?
+            let numPartiesForLine = 0;
+            for (let p of parties) {
+                if (p.excludedReceiptLines.indexOf(ln.id) > -1) {
+                    continue;
+                }
+                numPartiesForLine++;
+            }
+            if (numPartiesForLine === 0) {
+                continue;
+            }
+
+            if (party.excludedReceiptLines.indexOf(ln.id) > -1) {
+                // We didn't get value from ths line
+                continue;
+            }
+
+            totalForParty += Math.round(ln.amount / numPartiesForLine);
+
+        }
+
+        return totalForParty;
     }
 }

@@ -29,7 +29,7 @@ export class PartyComponent extends React.Component<PartyProps, any> {
                     <div className="media-content">
                         <p className="title">{this.props.name}</p>
                         <ul>
-                            <PartyContributionLineComponent text="Paid" amount={this.props.contributions} />
+                            <PartyContributionLineComponent text="Paid in" amount={this.props.contributions} />
                             <PartyContributionLineComponent text="Value received" amount={this.props.valueReceived} />
                         </ul>
                     </div>

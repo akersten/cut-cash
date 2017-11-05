@@ -13,7 +13,7 @@ class PartiesProps {
     public receipts: Array<VmReceipt>; // Used by party contribution calculation logic.
     public onPartyDeleteClick: (e, partyId: string) => void;
     public getPartyContribution: (receipts: Array<VmReceipt>, partyId: string) => number;
-    public getPartyValueReceived: (receipts: Array<VmReceipt>, partyId: string) => number;
+    public getPartyValueReceived: (receipts: Array<VmReceipt>, parties: Array<VmParty>, party: VmParty) => number;
 }
 
 export class PartiesComponent extends React.Component<PartiesProps, any> {
@@ -30,7 +30,7 @@ export class PartiesComponent extends React.Component<PartiesProps, any> {
                 color={party.color}
                 initials={party.initials}
                 contributions={FormatHelpers.formatCurrency(this.props.getPartyContribution(this.props.receipts, party.id) as any as string)}
-                valueReceived={FormatHelpers.formatCurrency(this.props.getPartyValueReceived(this.props.receipts, party.id) as any as string)}
+                valueReceived={FormatHelpers.formatCurrency(this.props.getPartyValueReceived(this.props.receipts, this.props.parties, party) as any as string)}
                 onPartyDeleteClick={this.props.onPartyDeleteClick}
 
             />);

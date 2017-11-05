@@ -2,6 +2,8 @@ import {connect} from "react-redux";
 import {createParty, deleteParty} from "../../redux-actions/partyActions";
 import {PartiesComponent} from "./PartiesComponent";
 import {VmReceipt} from "../../viewmodels/receipt/vmReceipt";
+import {VmParty} from "../../viewmodels/party/vmParty";
+import {receiptChangePayer} from "../../redux-actions/receiptActions";
 
 /**
  * Created by akersten on 6/4/17.
@@ -51,7 +53,7 @@ const mapDispatchToProps = (dispatch) => {
                 if (!receipt.payer) {
                     continue;
                 }
-                
+
                 if (receipt.payer.id === partyId) {
                     contribution += receipt.total;
                 }
@@ -60,8 +62,14 @@ const mapDispatchToProps = (dispatch) => {
             return contribution;
         },
 
-        getPartyValueReceived: (receipts: Array<VmReceipt>, partyId: string): number => {
-            return 4;
+        getPartyValueReceived: (receipts: Array<VmReceipt>, parties: Array<VmParty>, party: VmParty): number => {
+            let valueReceived: number = 0;
+
+            for (let receipt of receipts) {
+                valueReceived += VmReceipt.getReceivedValue(party, parties, receipt);
+            }
+
+            return valueReceived;
         }
     }
 };

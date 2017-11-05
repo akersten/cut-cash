@@ -37,9 +37,9 @@ export class ReceiptRowComponent extends React.Component<ReceiptRowProps, any> {
         let receiptRowAmountProps: DynamicLabelProps<number> = new DynamicLabelProps<number>();
         receiptRowAmountProps.elementId = this.props.id + "_amount";
         receiptRowAmountProps.objectId = this.props.id;
-        receiptRowAmountProps.inputType = DynamicLabelType.TEXT;
+        receiptRowAmountProps.inputType = DynamicLabelType.CURRENCY;
         receiptRowAmountProps.ghostText = "Line item";
-        receiptRowAmountProps.value = this.props.title;
+        receiptRowAmountProps.value = this.props.amount;
         receiptRowAmountProps.maxLength = 30;
         receiptRowAmountProps.onValueChange = this.props.onRowAmountChange;
         let receiptRowAmountLabel: any = React.createElement(DynamicLabel, receiptRowAmountProps);

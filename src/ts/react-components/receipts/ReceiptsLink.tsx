@@ -85,7 +85,12 @@ const mapDispatchToProps = (dispatch) => {
 
         onRowDelete: (e, rowId: string): void => {
             // TODO: Remove row. Probably want the receipt id so it's easier.
-        }
+        },
+
+        onRowTitleChange: (e: IDynamicLabelValueChangeEventArgs<string>): ValidationResult => {
+            // TODO: Title change event
+          return new ValidationResult(true);
+        },
     }
 };
 

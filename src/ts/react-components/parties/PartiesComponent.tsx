@@ -31,6 +31,9 @@ export class PartiesComponent extends React.Component<PartiesProps, any> {
                 initials={party.initials}
                 contributions={FormatHelpers.formatCurrency(this.props.getPartyContribution(this.props.receipts, party.id) as any as string)}
                 valueReceived={FormatHelpers.formatCurrency(this.props.getPartyValueReceived(this.props.receipts, this.props.parties, party) as any as string)}
+                owes={this.props.getPartyContribution(this.props.receipts, party.id) - this.props.getPartyValueReceived(this.props.receipts, this.props.parties, party) < 0}
+                delta={FormatHelpers.formatCurrency(Math.abs(this.props.getPartyContribution(this.props.receipts, party.id) - this.props.getPartyValueReceived(this.props.receipts, this.props.parties, party)) as any as string)}
+
                 onPartyDeleteClick={this.props.onPartyDeleteClick}
 
             />);

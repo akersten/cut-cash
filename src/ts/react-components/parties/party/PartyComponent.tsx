@@ -10,6 +10,8 @@ class PartyProps {
     public initials: string;
     public contributions?: string;
     public valueReceived?: string;
+    public delta?: string;
+    public owes?: boolean;
     public onPartyDeleteClick: (e, partyId: string) => void;
 }
 
@@ -29,8 +31,9 @@ export class PartyComponent extends React.Component<PartyProps, any> {
                     <div className="media-content">
                         <p className="title">{this.props.name}</p>
                         <ul>
-                            <PartyContributionLineComponent text="Paid in" amount={this.props.contributions} />
-                            <PartyContributionLineComponent text="Value received" amount={this.props.valueReceived} />
+                            <PartyContributionLineComponent text="Contributed" amount={this.props.contributions} />
+                            <PartyContributionLineComponent text="Received" amount={this.props.valueReceived} />
+                            <PartyContributionLineComponent text={this.props.owes ? "Owes" : "Owed"} amount={this.props.delta} classes={"has-text-weight-semibold " + (this.props.owes ? "has-text-info" : "has-text-black")} />
                         </ul>
                     </div>
                     <div className="media-right">

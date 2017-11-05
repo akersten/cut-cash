@@ -1,6 +1,7 @@
 import {connect} from "react-redux";
 import {createParty, deleteParty} from "../../redux-actions/partyActions";
 import {PartiesComponent} from "./PartiesComponent";
+import {VmReceipt} from "../../viewmodels/receipt/vmReceipt";
 
 /**
  * Created by akersten on 6/4/17.
@@ -43,11 +44,23 @@ const mapDispatchToProps = (dispatch) => {
             );
         },
 
-        getPartyContribution: (partyId: string): number => {
-            return 2;
+        getPartyContribution: (receipts: Array<VmReceipt>, partyId: string): number => {
+            let contribution: number = 0;
+
+            for (let receipt of receipts) {
+                if (!receipt.payer) {
+                    continue;
+                }
+                
+                if (receipt.payer.id === partyId) {
+                    contribution += receipt.total;
+                }
+            }
+
+            return contribution;
         },
 
-        getPartyValueReceived: (partyId: string): number => {
+        getPartyValueReceived: (receipts: Array<VmReceipt>, partyId: string): number => {
             return 4;
         }
     }

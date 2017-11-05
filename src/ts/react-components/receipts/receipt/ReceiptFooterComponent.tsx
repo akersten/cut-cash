@@ -4,16 +4,21 @@
 
 import * as React from "react";
 
-export class ReceiptFooterComponent extends React.Component<any, any> {
+class ReceiptFooterProps {
+    receiptId: string;
+    onCarveoutClick: (e, receiptId: string) => void;
+}
 
-    constructor(props: any) {
+export class ReceiptFooterComponent extends React.Component<ReceiptFooterProps, any> {
+
+    constructor(props: ReceiptFooterProps) {
         super(props);
     }
 
     render() {
         return (
             <footer className="card-footer">
-                <a className="card-footer-item" href="#">Add Carveou t</a>
+                <a className="card-footer-item" onClick={e => this.props.onCarveoutClick(e, this.props.receiptId)}>Add Line Item</a>
             </footer>
         );
     }

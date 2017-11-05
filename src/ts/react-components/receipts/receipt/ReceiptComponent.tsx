@@ -27,6 +27,8 @@ class ReceiptProps {
     public onReceiptPayerChange: IDynamicLabelValueChangeEvent<VmParty>;
     public onReceiptTotalChange: IDynamicLabelValueChangeEvent<number>;
     public onReceiptTitleChange: IDynamicLabelValueChangeEvent<string>;
+    public onCarveoutClick: (e, receiptId: string) => void;
+    public onRowDelete: (e, rowId: string) => void;
 }
 
 export class ReceiptComponent extends React.Component<ReceiptProps, any> {
@@ -49,11 +51,14 @@ export class ReceiptComponent extends React.Component<ReceiptProps, any> {
                                               onReceiptPayerChange={this.props.onReceiptPayerChange}
                                               onReceiptTotalChange={this.props.onReceiptTotalChange}
                         />
-                        <ReceiptBodyComponent lines={this.props.lines}/>
+                        <ReceiptBodyComponent lines={this.props.lines} onRowDelete={this.props.onRowDelete}/>
                         <ReceiptPartiesComponent parties={this.props.parties} receiptId={this.props.id}
                                                  onReceiptPartyChange={this.props.onReceiptPartyChange}/>
                     </div>
-                    <ReceiptFooterComponent/>
+                    <ReceiptFooterComponent
+                        receiptId={this.props.id}
+                        onCarveoutClick={this.props.onCarveoutClick}
+                    />
                 </div>
             </div>
         );

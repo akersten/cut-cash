@@ -14,6 +14,7 @@ export const enum ReceiptActionType {
     SET_TITLE,
     SET_PAYER,
     DELETE_RECEIPT,
+    CREATE_CARVEOUT,
 }
 
 
@@ -47,6 +48,10 @@ export interface ISetTitleAction extends IReceiptAction {
     title: string,
 }
 
+export interface ICreateCarveoutAction extends IReceiptAction {
+    receiptId: string,
+}
+
 export function receiptCreate(title: string): ICreateReceiptAction {
     return {type: ReceiptActionType.CREATE_RECEIPT, title, id: "CR_" + nextReceiptId++, date: new Date()};
 }
@@ -65,4 +70,8 @@ export function receiptChangeTotal(receiptId: string, totalRaw: number, totalFor
 
 export function receiptChangeTitle(receiptId: string, title: string): ISetTitleAction {
     return {type: ReceiptActionType.SET_TITLE, receiptId, title};
+}
+
+export function receiptCreateCarveout(receiptId: string): ICreateCarveoutAction {
+    return {type: ReceiptActionType.CREATE_CARVEOUT, receiptId};
 }

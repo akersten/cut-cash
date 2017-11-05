@@ -3,7 +3,7 @@ import {connect} from "react-redux";
 import {partyToggleOnReceipt} from "../../redux-actions/partyActions";
 import {IDynamicLabelValueChangeEventArgs} from "../lib/input/DynamicLabel";
 import {
-    receiptChangePayer, receiptChangeTitle, receiptChangeTotal, receiptCreate,
+    receiptChangePayer, receiptChangeTitle, receiptChangeTotal, receiptCreate, receiptCreateCarveout,
     receiptDelete
 } from "../../redux-actions/receiptActions";
 import {ValidationResult} from "../../core/lib/input/DynamicLabelHelpers";
@@ -78,6 +78,14 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(receiptChangeTitle(e.objectId, e.formatter(e.newValueRaw)));
             return new ValidationResult(true);
         },
+
+        onCarveoutClick: (e, receiptId: string): void => {
+            dispatch(receiptCreateCarveout(receiptId));
+        },
+
+        onRowDelete: (e, rowId: string): void => {
+            // TODO: Remove row. Probably want the receipt id so it's easier.
+        }
     }
 };
 

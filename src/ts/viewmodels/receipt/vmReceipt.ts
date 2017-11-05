@@ -47,14 +47,3 @@ export class VmReceipt extends Receipt {
         return Math.round(receipt.total / splitWays); // Since we store as whole cents, we can easily round.
     }
 }
-
-
-export class VmReceiptLine extends ReceiptLine {
-
-    public amountFormatted: string;
-
-    constructor(id: string) {
-        super(id);
-        this.amountFormatted = DynamicLabelHelpers.format(this.amount.toString(), DynamicLabelType.CURRENCY);
-    }
-}

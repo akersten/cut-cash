@@ -4,8 +4,9 @@
  * Reducer for a receipt object.
  */
 
-import {Receipt} from "../core/receipt/receipt";
+import {Receipt, ReceiptLine} from "../core/receipt/receipt";
 import {
+    ICreateCarveoutAction,
     ICreateReceiptAction, IDeleteReceiptAction, IReceiptAction, ISetPayerAction, ISetTitleAction, ISetTotalAction,
     ReceiptActionType
 } from "../redux-actions/receiptActions";
@@ -70,6 +71,24 @@ export function receiptReducer(state: Array<VmReceipt> = [], action: IReceiptAct
                             totalFormatted: actSTA.totalFormatted,
                         });
                     }
+                    return receipt;
+                }
+            );
+
+        case ReceiptActionType.CREATE_CARVEOUT:
+            let actCC = <ICreateCarveoutAction>action;
+
+            return <Array<VmReceipt>> state.map(
+                (receipt: VmReceipt): VmReceipt => {
+                    if (receipt.id === actCC.receiptId) {
+                        return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
+                            lines: [
+                                ...receipt.lines,
+                                new ReceiptLine("RL_" + receipt.id + "_" + receipt.lines.length)
+                            ]
+                        });
+                    }
+
                     return receipt;
                 }
             );

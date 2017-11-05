@@ -4,9 +4,12 @@
 
 import * as React from "react";
 import {ReceiptLine} from "../../../core/receipt/receipt";
+import {ReceiptRowComponent} from "./ReceiptRowComponent";
+import {FormatHelpers} from "../../../core/lib/util/FormatHelpers";
 
 class ReceiptBodyProps {
     public lines: ReceiptLine[];
+    public onRowDelete: (e, rowId: string) => void;
 }
 
 export class ReceiptBodyComponent extends React.Component<ReceiptBodyProps, any> {
@@ -16,7 +19,15 @@ export class ReceiptBodyComponent extends React.Component<ReceiptBodyProps, any>
     }
 
     render() {
-        let rows = this.props.lines.map(line => <li key={line.id} data-id={line.id}><a href="#">x</a> {line.title}</li>);
+        let rows = this.props.lines.map(line =>
+
+            <ReceiptRowComponent
+                id={line.id}
+                title={line.title}
+                amount={FormatHelpers.formatCurrency(line.amount as any as string)}
+                onRowDelete={this.props.onRowDelete}
+                />
+        );
 
         return (
             <div>

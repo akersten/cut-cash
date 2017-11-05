@@ -23,6 +23,7 @@ export class ReceiptBodyComponent extends React.Component<ReceiptBodyProps, any>
 
             <ReceiptRowComponent
                 id={line.id}
+                key={line.id}
                 title={line.title}
                 amount={FormatHelpers.formatCurrency(line.amount as any as string)}
                 onRowDelete={this.props.onRowDelete}

@@ -20,7 +20,7 @@ export class ReceiptRowComponent extends React.Component<ReceiptRowProps, any> {
 
     render() {
         return (
-            <li key={this.props.id}>
+            <li>
                 <span>{this.props.title}</span>
                 <a className="is-pulled-right">x</a>
             </li>

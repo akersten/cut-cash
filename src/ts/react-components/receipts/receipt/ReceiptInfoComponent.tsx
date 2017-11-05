@@ -57,13 +57,11 @@ export class ReceiptInfoComponent extends React.Component<ReceiptInfoProps, any>
         dateLabelProps.onValueChange = this.props.onReceiptDateChange;
         let dateLabel: any = React.createElement(DynamicLabel, dateLabelProps);
 
+        // TODO: Add {dateLabel} below once it's working.
         return (
-
-
             <div>
                 {amountLabel}
                 {payerLabel}
-                {dateLabel}
             </div>
         );
     }

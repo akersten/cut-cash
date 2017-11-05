@@ -25,6 +25,11 @@ export class VmReceipt extends Receipt {
             return 0;
         }
 
+        if (!receipt.payer) {
+            // No one got any value if no one paid.
+            return 0;
+        }
+
         let splitWays: number = 0;
         // See how many ways this receipt is split
         for (let p of parties) {

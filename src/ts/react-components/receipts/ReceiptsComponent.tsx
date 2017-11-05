@@ -26,7 +26,8 @@ class ReceiptsProps {
     public onReceiptTitleChange: IDynamicLabelValueChangeEvent<string>;
     public onRowTitleChange: IDynamicLabelValueChangeEvent<string>;
     public onCarveoutClick: (e) => void;
-    public onRowDelete: (e, rowId: string) => void;
+    public onRowDelete: (e, receiptsId: string, rowId: string) => void;
+    public onRowAmountChange: IDynamicLabelValueChangeEvent<number>;
 }
 
 export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
@@ -54,6 +55,7 @@ export class ReceiptsComponent extends React.Component<ReceiptsProps, any> {
                 onRowTitleChange={this.props.onRowTitleChange}
                 onCarveoutClick={this.props.onCarveoutClick}
                 onRowDelete={this.props.onRowDelete}
+                onRowAmountChange={this.props.onRowAmountChange}
             />);
 
         return (

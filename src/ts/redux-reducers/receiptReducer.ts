@@ -7,7 +7,10 @@
 import {Receipt, ReceiptLine} from "../core/receipt/receipt";
 import {
     ICreateCarveoutAction,
-    ICreateReceiptAction, IDeleteReceiptAction, IReceiptAction, ISetPayerAction, ISetTitleAction, ISetTotalAction,
+    ICreateReceiptAction, IDeleteCarveoutAction, IDeleteReceiptAction, IReceiptAction, ISetCarveoutAmountAction,
+    ISetCarveoutTitleAction,
+    ISetPayerAction,
+    ISetTitleAction, ISetTotalAction,
     ReceiptActionType
 } from "../redux-actions/receiptActions";
 import {VmReceipt} from "../viewmodels/receipt/vmReceipt";
@@ -92,6 +95,84 @@ export function receiptReducer(state: Array<VmReceipt> = [], action: IReceiptAct
                     return receipt;
                 }
             );
+
+        case ReceiptActionType.SET_CARVEOUT_AMOUNT:
+            let actSCA = <ISetCarveoutAmountAction>action;
+
+            return <Array<VmReceipt>> state.map(
+                (receipt: VmReceipt): VmReceipt => {
+                    // See if this receipt contains this line...
+                    for (let line of receipt.lines) {
+                        if (line.id === actSCA.rowId) {
+                            // This is the one.
+                            return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
+                                lines: receipt.lines.map(
+                                    (rl: ReceiptLine): ReceiptLine => {
+                                        if (rl.id === actSCA.rowId) {
+                                            return <ReceiptLine> Object.assign({}, rl, <ReceiptLine>{
+                                                amount: actSCA.amountRaw
+                                            });
+                                        }
+                                        return rl;
+                                    }
+                                )
+                            })
+                        }
+                    }
+
+                    return receipt;
+                }
+            );
+
+        case ReceiptActionType.SET_CARVEOUT_TITLE:
+
+            let actSCT = <ISetCarveoutTitleAction>action;
+
+            return <Array<VmReceipt>> state.map(
+                (receipt: VmReceipt): VmReceipt => {
+                    // See if this receipt contains this line...
+                    for (let line of receipt.lines) {
+                        if (line.id === actSCT.rowId) {
+                            // This is the one.
+                            return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
+                                lines: receipt.lines.map(
+                                    (rl: ReceiptLine): ReceiptLine => {
+                                        if (rl.id === actSCT.rowId) {
+                                            return <ReceiptLine> Object.assign({}, rl, <ReceiptLine>{
+                                                title: actSCT.title
+                                            });
+                                        }
+                                        return rl;
+                                    }
+                                )
+                            })
+                        }
+                    }
+
+                    return receipt;
+                }
+            );
+
+        case ReceiptActionType.DELETE_CARVEOUT:
+            let actDC = <IDeleteCarveoutAction>action;
+
+            return <Array<VmReceipt>> state.map(
+                (receipt: VmReceipt): VmReceipt => {
+                    if (receipt.id === actDC.receiptId) {
+                        // This is the one.
+                        return <VmReceipt> Object.assign({}, receipt, <VmReceipt> {
+                            lines: receipt.lines.filter(
+                                (rl: ReceiptLine): boolean => {
+                                    return rl.id !== actDC.rowId;
+                                }
+                            )
+                        })
+                    }
+
+                    return receipt;
+                }
+            );
+
         default:
             return state;
     }

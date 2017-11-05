@@ -8,11 +8,13 @@ import {DynamicLabelHelpers, DynamicLabelType} from "../../../core/lib/input/Dyn
 
 class ReceiptRowProps {
     public id: string;
+    public receiptId: string;
     public title: string;
     public amount: string;
 
-    public onRowDelete: (e, rowId: string) => void;
+    public onRowDelete: (e, receiptId: string, rowId: string) => void;
     public onRowTitleChange: IDynamicLabelValueChangeEvent<string>;
+    public onRowAmountChange: IDynamicLabelValueChangeEvent<number>;
 }
 
 export class ReceiptRowComponent extends React.Component<ReceiptRowProps, any> {
@@ -22,22 +24,35 @@ export class ReceiptRowComponent extends React.Component<ReceiptRowProps, any> {
     }
 
     render() {
-        let receiptRowProps: DynamicLabelProps<string> = new DynamicLabelProps<string>();
-        receiptRowProps.elementId = this.props.id + "_title";
-        receiptRowProps.objectId = this.props.id;
-        receiptRowProps.inputType = DynamicLabelType.TEXT;
-        receiptRowProps.ghostText = "Line item";
-        receiptRowProps.value = this.props.title;
-        receiptRowProps.maxLength = 30;
-        receiptRowProps.onValueChange = this.props.onRowTitleChange;
-        let receiptRowLabel: any = React.createElement(DynamicLabel, receiptRowProps);
+        let receiptRowTitleProps: DynamicLabelProps<string> = new DynamicLabelProps<string>();
+        receiptRowTitleProps.elementId = this.props.id + "_title";
+        receiptRowTitleProps.objectId = this.props.id;
+        receiptRowTitleProps.inputType = DynamicLabelType.TEXT;
+        receiptRowTitleProps.ghostText = "Line item";
+        receiptRowTitleProps.value = this.props.title;
+        receiptRowTitleProps.maxLength = 30;
+        receiptRowTitleProps.onValueChange = this.props.onRowTitleChange;
+        let receiptRowTitleLabel: any = React.createElement(DynamicLabel, receiptRowTitleProps);
 
-
+        let receiptRowAmountProps: DynamicLabelProps<number> = new DynamicLabelProps<number>();
+        receiptRowAmountProps.elementId = this.props.id + "_amount";
+        receiptRowAmountProps.objectId = this.props.id;
+        receiptRowAmountProps.inputType = DynamicLabelType.TEXT;
+        receiptRowAmountProps.ghostText = "Line item";
+        receiptRowAmountProps.value = this.props.title;
+        receiptRowAmountProps.maxLength = 30;
+        receiptRowAmountProps.onValueChange = this.props.onRowAmountChange;
+        let receiptRowAmountLabel: any = React.createElement(DynamicLabel, receiptRowAmountProps);
 
         return (
             <li>
-                {receiptRowLabel}
-                <a className="is-pulled-right">x</a>
+                {receiptRowTitleLabel}
+                {receiptRowAmountLabel}
+                <a className="is-pulled-right" onClick={e => this.props.onRowDelete(e, this.props.receiptId, this.props.id)}>x</a>
+                <ul>
+                    <li>Alex</li>
+                    <li>Wendy</li>
+                </ul>
             </li>
         );
     }

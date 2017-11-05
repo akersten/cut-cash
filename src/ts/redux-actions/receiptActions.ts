@@ -15,6 +15,9 @@ export const enum ReceiptActionType {
     SET_PAYER,
     DELETE_RECEIPT,
     CREATE_CARVEOUT,
+    SET_CARVEOUT_TITLE,
+    SET_CARVEOUT_AMOUNT,
+    DELETE_CARVEOUT,
 }
 
 
@@ -52,6 +55,22 @@ export interface ICreateCarveoutAction extends IReceiptAction {
     receiptId: string,
 }
 
+export interface ISetCarveoutTitleAction extends IReceiptAction {
+    rowId: string;
+    title: string;
+}
+
+export interface ISetCarveoutAmountAction extends IReceiptAction {
+    rowId: string;
+    amountRaw: number;
+    amountFormatted: string;
+}
+
+export interface IDeleteCarveoutAction extends IReceiptAction {
+    rowId: string;
+    receiptId: string;
+}
+
 export function receiptCreate(title: string): ICreateReceiptAction {
     return {type: ReceiptActionType.CREATE_RECEIPT, title, id: "CR_" + nextReceiptId++, date: new Date()};
 }
@@ -74,4 +93,16 @@ export function receiptChangeTitle(receiptId: string, title: string): ISetTitleA
 
 export function receiptCreateCarveout(receiptId: string): ICreateCarveoutAction {
     return {type: ReceiptActionType.CREATE_CARVEOUT, receiptId};
+}
+
+export function receiptSetCarveoutTitle(rowId: string, title: string): ISetCarveoutTitleAction {
+    return {type: ReceiptActionType.SET_CARVEOUT_TITLE, rowId, title};
+}
+
+export function receiptSetCarveoutAmount(rowId: string, amountRaw: number, amountFormatted: string): ISetCarveoutAmountAction {
+    return {type: ReceiptActionType.SET_CARVEOUT_AMOUNT, rowId, amountRaw, amountFormatted};
+}
+
+export function receiptDeleteCarveout(rowId: string, receiptId: string): IDeleteCarveoutAction {
+    return {type: ReceiptActionType.DELETE_CARVEOUT, rowId, receiptId};
 }

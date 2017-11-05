@@ -4,7 +4,7 @@ import {partyToggleOnReceipt} from "../../redux-actions/partyActions";
 import {IDynamicLabelValueChangeEventArgs} from "../lib/input/DynamicLabel";
 import {
     receiptChangePayer, receiptChangeTitle, receiptChangeTotal, receiptCreate, receiptCreateCarveout,
-    receiptDelete
+    receiptDelete, receiptDeleteCarveout, receiptSetCarveoutAmount, receiptSetCarveoutTitle
 } from "../../redux-actions/receiptActions";
 import {ValidationResult} from "../../core/lib/input/DynamicLabelHelpers";
 import {Party} from "../../core/party/party";
@@ -83,13 +83,18 @@ const mapDispatchToProps = (dispatch) => {
             dispatch(receiptCreateCarveout(receiptId));
         },
 
-        onRowDelete: (e, rowId: string): void => {
-            // TODO: Remove row. Probably want the receipt id so it's easier.
+        onRowDelete: (e, receiptId: string, rowId: string): void => {
+            dispatch(receiptDeleteCarveout(rowId, receiptId));
         },
 
         onRowTitleChange: (e: IDynamicLabelValueChangeEventArgs<string>): ValidationResult => {
-            // TODO: Title change event
-          return new ValidationResult(true);
+            dispatch(receiptSetCarveoutTitle(e.objectId,e.formatter(e.newValueRaw)));
+            return new ValidationResult(true);
+        },
+
+        onRowAmountChange: (e: IDynamicLabelValueChangeEventArgs<number>): ValidationResult => {
+            dispatch(receiptSetCarveoutAmount(e.objectId, e.newValueRaw, e.formatter(e.newValueRaw)));
+            return new ValidationResult(true);
         },
     }
 };

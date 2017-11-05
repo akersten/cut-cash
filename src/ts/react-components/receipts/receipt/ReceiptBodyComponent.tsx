@@ -31,7 +31,9 @@ export class ReceiptBodyComponent extends React.Component<ReceiptBodyProps, any>
             return party.excludedReceipts.indexOf(receipt) < 0;
         }
 
-        let parties = this.props.parties.filter(partyHasReceipt);
+        let parties = this.props.parties.filter((party: VmParty): boolean => {
+            return partyHasReceipt(party, this.props.receiptId);
+        });
 
         let rows = this.props.lines.map(line =>
 

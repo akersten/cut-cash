@@ -57,7 +57,7 @@ export class VmReceipt extends Receipt {
             // How many parties received value from this line?
             let numPartiesForLine = 0;
             for (let p of parties) {
-                if (p.excludedReceiptLines.indexOf(ln.id) > -1) {
+                if (p.excludedReceiptLines.indexOf(ln.id) > -1 || p.excludedReceipts.indexOf(receipt.id) > -1) {
                     continue;
                 }
                 numPartiesForLine++;

@@ -8,3 +8,6 @@
 - different font size and colors for DynamicLabel (able to edit payer names)
 
 - Rounding is a little wonky with lots of values (difference gets larger). maybe don't round until the end.
+
+- Add info to footer
+- Publish (use release build of React)

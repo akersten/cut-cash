@@ -1,14 +1,10 @@
-- footer with the math in it
-
-- Verify date control is working on all platforms (it's not defaulting in value on android)
+- Maybe add date control back if it's useful
 -- Formatter and parser
 
-- Adding carveouts
--- on delete of payer, remove from corresponding receipts if selected (and carveouts)
-
-- Math to tie everything together
--- make sure checkboxes are working on the main receipt
--- account for carveouts
+- Don't allow deleting a payer if they are on receipts...
+- Check to see that deleting and adding a payer doesn't get confused with a previous payer
 
 - better overall style/formatting
-- different font size and colors
+- different font size and colors for DynamicLabel (able to edit payer names)
+
+- Rounding is a little wonky with lots of values (difference gets larger). maybe don't round until the end.

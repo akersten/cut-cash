@@ -11,6 +11,7 @@ import {Provider} from "react-redux";
 
 import {CutCashApp} from "../react-components/CutCashApp";
 import {mainReducer} from "../redux-reducers/main";
+import {MenuBarLink} from "../react-components/menubar/MenuBarLink";
 
 let store = createStore(mainReducer);
 

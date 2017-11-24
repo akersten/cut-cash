@@ -12,3 +12,16 @@
 body, section.section {
   background-color: $cutcash-light;
 }
+
+
+/* Helper for the hover effect of the main navbar logo. */
+.navbar-brand .navbar-item.cwxs-navbar-logo:hover {
+  img:first-of-type {
+    display: none;
+  }
+}
+.navbar-brand .navbar-item.cwxs-navbar-logo:not(:hover) {
+  img:not(:first-of-type) {
+    display: none;
+  }
+}

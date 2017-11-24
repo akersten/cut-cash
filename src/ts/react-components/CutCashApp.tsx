@@ -1,6 +1,7 @@
 import * as React from "react";
 import {ReceiptsLink} from "./receipts/ReceiptsLink";
 import {PartiesLink} from "./parties/PartiesLink";
+import {MenuBarLink} from "./menubar/MenuBarLink";
 
 /**
  * Created by akersten on 4/30/17.
@@ -14,9 +15,14 @@ export class CutCashApp extends React.Component<any, any> {
 
     render() {
         return <div>
-            <img src="static/img/logo/logo512.png" alt="CutCash" />
-            <PartiesLink/>
-            <ReceiptsLink/>
-        </div>;
+                        <MenuBarLink/>
+
+            <section className="section">
+            <div className="container">
+                <PartiesLink/>
+                <ReceiptsLink/>
+            </div>
+        </section>
+        </div>
     }
 }

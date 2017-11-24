@@ -14,7 +14,7 @@ export class CutCashApp extends React.Component<any, any> {
 
     render() {
         return <div>
-            <h1 className="title">CutCash</h1>
+            <img src="static/img/logo/logo512.png" alt="CutCash" />
             <PartiesLink/>
             <ReceiptsLink/>
         </div>;

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block title %}CutCash{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bin/route/cutcashapp/cutcashapp.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='js/bin/react-apps/main.bundled.js') }}"></script>
+{% endblock %}
+
+{% block header %}
+    {% include "cutcashapp/cutcashapp-header.html" %}
+{% endblock %}
+
+{% block body %}
+    {% include "cutcashapp/cutcashapp-body.html" %}
+{% endblock %}
+
+{% block footer %}
+    {% include "cutcashapp/cutcashapp-footer.html" %}
+{% endblock %}

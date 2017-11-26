@@ -13,6 +13,14 @@ def splash():
     return generic_path_render("splash/splash.html")
 
 
+def app():
+    """
+    The main application path for CutCash.
+    :return: The rendered template.
+    """
+    return generic_path_render("cutcashapp/cutcashapp.html")
+
+
 def generic_path_render(file):
     """
     A generic renderer for a static page.

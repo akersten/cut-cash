@@ -33,6 +33,15 @@ svg {
 
   /* #endregion */
 
+  /* #region Highlight full colors */
+
+  .is-color-cutcash-secondary {
+    stroke: $cutcash-secondary;
+    fill: $cutcash-secondary;
+  }
+
+  /* #endregion */
+
   /* #region Standard CutCash stroke colors */
 
   .is-stroke-cutcash-dark {
@@ -45,15 +54,6 @@ svg {
 
   .is-stroke-cutcash-black-deep {
     stroke: $cutcash-black-deep;
-  }
-
-  /* #endregion */
-
-  /* #region Highlight full colors */
-
-  .is-color-cutcash-secondary {
-    stroke: $cutcash-secondary;
-    fill: $cutcash-secondary;
   }
 
   /* #endregion */

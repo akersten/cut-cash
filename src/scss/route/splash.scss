@@ -9,9 +9,8 @@
 
 section.section {
   background-color: $cutcash-dark;
-
-  .title {
-    color: $cutcash-light;
-  }
 }
 
+.button.is-large.is-block {
+  font-weight: bold;
+}

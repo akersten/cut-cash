@@ -5,6 +5,10 @@
     <script type="text/javascript" src="{{ url_for('static', filename='js/bin/route/splash/splash.js') }}"></script>
 {% endblock %}
 
+{% block styles %}
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bin/route/splash.css') }}">
+{% endblock %}
+
 {% block header %}
     {% include "splash/splash-header.html" %}
 {% endblock %}

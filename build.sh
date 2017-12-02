@@ -13,8 +13,12 @@ if  [ ! -d static/css/bin ]
 then
     mkdir -p static/css/bin
 fi
+
+# TODO: Find an automatic way to populate these
 sass src/scss/bulma.scss static/css/bin/bulma.css
 sass src/scss/cutcash.scss static/css/bin/cutcash.css
+mkdir -p static/css/bin/route
+sass src/scss/route/splash.scss static/css/bin/route/splash.css
 
 echo "  Building scripts..."
 

@@ -1,5 +1,59 @@
-@import "../cuteworks-variables";
+@import "../cutcash-variables";
 
-.section {
+.hero.is-black .title {
+  color: $cutcash-light;
+  font-family: $cutcash-block-font;
+  font-weight: 400;
+}
+
+section.section {
   background-color: $cutcash-dark;
+
+  .title {
+    color: $cutcash-light;
+  }
+}
+
+svg {
+  width: 100%;
+  min-height: 56rem;
+
+  .is-color-cutcash-white {
+    stroke: $cutcash-white;
+    fill: $cutcash-white;
+  }
+
+  .is-color-cutcash-light {
+    stroke: $cutcash-light;
+    fill: $cutcash-light;
+  }
+
+  .is-color-cutcash-dark {
+    stroke: $cutcash-dark;
+    fill: $cutcash-dark;
+  }
+
+  .is-color-cutcash-black {
+    stroke: $cutcash-black;
+    fill: $cutcash-black;
+  }
+
+  .is-color-cutcash-black-deep {
+    stroke: $cutcash-black-deep;
+    fill: $cutcash-black-deep;
+  }
+
+
+  .is-stroke-cutcash-dark {
+    stroke: $cutcash-dark;
+  }
+
+  .is-stroke-cutcash-black {
+    stroke: $cutcash-black;
+  }
+
+  .is-stroke-cutcash-black-deep {
+    stroke: $cutcash-black-deep;
+  }
+
 }

@@ -1,11 +1,9 @@
 /**
  * Created by akersten on 9/10/17.
  */
-import {Party} from "../../core/party/party";
-import {Color} from "../../core/lib/color";
-import {Receipt, ReceiptLine} from "../../core/receipt/receipt";
-import {DynamicLabelHelpers, DynamicLabelType} from "../../core/lib/input/DynamicLabelHelpers";
+import {Receipt} from "../../core/receipt/receipt";
 import {VmParty} from "../party/vmParty";
+import {FormatHelpers} from "../../core/lib/util/FormatHelpers";
 
 export class VmReceipt extends Receipt {
 
@@ -14,8 +12,8 @@ export class VmReceipt extends Receipt {
 
     constructor(id: string, title: string, date: Date) {
         super(id, title, date);
-        this.dateFormatted = DynamicLabelHelpers.format(this.date.toString(), DynamicLabelType.DATE);
-        this.totalFormatted = DynamicLabelHelpers.format(this.total.toString(), DynamicLabelType.CURRENCY);
+        this.dateFormatted = FormatHelpers.formatDate(this.date.toString());
+        this.totalFormatted = FormatHelpers.formatCurrency(this.total.toString());
     }
 
 
@@ -50,7 +48,7 @@ export class VmReceipt extends Receipt {
             totalForParty -= ln.amount;
         }
 
-        totalForParty = Math.round(totalForParty/splitWays);
+        totalForParty = Math.round(totalForParty / splitWays);
 
         // Subtract any line items that this party didn't receive value from.
         for (let ln of receipt.lines) {

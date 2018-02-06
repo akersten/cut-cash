@@ -4,6 +4,7 @@ import {PartiesComponent} from "./PartiesComponent";
 import {VmReceipt} from "../../viewmodels/receipt/vmReceipt";
 import {VmParty} from "../../viewmodels/party/vmParty";
 import {receiptChangePayer} from "../../redux-actions/receiptActions";
+import {DivisionResult} from "../../core/lib/util/divisionResult";
 
 /**
  * Created by akersten on 6/4/17.
@@ -63,13 +64,14 @@ const mapDispatchToProps = (dispatch) => {
         },
 
         getPartyValueReceived: (receipts: Array<VmReceipt>, parties: Array<VmParty>, party: VmParty): number => {
-            let valueReceived: number = 0;
+            let valueReceived: DivisionResult = new DivisionResult(0,0);
 
             for (let receipt of receipts) {
-                valueReceived += VmReceipt.getReceivedValue(party, parties, receipt);
+                let dr: DivisionResult = VmReceipt.getReceivedValue(party, parties, receipt);
+                valueReceived = valueReceived.add(dr);
             }
 
-            return valueReceived;
+            return valueReceived.quotient;
         }
     }
 };

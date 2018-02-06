@@ -4,6 +4,7 @@
 import {Receipt} from "../../core/receipt/receipt";
 import {VmParty} from "../party/vmParty";
 import {FormatHelpers} from "../../core/lib/util/FormatHelpers";
+import {DivisionResult} from "../../core/lib/util/divisionResult";
 
 export class VmReceipt extends Receipt {
 
@@ -17,15 +18,15 @@ export class VmReceipt extends Receipt {
     }
 
 
-    static getReceivedValue(party: VmParty, parties: Array<VmParty>, receipt: Receipt): number {
+    static getReceivedValue(party: VmParty, parties: Array<VmParty>, receipt: Receipt): DivisionResult {
         // See if this party is excluding this receipt, in that case it's 0.
         if (party.excludedReceipts.indexOf(receipt.id) > -1) {
-            return 0;
+            return new DivisionResult(0,0);
         }
 
         if (!receipt.payer) {
             // No one got any value if no one paid.
-            return 0;
+            return new DivisionResult(0,0);
         }
 
         let splitWays: number = 0;
@@ -39,16 +40,16 @@ export class VmReceipt extends Receipt {
 
         if (splitWays === 0) {
             // No one is getting any value from this.
-            return 0;
+            return new DivisionResult(0,0);
         }
 
-        let totalForParty = receipt.total;
+        let totalForParty = new DivisionResult(receipt.total, 0);
 
         for (let ln of receipt.lines) {
-            totalForParty -= ln.amount;
+            totalForParty = totalForParty.subtract(ln.amount);
         }
 
-        totalForParty = Math.round(totalForParty / splitWays);
+        totalForParty = totalForParty.divide(splitWays); //= Math.round(totalForParty / splitWays);
 
         // Subtract any line items that this party didn't receive value from.
         for (let ln of receipt.lines) {
@@ -69,8 +70,8 @@ export class VmReceipt extends Receipt {
                 continue;
             }
 
-            totalForParty += Math.round(ln.amount / numPartiesForLine);
-
+            let lineDivisionResult = new DivisionResult(ln.amount, 0).divide(numPartiesForLine);
+            totalForParty = totalForParty.add(lineDivisionResult, numPartiesForLine);
         }
 
         return totalForParty;

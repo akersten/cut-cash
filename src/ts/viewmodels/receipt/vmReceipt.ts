@@ -71,7 +71,7 @@ export class VmReceipt extends Receipt {
             }
 
             let lineDivisionResult = new DivisionResult(ln.amount, 0).divide(numPartiesForLine);
-            totalForParty = totalForParty.add(lineDivisionResult, numPartiesForLine);
+            totalForParty = totalForParty.add(lineDivisionResult);
         }
 
         return totalForParty;
